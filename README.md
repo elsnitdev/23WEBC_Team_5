@@ -1,5 +1,7 @@
 # 23WEBC_Team_5
-ASP.NET-core
+ASP.NET Core
+
+Tracker Link: https://docs.google.com/spreadsheets/d/1TlyTRuIrmOAKHJSb4l_gaijr4BBE-LtmuElKahge2E8/edit?usp=sharing
 
 Team Members - Thành Viên:
 + 0306231271 - Nguyễn Gia Bảo
