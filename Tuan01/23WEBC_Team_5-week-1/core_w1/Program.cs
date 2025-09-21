@@ -1,7 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Thêm file customappsettings vào cấu hình
+builder.Configuration.AddJsonFile("customappsettings.json");
 
 var app = builder.Build();
 

@@ -1,9 +1,9 @@
 {
-  "AppSettings": {
-    "MaxFileSize": 52428800, //50 MB
+  "CustomAppSettings": {
+    "MaxFileSize": 41943040, //40 MB
     "ListBannedIPs": [
-      "192.168.1.100",
-      "188.167.1.1"
+      "192.168.1.101",
+      "188.167.1.2"
     ]
   }
 }

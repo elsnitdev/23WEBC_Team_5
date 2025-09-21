@@ -35,6 +35,15 @@ namespace core_w1.Controllers
             return View("Index");
         }
 
+        public IActionResult TestCustomAppSettings()
+        {
+            long maxFileSize = _configuration.GetValue<long>("CustomAppSettings:MaxFileSize");
+            Console.WriteLine("Max file size (file customappsettings): " + maxFileSize);
+            string[] listBannedIPs = _configuration.GetSection("CustomAppSettings:ListBannedIPs").Get<string[]>();
+            Console.WriteLine("List banned IPs (file customappsettings): " + string.Join(", ", listBannedIPs));
+            return View("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
