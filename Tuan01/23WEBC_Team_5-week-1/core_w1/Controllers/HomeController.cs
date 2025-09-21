@@ -44,6 +44,11 @@ namespace core_w1.Controllers
             return View("Index");
         }
 
+        public IActionResult ListUser()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
