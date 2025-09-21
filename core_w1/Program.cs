@@ -1,8 +1,13 @@
+using core_w1.MiddleWares;
+using core_w1.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+// Tinsle code
+builder.Services.AddScoped<IRequestLogger, RequestLogger>();
+builder.Services.AddScoped<IUserService, UserService>();
+// Tinsle code end
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
