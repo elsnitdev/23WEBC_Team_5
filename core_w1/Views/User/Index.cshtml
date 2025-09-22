@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "List User";
+	var users = ViewData["Users"] as List<User>;
+	var currentPage = ViewData["CurrentPage"] as int? ?? 1;
+    var totalPages = ViewData["TotalPages"] as int? ?? 1;
+    var pageSize = ViewData["PageSize"] as int? ?? 10;
+    var totalUsers = ViewData["TotalUsers"] as int? ?? 0;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+
+<div class="container mt-3 mb-4">
+    <div class="col-lg-9 mt-4 mt-lg-0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+                    <table class="table manage-candidates-top mb-0">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th class="text-center">Password</th>
+                                <th class="action text-right">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (users.Any())
+                            {
+                                @foreach (var user in users)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td class="text-center">@user.Password</td>
+                                        <td>@(user.RoleId == 1 ? "Admin" : user.RoleId == 2 ? "User" : "Guest")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No users found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @if (users.Any())
+                    {
+                        <div class="text-center mt-3 mt-sm-3">
+                            <ul class="pagination justify-content-center mb-0">
+                                <!-- Previous Page Link -->
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-action="Index" asp-controller="User" asp-route-page="@(currentPage - 1)">Prev</a>
+                                </li>
+
+                                <!-- Page Number Links -->
+                                @{
+                                    int startPage = Math.Max(1, currentPage - 2);
+                                    int endPage = Math.Min(totalPages, currentPage + 2);
+
+                                    if (startPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-controller="User" asp-route-page="1">1</a>
+                                        </li>
+                                        if (startPage > 2)
+                                        {
+                                            <li class="page-item">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        }
+                                    }
+
+                                    for (int i = startPage; i <= endPage; i++)
+                                    {
+                                        <li class="page-item @(i == currentPage ? "active" : "")">
+                                            <a class="page-link" asp-action="Index" asp-controller="User" asp-route-page="@i">@i</a>
+                                        </li>
+                                    }
+
+                                    if (endPage < totalPages)
+                                    {
+                                        if (endPage < totalPages - 1)
+                                        {
+                                            <li class="page-item">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        }
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-controller="User" asp-route-page="@totalPages">@totalPages</a>
+                                        </li>
+                                    }
+                                }
+
+                                <!-- Next Page Link -->
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-action="Index" asp-controller="User" asp-route-page="@(currentPage + 1)">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
