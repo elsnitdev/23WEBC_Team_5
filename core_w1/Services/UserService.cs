@@ -4,7 +4,7 @@ namespace core_w1.Services
 {
     public class UserService : IUserService //implement the interface for user service
     {
-        private readonly List<User> _users= new List<User>(); // remember assigning an intial value to avoid null expception
+        private  List<User> _users= new List<User>(); // remember used readonly to assigning an intial value to avoid null expception
         public UserService()
         {
             if (File.Exists("listUser.txt"))
@@ -25,14 +25,15 @@ namespace core_w1.Services
                 }
             }
         }
-        public List<User> GetAllUsers(List<User>users)
+
+        public List<User> GetAllUsers()
         {
-            return _users;
+           return _users;
         }
 
         public void setUsers(List<User> users)
         {
-            throw new NotImplementedException();
+            _users = users;
         }
     }
 }

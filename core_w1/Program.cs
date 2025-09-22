@@ -7,9 +7,11 @@ builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddScoped<IRequestLogger, RequestLogger>();
 builder.Services.AddScoped<IUserService, UserService>();
-// Tinsle code end
-var app = builder.Build();
+builder.Services.AddScoped<IUserService, UserService>();
 
+var app = builder.Build();
+app.UseUserLoading(); // Add the custom middleware to the pipeline
+// Tinsle code end
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
