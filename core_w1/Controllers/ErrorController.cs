@@ -4,14 +4,17 @@ namespace core_w1.Controllers
 {
     public class ErrorController : Controller
     {
-        public IActionResult HandleError(int statusCode)
+        [Route("Error")]
+        public IActionResult Error()
         {
-            switch (statusCode)
-            {
-                case 404: return View("404");
-                //case ...?
-            }
-            return View("Error");
+          return View("~/Views/Shared/Error.cshtml");
         }
-    }
+
+        [Route("Error/404")]
+        public IActionResult NotFound()
+        {
+          Response.StatusCode = 404; // Ensure the response status is 404
+          return View("~/Views/Shared/404.cshtml");
+        }
+  }
 }
