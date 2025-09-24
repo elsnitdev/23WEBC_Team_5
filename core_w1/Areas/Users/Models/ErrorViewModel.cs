@@ -1,4 +1,6 @@
-namespace core_w1.Models
+using Microsoft.AspNetCore.Mvc;
+
+namespace core_w2.Areas.Users.Models
 {
     public class ErrorViewModel
     {

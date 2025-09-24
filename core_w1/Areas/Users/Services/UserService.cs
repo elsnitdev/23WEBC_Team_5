@@ -1,6 +1,7 @@
-﻿using core_w1.Models;
+﻿using core_w2.Areas.Users.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace core_w1.Services
+namespace core_w2.Areas.Users.Services
 {
     public class UserService : IUserService //implement the interface for user service
     {

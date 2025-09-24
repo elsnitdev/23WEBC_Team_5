@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace core_w1.Controllers
+namespace core_w2.Areas.Users.Controllers
 {
+    [Area("Users")]
     public class ErrorController : Controller
     {
         public IActionResult HandleError(int statusCode)

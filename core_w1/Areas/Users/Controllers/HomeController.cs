@@ -1,10 +1,11 @@
 using System.Diagnostics;
-using core_w1.Models;
+using core_w2.Areas.Users.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w1.Controllers
+namespace core_w2.Areas.Users.Controllers
 {
-  public class HomeController : Controller
+    [Area("Users")]
+    public class HomeController : Controller
   {
     private readonly ILogger<HomeController> _logger;
     private readonly IConfiguration _configuration;
@@ -15,7 +16,6 @@ namespace core_w1.Controllers
       _configuration = configuration;
 
     }
-
     public IActionResult Index()
     {
       return View();

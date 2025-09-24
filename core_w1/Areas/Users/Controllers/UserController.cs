@@ -1,9 +1,10 @@
-﻿using core_w1.Models;
-using core_w1.Services;
+﻿using core_w2.Areas.Users.Models;
+using core_w2.Areas.Users.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w1.Controllers
+namespace core_w2.Areas.Users.Controllers
 {
+    [Area("Users")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

@@ -1,5 +1,5 @@
-using core_w1.MiddleWares;
-using core_w1.Services;
+using core_w2.Areas.Users.MiddleWares;
+using core_w2.Areas.Users.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +24,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(  
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
 
 app.MapControllerRoute(
     name: "default",

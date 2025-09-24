@@ -1,5 +1,5 @@
-﻿using core_w1.Models;
-namespace core_w1.Services
+﻿using core_w2.Areas.Users.Models;
+namespace core_w2.Areas.Users.Services
 {
     public interface IUserService // create the interface for user service
     {

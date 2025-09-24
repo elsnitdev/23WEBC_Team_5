@@ -1,5 +1,6 @@
-﻿
-namespace core_w1.MiddleWares
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace core_w2.Areas.Users.MiddleWares
 {
     public class UserLoadingListUser
     {
