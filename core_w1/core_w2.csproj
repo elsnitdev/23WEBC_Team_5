@@ -12,7 +12,6 @@
     <Folder Include="Areas\Admins\Views\" />
 	  <Folder Include="Areas\Users\Controllers\" />
 	  <Folder Include="Areas\Users\Models\" />
-	  <Folder Include="Areas\Users\Views\" />
   </ItemGroup>
 
 </Project>

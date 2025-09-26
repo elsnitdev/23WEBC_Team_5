@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	ViewData["ActivePage"] = "Login";
+}
+<div class="login_sec">
+	 <div class="container">
+		 @await Html.PartialAsync("_Breadcrumb")
+		 <h2>Login</h2>
+		 <div class="col-md-6 log">			 
+				 <p>Welcome, please enter the folling to continue.</p>
+				 <p>If you have previously Login with us, <span>click here</span></p>
+				 <form>
+					 <h5>User Name</h5>	
+					 <input type="text" value="">
+					 <h5>Password</h5>
+					 <input type="password" value="">					
+					 <input type="submit" value="Login">	
+						<a class="acount-btn" href="account.html">Create an Account</a>
+				 </form>
+				 <a href="#">Forgot Password ?</a>
+
+		 </div>	
+
+		 <div class="clearfix"></div>
+	 </div>
+</div>

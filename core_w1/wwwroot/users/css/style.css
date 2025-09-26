@@ -23,16 +23,16 @@ a:hover, a:focus {
     text-decoration:none;
 }
 @font-face {
-   font-family: 'Dosis-Regular';
-   src: url(../fonts/Dosis-Regular.ttf) format('truetype');
+	font-family: 'Dosis-Regular';
+	src: url(/fonts/Dosis-Regular.ttf) format('truetype');
 }
 @font-face {
-   font-family: 'Dosis-Bold';
-   src: url(../fonts/Dosis-Bold.ttf) format('truetype');
+	font-family: 'Dosis-Bold';
+	src: url(/fonts/Dosis-Bold.ttf) format('truetype');
 }
 @font-face {
-   font-family: 'Dosis-Medium';
-   src: url(../fonts/Dosis-Medium.ttf) format('truetype');
+	font-family: 'Dosis-Medium';
+	src: url(/fonts/Dosis-Medium.ttf) format('truetype');
 }
 ul{
 	padding: 0;
@@ -565,7 +565,7 @@ ul.nav-bottom li:nth-child(1){
 .social i {
 width: 27px;
 height: 27px;
-background: url('../images/social.png') no-repeat 0px 0px;
+background: url('/images/social.png') no-repeat 0px 0px;
 display: inline-block;
 margin:0 5px;
 }
