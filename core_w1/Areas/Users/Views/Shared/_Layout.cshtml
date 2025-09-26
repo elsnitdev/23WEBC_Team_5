@@ -2,27 +2,21 @@
 <html lang="en">
 <head>
     <title>Lighting A Ecommerce Category Flat Bootstarp Resposive Website Template | @ViewData["Title"] :: w3layouts</title>
-    <link href="~/users/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-    <!-- Custom Theme files -->
-    <!--theme style-->
-    <link href="~/users/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <script src="~/users/js/jquery.min.js"></script>
 
+    <!-- Custom Theme files -->
     <!--//theme style-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Wedding Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!-- start menu -->
-    <script src="~/users/js/simpleCart.min.js"> </script>
-    <!-- start menu -->
-    <link href="~/users/css/memenu.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="~/users/js/memenu.js"></script>
-    <script>$(document).ready(function(){$(".memenu").memenu();});</script>
-    <!-- /start menu -->
-    <link href="~/users/css/form.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/users/css/bootstrap.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/users/css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/users/css/memenu.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="~/users/css/form.css" type="text/css" media="all" />
     <link rel="stylesheet" href="~/users/css/flexslider.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="~/users/css/jquery-ui.css" type="text/css">
+
 
 </head>
 <body>
@@ -33,9 +27,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	@await Html.PartialAsync("_Subscribe")
     @await Html.PartialAsync("_Footer")
     @await Html.PartialAsync("_Copywrite")
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" src="~/users/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/users/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/users/js/jquery.flexisel.js"></script>
+    <script type="text/javascript" src="~/users/js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="~/users/js/jquery.jscrollpane.min.js"></script>
+    <script type="text/javascript" src="~/users/js/memenu.js"></script>
+    <script type="text/javascript" src="~/users/js/imagezoom.js"></script>
+    <script type="text/javascript" src="~/users/js/responsiveslides.min.js"></script>
+    <script type="text/javascript" src="~/users/js/simpleCart.min.js"> </script>
+    <script type="text/javascript" src="~/users/js/main.js"></script>
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script>$(document).ready(function(){$(".memenu").memenu();});</script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
