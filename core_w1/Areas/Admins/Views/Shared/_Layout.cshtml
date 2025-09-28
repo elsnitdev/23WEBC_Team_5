@@ -1,0 +1,14 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Admin</title>
+    <link rel="stylesheet" href="~/admins/css/sb-admin-2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admins/css/timeline.css" asp-append-version="true" />
+</head>
+<body>
+    @RenderBody()
+    @await Html.PartialAsync("_Sidebar")
+</body>
+</html>

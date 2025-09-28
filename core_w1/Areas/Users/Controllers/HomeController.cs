@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using core_w2.Areas.Users.Models;
+using core_w2.Areas.Users.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_w2.Areas.Users.Controllers
@@ -9,21 +10,22 @@ namespace core_w2.Areas.Users.Controllers
   {
     private readonly ILogger<HomeController> _logger;
     private readonly IConfiguration _configuration;
-
-    public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+    private readonly ISanPhamService _sanPhamService;
+    public HomeController(ILogger<HomeController> logger, IConfiguration configuration, ISanPhamService sanPhamService)
     {
       _logger = logger;
       _configuration = configuration;
-
+      _sanPhamService = sanPhamService;
     }
     public IActionResult Index()
     {
-      return View();
+        Console.WriteLine("run");
+        return View();
     }
 
     public IActionResult Privacy()
     {
-      return View();
+        return View();
     }
 
     public IActionResult TestAppSettings()
@@ -43,6 +45,13 @@ namespace core_w2.Areas.Users.Controllers
       Console.WriteLine("List banned IPs (file customappsettings): " + string.Join(", ", listBannedIPs));
       return View("Index");
     }
+    public IActionResult Single(int id)
+    { 
+        var sp = _sanPhamService.GetById(id);
+        if (sp == null) {
+            return NotFound(); 
+        }
+        return View(sp); }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
