@@ -1,0 +1,185 @@
+{
+  "products": [
+    {
+      "MaSP": 1,
+      "TenSP": "Đèn tường cổ điển mosaic",
+      "DonGia": 550000,
+      "DonGiaKhuyenMai": 495000,
+      "HinhAnh": "img2.jpg",
+      "MoTa": "Đèn treo tường mang phong cách cổ điển, phần chao đèn được làm từ gốm sứ mosaic tạo điểm nhấn độc đáo.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 2,
+      "TenSP": "Đèn treo tường đôi phong cách hiện đại",
+      "DonGia": 420000,
+      "DonGiaKhuyenMai": 378000,
+      "HinhAnh": "img1.jpg",
+      "MoTa": "Đèn treo tường đôi với thiết kế hiện đại, phần đế gỗ chắc chắn và chao đèn bằng thủy tinh màu trắng đục.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 3,
+      "TenSP": "Đèn treo tường bằng gỗ rustic",
+      "DonGia": 480000,
+      "DonGiaKhuyenMai": 432000,
+      "HinhAnh": "img3.jpg",
+      "MoTa": "Đèn treo tường với thiết kế mộc mạc, phần đế làm từ gỗ xếp khối độc đáo, chao đèn hình trụ bằng thủy tinh màu trắng mờ.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 4,
+      "TenSP": "Đèn treo tường đồng thau cổ điển",
+      "DonGia": 680000,
+      "DonGiaKhuyenMai": 612000,
+      "HinhAnh": "img4.jpg",
+      "MoTa": "Đèn treo tường đôi với chất liệu đồng thau chạm khắc tinh xảo, chao đèn thủy tinh trong suốt tạo vẻ đẹp sang trọng.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 5,
+      "TenSP": "Đèn pin sạc Eveready",
+      "DonGia": 150000,
+      "DonGiaKhuyenMai": 135000,
+      "HinhAnh": "img5.jpg",
+      "MoTa": "Đèn pin sạc cầm tay Eveready, thiết kế nhỏ gọn với tay cầm tiện lợi, sử dụng công nghệ LED tiết kiệm năng lượng.",
+      "LoaiSP": "Đèn pin"
+    },
+    {
+      "MaSP": 6,
+      "TenSP": "Đèn pin sạc mini",
+      "DonGia": 120000,
+      "DonGiaKhuyenMai": 108000,
+      "HinhAnh": "img6.jpg",
+      "MoTa": "Đèn pin sạc cầm tay mini, thiết kế hình hộp nhỏ gọn, tích hợp nhiều bóng LED nhỏ cho ánh sáng mạnh mẽ.",
+      "LoaiSP": "Đèn pin"
+    },
+    {
+      "MaSP": 7,
+      "TenSP": "Bộ 10 bóng đèn LED E27",
+      "DonGia": 250000,
+      "DonGiaKhuyenMai": 225000,
+      "HinhAnh": "img7.jpg",
+      "MoTa": "Bộ 10 bóng đèn LED tiết kiệm điện, đui E27 phổ biến, ánh sáng trắng, phù hợp cho nhiều loại đèn khác nhau trong nhà.",
+      "LoaiSP": "Bóng đèn"
+    },
+    {
+      "MaSP": 8,
+      "TenSP": "Đèn bàn Eveready",
+      "DonGia": 280000,
+      "DonGiaKhuyenMai": 252000,
+      "HinhAnh": "img8.jpg",
+      "MoTa": "Đèn bàn học Eveready, thiết kế linh hoạt với cổ ngỗng có thể uốn cong, ánh sáng tập trung, phù hợp cho việc học tập và làm việc.",
+      "LoaiSP": "Đèn bàn"
+    },
+    {
+      "MaSP": 9,
+      "TenSP": "Đèn pin sạc BPL U.lite",
+      "DonGia": 180000,
+      "DonGiaKhuyenMai": 162000,
+      "HinhAnh": "ofr.jpg",
+      "MoTa": "Đèn pin sạc BPL U.lite, thiết kế dạng hình khối dẹt, có tay cầm, nhiều bóng LED nhỏ cho ánh sáng tỏa đều, phù hợp sử dụng khi mất điện.",
+      "LoaiSP": "Đèn pin"
+    },
+    {
+      "MaSP": 10,
+      "TenSP": "Đèn treo tường ngoài trời",
+      "DonGia": 750000,
+      "DonGiaKhuyenMai": 675000,
+      "HinhAnh": "ofr3.jpg",
+      "MoTa": "Đèn treo tường ngoài trời, thiết kế dạng đèn lồng cổ điển, chất liệu kim loại chắc chắn, chống chịu thời tiết tốt, phù hợp trang trí sân vườn, hiên nhà.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 11,
+      "TenSP": "Đèn rọi LED Glitz 30W",
+      "DonGia": 350000,
+      "DonGiaKhuyenMai": 315000,
+      "HinhAnh": "p6.jpg",
+      "MoTa": "Đèn rọi LED công suất 30W, chuẩn chống nước IP66, ánh sáng mạnh, phù hợp chiếu sáng ngoài trời hoặc không gian rộng.",
+      "LoaiSP": "Đèn chiếu sáng"
+    },
+    {
+      "MaSP": 12,
+      "TenSP": "Đèn treo tường đơn mosaic",
+      "DonGia": 380000,
+      "DonGiaKhuyenMai": 342000,
+      "HinhAnh": "si.jpg",
+      "MoTa": "Đèn treo tường đơn với chao đèn bằng mosaic gốm sứ độc đáo, phần đế và tay vịn bằng kim loại họa tiết cổ điển.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 13,
+      "TenSP": "Đèn treo tường gỗ hiện đại",
+      "DonGia": 280000,
+      "DonGiaKhuyenMai": 252000,
+      "HinhAnh": "si3.jpg",
+      "MoTa": "Đèn treo tường thiết kế đơn giản nhưng hiện đại, phần đế gỗ tròn và tay đỡ uốn cong, chao đèn thủy tinh trắng mờ.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 14,
+      "TenSP": "Đèn treo tường đôi phong cách cổ điển",
+      "DonGia": 720000,
+      "DonGiaKhuyenMai": 648000,
+      "HinhAnh": "p8.jpg",
+      "MoTa": "Đèn treo tường đôi chạm khắc hoa văn tinh tế, chất liệu kim loại màu đồng, chao đèn thủy tinh họa tiết cổ điển, phù hợp trang trí phòng khách hoặc hành lang.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 15,
+      "TenSP": "Đèn treo tường đồng thau họa tiết lá",
+      "DonGia": 650000,
+      "DonGiaKhuyenMai": 585000,
+      "HinhAnh": "si2.jpg",
+      "MoTa": "Đèn treo tường đơn với chất liệu đồng thau, chao đèn thủy tinh họa tiết lá độc đáo, mang đến vẻ đẹp sang trọng và cổ điển cho không gian.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 16,
+      "TenSP": "Đèn ốp trần phong cách hiện đại",
+      "DonGia": 450000,
+      "DonGiaKhuyenMai": 405000,
+      "HinhAnh": "p10.jpg",
+      "MoTa": "Đèn ốp trần thiết kế độc đáo, chất liệu kim loại mạ crom sáng bóng, kiểu dáng hiện đại, phù hợp lắp đặt trong phòng ngủ hoặc phòng khách.",
+      "LoaiSP": "Đèn trần"
+    },
+    {
+      "MaSP": 17,
+      "TenSP": "Đèn treo tường đơn pha lê",
+      "DonGia": 550000,
+      "DonGiaKhuyenMai": 495000,
+      "HinhAnh": "p12.jpg",
+      "MoTa": "Đèn treo tường đơn cổ điển, thân đèn bằng kim loại màu đồng, chao đèn thủy tinh và trang trí thêm hạt pha lê lấp lánh.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 18,
+      "TenSP": "Đèn bàn gốm sứ",
+      "DonGia": 320000,
+      "DonGiaKhuyenMai": 288000,
+      "HinhAnh": "p9.jpg",
+      "MoTa": "Đèn bàn gốm sứ với phần đế được vẽ họa tiết thủ công, chao đèn bằng vải màu đỏ tạo điểm nhấn rực rỡ.",
+      "LoaiSP": "Đèn bàn"
+    },
+    {
+      "MaSP": 19,
+      "TenSP": "Đèn treo tường nghệ thuật",
+      "DonGia": 490000,
+      "DonGiaKhuyenMai": 441000,
+      "HinhAnh": "p7.jpg",
+      "MoTa": "Đèn treo tường đơn với phần tay vịn uốn lượn nghệ thuật, chao đèn làm từ gốm sứ mosaic màu sắc trang nhã.",
+      "LoaiSP": "Đèn trang trí"
+    },
+    {
+      "MaSP": 20,
+      "TenSP": "Đèn treo tường đôi gỗ hiện đại",
+      "DonGia": 450000,
+      "DonGiaKhuyenMai": 405000,
+      "HinhAnh": "p11.jpg",
+      "MoTa": "Đèn treo tường đôi với thiết kế hiện đại, phần đế gỗ hình bát giác và hai chao đèn thủy tinh trắng, mang lại vẻ đẹp đơn giản, thanh lịch.",
+      "LoaiSP": "Đèn trang trí"
+    }
+  ],
+  "total":  20
+}

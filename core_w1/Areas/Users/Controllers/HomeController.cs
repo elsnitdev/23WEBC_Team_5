@@ -18,7 +18,8 @@ namespace core_w2.Areas.Users.Controllers
     }
     public IActionResult Index()
     {
-      return View();
+                Console.WriteLine("run");
+            return View();
     }
 
     public IActionResult Privacy()

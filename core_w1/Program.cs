@@ -9,6 +9,7 @@ namespace core_w2
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             // Tinsle code
@@ -33,7 +34,9 @@ namespace core_w2
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //Huy code
+            app.UseMiddleware<ReadingJsonData>();
+            //Huy end
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
@@ -43,7 +46,12 @@ namespace core_w2
                 name: "users",
                 pattern: "users/{controller=Home}/{action=Index}/{id?}"
             );
-
+            //Thuong code
+            app.MapControllerRoute(
+                name: "admins",
+                pattern: "admins/{controller=Admin}/{action=Index}/{id?}"
+            );
+            //Thuong code end
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
