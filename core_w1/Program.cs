@@ -34,6 +34,10 @@ namespace core_w2
 
             app.UseAuthorization();
 
+            //Huy code
+            app.UseMiddleware<ReadingJsonData>();
+            //Huy end
+
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
