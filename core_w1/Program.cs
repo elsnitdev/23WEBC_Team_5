@@ -1,5 +1,4 @@
-﻿using core_w2.Areas.Admins.Middlewares;
-using core_w2.Areas.Users.MiddleWares;
+﻿using core_w2.Areas.Users.MiddleWares;
 using core_w2.Areas.Users.Services;
 
 var builder = WebApplication.CreateBuilder(args);
