@@ -3,7 +3,7 @@
 namespace core_w2.Areas.Admins.Controllers
 {
     [Area("Admins")]
-    public class AdminController : Controller
+    public class HomeController : Controller
     {
       
         public IActionResult Blank()
@@ -14,5 +14,5 @@ namespace core_w2.Areas.Admins.Controllers
         {
             return View();
         }
-    }
+  }
 }

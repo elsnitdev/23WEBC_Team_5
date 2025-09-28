@@ -1,0 +1,57 @@
+﻿@model core_w2.Areas.Users.Models.SanPham
+@{
+    ViewData["PageTitle"] = "Thêm Sản Phẩm Mới";
+}
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    <form asp-action="Create" asp-controller="Products" asp-area="Admins" method="post" enctype="multipart/form-data" id="productForm">
+        <div class="form-group">
+            <label asp-for="TenSP" class="control-label"></label>
+            <input asp-for="TenSP" class="form-control" />
+            <span asp-validation-for="TenSP" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DonGia" class="control-label"></label>
+            <input asp-for="DonGia" class="form-control" type="number" step="0.01" />
+            <span asp-validation-for="DonGia" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DonGiaKhuyenMai" class="control-label"></label>
+            <input asp-for="DonGiaKhuyenMai" class="form-control" type="number" step="0.01" />
+            <span asp-validation-for="DonGiaKhuyenMai" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HinhAnh" class="control-label"></label>
+            <input asp-for="HinhAnh" type="file" class="form-control" accept="image/*" />
+            <span asp-validation-for="HinhAnh" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MoTa" class="control-label"></label>
+            <textarea asp-for="MoTa" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LoaiSP" class="control-label"></label>
+            <select asp-for="LoaiSP" class="form-control">
+                <option value="">Chọn loại sản phẩm</option>
+                <option value="1">Điện tử</option>
+                <option value="2">Thời trang</option>
+                <option value="3">Gia dụng</option>
+                <option value="4">Khác</option>
+            </select>
+            <span asp-validation-for="LoaiSP" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+    </form>
+</div>

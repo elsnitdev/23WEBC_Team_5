@@ -1,3 +1,4 @@
+﻿using core_w2.Areas.Admins.Middlewares;
 using core_w2.Areas.Users.MiddleWares;
 using core_w2.Areas.Users.Services;
 
@@ -26,10 +27,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
-);
+//Custom MiddleWares
+app.UseMiddleware<ProductFormValidation>();
+
+// KhoaTr - 28/09/2025: Sửa lại route controller
 app.MapControllerRoute(  
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

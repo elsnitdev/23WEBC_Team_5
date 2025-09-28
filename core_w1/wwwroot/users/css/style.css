@@ -143,17 +143,17 @@ display:inline-block;
 }
 /*--- slider-css --*/
 .banner1{
-	background:url(../images/bnr.jpg) no-repeat 0px 0px;
+	background:url(/images/bnr.jpg) no-repeat 0px 0px;
 	background-size:cover;
 	min-height:585px;
 }
 .banner2{
-	background:url(../images/bnr2.jpg) no-repeat 0px 0px;
+	background:url(/images/bnr2.jpg) no-repeat 0px 0px;
 	background-size:cover;
 	min-height:585px;
 }
 .banner3{
-	background:url(../images/bnr3.jpg) no-repeat 0px 0px;
+	background:url(/images/bnr3.jpg) no-repeat 0px 0px;
 	background-size:cover;
 	min-height:585px;
 }
@@ -259,14 +259,14 @@ display:inline-block;
 	text-decoration: none;
 	height: 72px;
 	width: 38px;
-	background: transparent url("../images/sp.png") no-repeat -19px -7px;
+	background: transparent url("/images/sp.png") no-repeat -19px -7px;
 }
 .callbacks_nav:active {
 	opacity: 1.0;
 }
 .callbacks_nav.next {
 	left: auto;
-	background: transparent url("../images/sp.png") no-repeat -77px -7px;
+	background: transparent url("/images/sp.png") no-repeat -77px -7px;
 	right:0;
 }
 /*----*/
