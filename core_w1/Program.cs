@@ -1,5 +1,6 @@
 using core_w2.Areas.Users.MiddleWares;
 using core_w2.Areas.Users.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,6 +26,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
+);
 app.MapControllerRoute(  
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
