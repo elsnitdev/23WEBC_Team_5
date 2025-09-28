@@ -1,6 +1,8 @@
 ﻿@{
 	ViewData["Title"] = "Single";
+
 }
+@model List<core_w2.Areas.Users.Models.SanPham>
 <div class="product">
 <div class="container">
 <div class="product-price1">
@@ -62,14 +64,18 @@
 <div class="clearfix"> </div>
 <div class="bottom-prdt">
 	<div class="btm-grid-sec">
-		<div class="col-md-2 btm-grid">
-			<a asp-controller="home" asp-action="product">
-				<img src="~/images/p3.jpg" alt="" />
-				<h4>Product#1</h4>
-				<span>$1200</span>
-			</a>
-		</div>
-		<div class="col-md-2 btm-grid">
+
+					@foreach (var sp in Model)
+					{
+						<div class="col-md-2 btm-grid">
+							<a asp-controller="Home" asp-action="Product" asp-route-id="@sp.MaSP">
+								<img src="~/images/@sp.HinhAnh" alt="@sp.TenSP" />
+								<h4>@sp.TenSP</h4>
+								<span>@String.Format("{0:N0} ₫", sp.DonGiaKhuyenMai > 0 ? sp.DonGiaKhuyenMai : sp.DonGia)</span>
+							</a>
+						</div>
+					}
+		@* <div class="col-md-2 btm-grid">
 			<a asp-controller="home" asp-action="product">
 				<img src="~/images/p10.jpg" alt="" />
 				<h4>Product#1</h4>
@@ -96,7 +102,7 @@
 				<h4>Product#1</h4>
 				<span>$450</span>
 			</a>
-		</div>
+		</div> *@
 		<div class="clearfix"></div>
 	</div>
 </div>
