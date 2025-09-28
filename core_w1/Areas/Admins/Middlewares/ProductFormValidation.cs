@@ -44,25 +44,6 @@ namespace core_w2.Areas.Admins.Middlewares
 
           if (!isValid)
           {
-            var isAjaxRequest = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
-
-            if (isAjaxRequest)
-            {
-              // Return JSON response for AJAX/API calls
-              httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-              httpContext.Response.ContentType = "application/json";
-              var errors = validationResults.Select(vr => vr.ErrorMessage);
-              var errorResponse = new
-              {
-                Success = false,
-                Errors = errors
-              };
-              await httpContext.Response.WriteAsJsonAsync(errorResponse);
-              return;
-            }
-            else
-            {
-              // Add errors to ModelState for non-AJAX requests
               var errors = validationResults.Select(vr => new
               {
                 Key = vr.MemberNames.FirstOrDefault() ?? string.Empty,
@@ -70,32 +51,15 @@ namespace core_w2.Areas.Admins.Middlewares
               }).ToList();
               httpContext.Items["ValidationErrors"] = errors;
               httpContext.Items["IsValid"] = false;
-            }
           }
         }
         catch (Exception ex)
         {
-          var isAjaxRequest = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
-
-          if (isAjaxRequest)
-          {
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            httpContext.Response.ContentType = "application/json";
-            await httpContext.Response.WriteAsJsonAsync(new
-            {
-              Success = false,
-              Errors = new[] { $"Lỗi xử lý form data: {ex.Message}" }
-            });
-            return;
-          }
-          else
-          {
             httpContext.Items["ValidationErrors"] = new[]
                         {
                             new { Key = string.Empty, ErrorMessage = $"Lỗi xử lý form data: {ex.Message}" }
                         }.ToList();
             httpContext.Items["IsValid"] = false;
-          }
         }
       }
 

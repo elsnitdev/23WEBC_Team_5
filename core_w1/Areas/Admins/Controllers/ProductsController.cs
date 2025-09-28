@@ -30,19 +30,7 @@ namespace core_w2.Areas.Admins.Controllers
 
       if (!ModelState.IsValid)
       {
-        // If validation fails, return to the form with errors
-        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-        {
-          return BadRequest(ModelState);
-        }
         return View("Add", sanPham);
-      }
-
-      // Here you would typically save the product to a database
-      // For demo purposes, we'll just return a success response
-      if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-      {
-        return Json(new { success = true, message = "Tạo sản phẩm thành công" });
       }
 
       TempData["SuccessMessage"] = "Tạo sản phẩm thành công";
