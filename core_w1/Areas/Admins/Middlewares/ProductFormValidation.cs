@@ -47,7 +47,6 @@ namespace core_w2.Areas.Admins.Middlewares
               var errors = validationResults.Select(vr => new
               {
                 Key = vr.MemberNames.FirstOrDefault() ?? string.Empty,
-                ErrorMessage = vr.ErrorMessage
               }).ToList();
               httpContext.Items["ValidationErrors"] = errors;
               httpContext.Items["IsValid"] = false;
