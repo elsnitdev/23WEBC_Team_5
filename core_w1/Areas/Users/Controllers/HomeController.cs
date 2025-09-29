@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using core_w2.Areas.Users.Models;
+using core_w2.Areas.Users.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_w2.Areas.Users.Controllers
@@ -9,17 +10,24 @@ namespace core_w2.Areas.Users.Controllers
   {
     private readonly ILogger<HomeController> _logger;
     private readonly IConfiguration _configuration;
+    private readonly ISanPhamService _sanPhamService;
 
-    public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+    public HomeController(ILogger<HomeController> logger, IConfiguration configuration, ISanPhamService sanPhamService)
     {
       _logger = logger;
       _configuration = configuration;
+      _sanPhamService = sanPhamService;
 
     }
     public IActionResult Index()
     {
                 Console.WriteLine("run");
             return View();
+    }
+    public IActionResult Product()
+    {
+      var products = _sanPhamService.GetAll();
+      return View(products);
     }
 
     public IActionResult Privacy()

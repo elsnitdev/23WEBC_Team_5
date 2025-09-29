@@ -1,5 +1,5 @@
 {
-  "products": [
+  "Products": [
     {
       "MaSP": 1,
       "TenSP": "Đèn tường cổ điển mosaic",
@@ -181,5 +181,5 @@
       "LoaiSP": "Đèn trang trí"
     }
   ],
-  "total":  20
+  "total": 20
 }
