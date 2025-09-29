@@ -8,9 +8,19 @@ namespace core_w2.Areas.Users.Services
     {
 
         private List<SanPham> _dsSanPham;
-        public SanPhamService()
+        public SanPhamService(IWebHostEnvironment env)
         {
-            _dsSanPham = new List<SanPham>();
+            var jsonPath = Path.Combine(env.ContentRootPath, "db.json");
+
+            var json = File.ReadAllText(jsonPath);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var wrapper = JsonSerializer.Deserialize<SanPhamWrapper>(json, options);
+            _dsSanPham = wrapper?.Products ?? new List<SanPham>();
         }
         public SanPhamService(List<SanPham> dsSanPham)
         {
