@@ -8,11 +8,16 @@
 
   <ItemGroup>
 	  <Folder Include="Areas\Admins\Models\" />
-	  <Folder Include="Areas\Users\Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\data\db.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

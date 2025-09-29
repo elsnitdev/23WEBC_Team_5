@@ -1,4 +1,6 @@
 ﻿using core_w2.Areas.Admins.Middlewares;
+using core_w2.Areas.Admins.Services;
+using core_w2.Areas.Admins.Controllers;
 using core_w2.Areas.Users.MiddleWares;
 using core_w2.Areas.Users.Services;
 
@@ -7,12 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Tinsle code
-builder.Services.AddSingleton<ISanPhamService, SanPhamService>();
+
 builder.Services.AddScoped<IRequestLogger, RequestLogger>();
 builder.Services.AddScoped<IUserService, UserService>();
-// Tinsle code end
+builder.Services.AddScoped<core_w2.Areas.Users.Services.ISanPhamService,
+                           core_w2.Areas.Users.Services.SanPhamService>();
+builder.Services.AddScoped<core_w2.Areas.Admins.Services.ISanPhamService, core_w2.Areas.Admins.Services.SanPhamService>();
+//builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 var app = builder.Build();
+//app.UseMiddleware<SaveProductMiddleware>();
 
+// Tinsle code end
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -29,7 +36,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //Custom MiddleWares
-app.UseMiddleware<ReadingJsonData>();
+//app.UseMiddleware<core_w2.Areas.Admins.Middlewares.ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
 
 // KhoaTr - 28/09/2025: Sửa lại route controller

@@ -182,12 +182,12 @@
     },
     {
       "MaSP": 21,
-      "TenSP": "trung tin",
-      "DonGia": 10000,
-      "DonGiaKhuyenMai": 10,
-      "HinhAnh": "/uploads/\u1EA2nh ch\u1EE5p m\u00E0n h\u00ECnh 2025-09-25 155349.png",
-      "MoTa": "dep trai",
-      "LoaiSP": "3"
+      "TenSP": "1",
+      "DonGia": 1,
+      "DonGiaKhuyenMai": 1,
+      "HinhAnh": "/uploads/\u1EA2nh ch\u1EE5p m\u00E0n h\u00ECnh 2025-09-24 214319.png",
+      "MoTa": "1",
+      "LoaiSP": "1"
     }
   ],
   "Total": 21
