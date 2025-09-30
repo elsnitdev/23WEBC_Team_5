@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Areas.Users.Models
+namespace core_w2.Models
 {
-    public class UserResponse
+  public class UserResponse
   {
     public List<User> Users { get; set; } = new List<User>();
     public int Total { get; set; }

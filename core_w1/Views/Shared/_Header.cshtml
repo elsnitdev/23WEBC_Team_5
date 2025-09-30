@@ -1,4 +1,7 @@
-﻿<div class="header-top">
+﻿@{
+
+}
+<div class="header-top">
 	<div class="header-bottom">
 		<div class="logo">
 			<h1><a asp-controller="home" asp-action="index">Lighting</a></h1>
@@ -6,8 +9,8 @@
 		<!---->
 		<div class="top-nav">
 			<ul class="memenu skyblue">
-				<li class="active"><a asp-controller="home" asp-action="index">Home</a></li>
-				<li class="grid">
+				<li class="@(ViewData["CurrentPage"] as string == "Home" ? "active" : "")"><a asp-controller="home" asp-action="index">Home</a></li>
+				<li class="@(ViewData["CurrentPage"] as string == "Products" ? "active" : "") grid">
 					<a asp-controller="home" asp-action="product">Products</a>
 					<div class="mepanel">
 						<div class="row">
@@ -95,8 +98,12 @@
 						</div>
 					</div>
 				</li>
-				<li class="grid"><a asp-controller="home" asp-action="typo">Typo</a></li>
-				<li class="grid"><a asp-controller="home" asp-action="contact">Contact</a></li>
+				<li class="@(ViewData["CurrentPage"] as string == "Typo" ? "active" : "") grid">
+					<a asp-controller="home" asp-action="typo">Typo</a>
+				</li>
+				<li class="@(ViewData["CurrentPage"] as string == "Contact" ? "active" : "") grid">
+					<a asp-controller="home" asp-action="contact">Contact</a>
+				</li>
 			</ul>
 		</div>
 		<!---->

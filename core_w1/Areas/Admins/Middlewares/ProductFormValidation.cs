@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using core_w2.Areas.Users.Models;
+using core_w2.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

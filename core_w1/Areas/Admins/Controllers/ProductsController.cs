@@ -1,11 +1,11 @@
-﻿using core_w2.Areas.Users.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using core_w2.Areas.Admins.Services;
+using core_w2.Models;
 
 namespace core_w2.Areas.Admins.Controllers
 {
-    [Area("Admins")]
+  [Area("Admins")]
     public class ProductsController : Controller
     {
         private readonly ILogger<ProductsController> _logger;

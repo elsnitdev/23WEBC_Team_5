@@ -1,12 +1,11 @@
 using System.Diagnostics;
-using core_w2.Areas.Users.Models;
-using core_w2.Areas.Users.Services;
+using core_w2.Models;
+using core_w2.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Areas.Users.Controllers
+namespace core_w2.Controllers
 {
-    [Area("Users")]
-    public class HomeController : Controller
+  public class HomeController : Controller
   {
     private readonly ILogger<HomeController> _logger;
     private readonly IConfiguration _configuration;
@@ -21,20 +20,35 @@ namespace core_w2.Areas.Users.Controllers
     }
     public IActionResult Index()
     {
-                Console.WriteLine("run");
-            return View();
+      ViewData["CurrentPage"] = "Home";
+      Console.WriteLine("run");
+      return View();
     }
     public IActionResult Product()
     {
+      ViewData["CurrentPage"] = "Products";
       var products = _sanPhamService.GetAll();
       return View(products);
+    }
+    public IActionResult Typo()
+    {
+      ViewData["CurrentPage"] = "Typo";
+      return View();
+    }
+    public IActionResult Contact()
+    {
+      ViewData["CurrentPage"] = "Contact";
+      return View();
     }
 
     public IActionResult Privacy()
     {
       return View();
     }
-
+    public IActionResult Checkout()
+    {
+      return View();
+    }
     public IActionResult TestAppSettings()
     {
       long maxFileSize = _configuration.GetValue<long>("AppSettings:MaxFileSize");

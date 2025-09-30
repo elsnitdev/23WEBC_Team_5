@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
-using core_w2.Areas.Users.Models;
+using core_w2.Models;
 using Microsoft.AspNetCore.Hosting;
 
 namespace core_w2.Areas.Admins.Services
 {
-    public class SanPhamService : ISanPhamService
+  public class SanPhamService : ISanPhamService
     {
         private readonly string _path;
 
