@@ -34,7 +34,14 @@ namespace core_w2.Areas.Users.Controllers
     {
       return View();
     }
-
+        public IActionResult Checkout()
+        {
+         
+        var listProducts =    _sanPhamService.GetAll();
+            List<SanPham> listCheckout = [_sanPhamService.GetById(3), _sanPhamService.GetById(6), _sanPhamService.GetById(2)];
+            Console.WriteLine(listProducts.Count.ToString());
+            return View(listCheckout);
+        }
     public IActionResult TestAppSettings()
     {
       long maxFileSize = _configuration.GetValue<long>("AppSettings:MaxFileSize");

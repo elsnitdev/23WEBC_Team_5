@@ -21,5 +21,9 @@ namespace core_w2.Areas.Users.Services
             _dsSanPham.AddRange(list);
         }
         //Huy end
+        public SanPham GetById(int id)
+        {
+            return _dsSanPham.FirstOrDefault(sp => sp.MaSP == id);
+        }
     }
 }

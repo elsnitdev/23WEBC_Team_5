@@ -9,5 +9,6 @@ namespace core_w2.Areas.Users.Services
         //Huy code
         void UpdateList(List<SanPham> list);
         //Huy end
+        SanPham GetById(int maSP);
     }
 }
