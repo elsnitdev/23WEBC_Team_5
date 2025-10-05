@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.MiddleWares
+namespace core_website.MiddleWares
 {
   public class UserLoadingListUser
   {

@@ -1,6 +1,6 @@
-﻿using core_w2.Models;
+﻿using core_website.Models;
 
-namespace core_w2.Services
+namespace core_website.Services
 {
   public interface ISanPhamService
   {

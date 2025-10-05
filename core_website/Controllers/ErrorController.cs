@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Controllers
+namespace core_website.Controllers
 {
   [Area("Users")]
   public class ErrorController : Controller

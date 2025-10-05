@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Areas.Admins.Controllers
+namespace core_website.Areas.Admins.Controllers
 {
     [Area("Admins")]
     public class ErrorController : Controller

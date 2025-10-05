@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace core_w2.Models
+namespace core_website.Models
 {
   public class SanPham
   {
