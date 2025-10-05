@@ -1,7 +1,7 @@
-﻿using core_w2.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace core_w2.Services
+﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+using core_website.Models;
+namespace core_website.Services
+// KhoaTr - END
 {
   public class UserService : IUserService //implement the interface for user service
   {

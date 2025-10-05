@@ -1,8 +1,8 @@
-﻿using core_w2.Models;
-using core_w2.Services;
+﻿using core_website.Models;
+using core_website.Services;
 using System.Text.Json;
 
-namespace core_w2.MiddleWares
+namespace core_website.MiddleWares
 {
   public class ReadingJsonData
   {

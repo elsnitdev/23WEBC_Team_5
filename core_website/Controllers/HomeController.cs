@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using core_w2.Models;
-using core_w2.Services;
+using core_website.Models;
+using core_website.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Controllers
+namespace core_website.Controllers
 {
   public class HomeController : Controller
   {

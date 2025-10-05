@@ -1,5 +1,5 @@
-﻿using core_w2.Models;
-namespace core_w2.Services
+﻿using core_website.Models;
+namespace core_website.Services
 {
   public interface IUserService // create the interface for user service
   {
