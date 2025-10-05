@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// KhoaTr - 5/10/2025: Sửa lại model
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using core_website.Models;
 using core_website.Models;
@@ -75,3 +76,4 @@ namespace core_website.Areas.Admins.Middlewares
         }
     }
 }
+// KhoaTr - END
