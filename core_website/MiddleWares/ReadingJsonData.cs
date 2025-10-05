@@ -1,8 +1,10 @@
-﻿using core_w2.Models;
-using core_w2.Services;
+﻿// KhoaTr - Sửa lại namespace từ core_w2 thành core_website
+using core_website.Models;
+using core_website.Services;
 using System.Text.Json;
 
-namespace core_w2.MiddleWares
+namespace core_website.MiddleWares
+// KhoaTr - END
 {
   public class ReadingJsonData
   {

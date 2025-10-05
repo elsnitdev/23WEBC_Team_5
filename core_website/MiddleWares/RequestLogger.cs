@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace core_w2.MiddleWares
+﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+namespace core_website.MiddleWares
+// KhoaTr - END
 {
 
   public interface IRequestLogger

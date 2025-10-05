@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// KhoaTr - 5/10/2025: Sửa lại model
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using core_w2.Models;
+using core_website.Models;
+using core_website.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Areas.Admins.Middlewares
+namespace core_website.Areas.Admins.Middlewares
 {
     public class ProductFormValidation
     {
@@ -18,20 +20,21 @@ namespace core_w2.Areas.Admins.Middlewares
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            if (httpContext.Request.Method == HttpMethods.Post &&
-                            httpContext.Request.Path.StartsWithSegments("/Api/Products/Create"))
+            if (
+              httpContext.Request.Method == HttpMethods.Post &&
+              httpContext.Request.Path.StartsWithSegments("/Api/Products/Create"))
             {
                 try
                 {
                     var form = await httpContext.Request.ReadFormAsync();
-                    var sanPham = new SanPham
+                    var sanPham = new SanPhamViewModel
                     {
                         TenSP = form["TenSP"],
                         DonGia = decimal.TryParse(form["DonGia"], out var donGia) ? donGia : 0,
-                        DonGiaKhuyenMai = decimal.TryParse(form["DonGiaKhuyenMai"], out var donGiaKM) ? donGiaKM : 0,
+                        KhuyenMai = decimal.TryParse(form["KhuyenMai"], out var donGiaKM) ? donGiaKM : 0,
                         HinhAnh = form["HinhAnh"],
                         MoTa = form["MoTa"],
-                        LoaiSP = form["LoaiSP"]
+                        Tag = form["Tag"]
                     };
 
                     var validationResults = new List<ValidationResult>();
@@ -73,3 +76,4 @@ namespace core_w2.Areas.Admins.Middlewares
         }
     }
 }
+// KhoaTr - END

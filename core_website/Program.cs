@@ -1,6 +1,8 @@
-﻿using core_w2.Areas.Admins.Middlewares;
-using core_w2.MiddleWares;
-using core_w2.Services;
+﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+using core_website.Areas.Admins.Middlewares;
+using core_website.MiddleWares;
+using core_website.Services;
+// KhoaTr - END
 
 var builder = WebApplication.CreateBuilder(args);
 
