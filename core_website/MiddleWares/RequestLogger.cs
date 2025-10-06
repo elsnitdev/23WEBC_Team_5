@@ -11,9 +11,9 @@ namespace core_website.MiddleWares
   {
     public void Log(string message)
     {
-      File.AppendAllText("Request_log.txt", message); // File.AppendAllText is used to append
-                                                      // the text to file ,if file does not exist it'll create the file
-      Console.WriteLine($"Request Log: {message}");
+      File.AppendAllText("Request_log.txt", message); //Tinle- File.AppendAllText is used to append
+                                                      //Tinle- the text to file ,if file does not exist it'll create the file
+            Console.WriteLine($"Request Log: {message}");
     }
 
   }

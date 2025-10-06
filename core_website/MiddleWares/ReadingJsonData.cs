@@ -30,11 +30,11 @@ namespace core_website.MiddleWares
 
         if (jsonData?.Products != null)
         {
-          // Cập nhật danh sách sản phẩm trong SanPhamService
-          sanPhamService.UpdateList(jsonData.Products);
+                    //Tinle- Cập nhật danh sách sản phẩm trong SanPhamService
+                    sanPhamService.UpdateList(jsonData.Products);
 
-          // In danh sách sản phẩm để kiểm tra
-          foreach (var p in jsonData.Products)
+                    //Tinle- In danh sách sản phẩm để kiểm tra
+                    foreach (var p in jsonData.Products)
           {
             Console.WriteLine(p.TenSP);
           }
@@ -45,11 +45,11 @@ namespace core_website.MiddleWares
         }
       }
 
-      // Chuyển tiếp request đến middleware tiếp theo
-      await _next(context);
+            //Tinle- Chuyển tiếp request đến middleware tiếp theo
+            await _next(context);
     }
 
-    // Class để deserialize JSON
+   
     private class JsonData
     {
       public List<SanPham> Products { get; set; }
