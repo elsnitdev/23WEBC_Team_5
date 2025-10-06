@@ -3,22 +3,22 @@ using core_website.Models;
 namespace core_website.Services
 // KhoaTr - END
 {
-  public class UserService : IUserService //implement the interface for user service
+  public class UserService : IUserService //Tinle- implement the interface for user service
   {
-    private readonly List<User> _users = new List<User>(); // remember assigning an intial value to avoid null expception
-    public UserService()
+    private readonly List<User> _users = new List<User>(); //Tinle- remember assigning an intial value to avoid null expception
+        public UserService()
     {
       if (File.Exists("listUser.txt"))
       {
         var lines = File.ReadAllLines("listUser.txt");
         foreach (var line in lines)
         {
-          var parts = line.Split(','); // format username,password,roleId
-          if (parts.Length == 3)
+          var parts = line.Split(','); //Tinle- format username,password,roleId
+                    if (parts.Length == 3)
           {
             _users.Add(new User
-            { // take the index of each part username,password,roleId
-              UserName = parts[0],
+            { //Tinle- take the index of each part username,password,roleId
+                UserName = parts[0],
               Password = parts[1],
               RoleId = int.Parse(parts[2])
             });
