@@ -1,21 +1,18 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại model
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using core_website.Areas.Admins.Services;
 using core_website.Models;
-using core_website.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Admins.Middlewares
 {
     public class ProductFormValidation
     {
         private readonly RequestDelegate _next;
-
-        public ProductFormValidation(RequestDelegate next)
+        private readonly IImageProcessingService _imageService;
+        public ProductFormValidation(RequestDelegate next, IImageProcessingService imageService)
         {
             _next = next;
+            _imageService = imageService;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -32,11 +29,9 @@ namespace core_website.Areas.Admins.Middlewares
                         TenSP = form["TenSP"],
                         DonGia = decimal.TryParse(form["DonGia"], out var donGia) ? donGia : 0,
                         KhuyenMai = decimal.TryParse(form["KhuyenMai"], out var donGiaKM) ? donGiaKM : 0,
-                        HinhAnh = form["HinhAnh"],
                         MoTa = form["MoTa"],
                         Tag = form["Tag"]
                     };
-
                     var validationResults = new List<ValidationResult>();
                     var validationContext = new ValidationContext(sanPham);
                     bool isValid = Validator.TryValidateObject(
@@ -45,14 +40,43 @@ namespace core_website.Areas.Admins.Middlewares
                         validationResults,
                         true);
 
+                    // KhoaTr - 7/10/2025: Kiểm tra file hình ảnh
+                    var imageFiles = httpContext.Request.Form.Files.GetFiles("HinhAnh");
+                    if (imageFiles != null && imageFiles.Any())
+                    {
+                      foreach (var imageFile in imageFiles)
+                      {
+                        if (imageFile.Length > 0)
+                        {
+                          var (IsValid, ErrorMessage) = await _imageService.ValidateImageAsync(imageFile);
+                          if (!IsValid)
+                          {
+                            isValid = false;
+                            validationResults.Add(new ValidationResult(ErrorMessage, ["HinhAnh"]));
+                            await _next(httpContext);
+                          }
+                        }
+                      }
+                    }
+                    else
+                    {
+                      isValid = false;
+                      validationResults.Add(new ValidationResult("Hình ảnh là bắt buộc", ["HinhAnh"]));
+                    }
+
                     if (!isValid)
                     {
-                        var errors = validationResults.Select(vr => new
-                        {
-                            Key = vr.MemberNames.FirstOrDefault() ?? string.Empty,
-                        }).ToList();
-                        httpContext.Items["ValidationErrors"] = errors;
-                        httpContext.Items["IsValid"] = false;
+                      var errors = validationResults.Select(vr => new
+                      {
+                        Key = vr.MemberNames.FirstOrDefault() ?? string.Empty,
+                        vr.ErrorMessage
+                      }).ToList();
+                      httpContext.Items["ValidationErrors"] = errors;
+                      httpContext.Items["IsValid"] = false;
+                    }
+                    else
+                    {
+                      httpContext.Items["IsValid"] = true;
                     }
                 }
                 catch (Exception ex)
