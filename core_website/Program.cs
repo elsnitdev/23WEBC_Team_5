@@ -33,7 +33,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //Custom MiddleWares
-app.UseMiddleware<ReadingJsonData>();
+//app.UseMiddleware<ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
 // Tinsle : cap nhat duong dan Login
 app.MapControllerRoute(
