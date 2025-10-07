@@ -2,6 +2,8 @@
 using core_website.Areas.Admins.Middlewares;
 using core_website.MiddleWares;
 using core_website.Services;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 // KhoaTr - END
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddScoped<IRequestLogger, RequestLogger>();
 builder.Services.AddScoped<IUserService, UserService>();
 // Tinsle code end
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -31,7 +34,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //Custom MiddleWares
-app.UseMiddleware<ReadingJsonData>();
+//app.UseMiddleware<ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
 
 // KhoaTr - 28/09/2025: Sửa lại route controller

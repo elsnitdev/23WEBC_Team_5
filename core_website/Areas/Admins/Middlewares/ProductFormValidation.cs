@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using core_website.Models;
-using core_website.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
