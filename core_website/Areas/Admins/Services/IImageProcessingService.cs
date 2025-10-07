@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;// Tin: gọi để sử dụng IFormFile
 using System.Threading.Tasks;
-namespace core_website.Services
+namespace core_website.Areas.Admins.Services
 {
   //Tin 6/10
   // KhoaTr - 7/10/2025: Sửa interface IImageProcessingService, thêm/sửa 1 số phương thức
@@ -34,5 +34,5 @@ namespace core_website.Services
     // return: một Stream chứa ảnh đã được chuyển đổi định dạng
     Task<Stream> ConvertImageFormatAsync(IFormFile file, string format);
   }
-    //Tin END
+  //Tin END
 }

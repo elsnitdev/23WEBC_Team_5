@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace core_website.Services
+namespace core_website.Areas.Admins.Services
 {
   public class ImageProcessingService : IImageProcessingService
   {
-    public async Task<(bool IsValid, string ErrorMessage)> ValidateImageAsync(IFormFile file, long maxSizeBytes)
+    public async Task<(bool IsValid, string ErrorMessage)> ValidateImageAsync(IFormFile file, long maxSizeBytes = 5 * 1024 * 1024)
     {
       // Kiểm tra nếu file null hoặc rỗng
       if (file == null || file.Length == 0)
