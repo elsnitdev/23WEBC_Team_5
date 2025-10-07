@@ -31,7 +31,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 //Custom MiddleWares
-app.UseMiddleware<ReadingJsonData>();
+//app.UseMiddleware<ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
 
 // KhoaTr - 28/09/2025: Sửa lại route controller
