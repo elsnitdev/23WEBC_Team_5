@@ -8,7 +8,7 @@ namespace core_website.Areas.Admins.Controllers
         [HttpGet]// Tin : cập nhật action Login 
         public IActionResult Login()
         {
-            return View("LoginForm");
+            return View();
         }
         public IActionResult Index()
         {
