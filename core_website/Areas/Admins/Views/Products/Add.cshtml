@@ -1,0 +1,73 @@
+﻿@* // KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website + chỉnh sửa giao diện *@
+@using core_website.Models
+@model SanPhamViewModel
+@{
+    ViewData["PageTitle"] = "Thêm Sản Phẩm Mới";
+}
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <form asp-action="Create" asp-controller="Products" asp-area="Admins" method="post" enctype="multipart/form-data" id="productForm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="TenSP" class="control-label"></label>
+                    <input asp-for="TenSP" class="form-control" placeholder="Nhập tên sản phẩm" />
+                    <span asp-validation-for="TenSP" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="DonGia" class="control-label"></label>
+                    <input asp-for="DonGia" class="form-control" type="number" step="0.01" min="0" placeholder="Nhập đơn giá (VNĐ)" />
+                    <span asp-validation-for="DonGia" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="KhuyenMai" class="control-label"></label>
+                    <input asp-for="KhuyenMai" class="form-control" type="number" step="0.01" min="0" placeholder="Nhập giá khuyến mãi (VNĐ, nếu có)" />
+                    <span asp-validation-for="KhuyenMai" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="SoLuong" class="control-label"></label>
+                    <input asp-for="SoLuong" class="form-control" type="number" min="0" placeholder="Nhập số lượng" />
+                    <span asp-validation-for="SoLuong" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="HinhAnh" class="control-label"></label>
+                    <input asp-for="HinhAnh" type="file" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
+                    <span asp-validation-for="HinhAnh" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Tag" class="control-label"></label>
+                    <input asp-for="Tag" class="form-control" placeholder="Nhập tag (ví dụ: điện tử, laptop, mới)" />
+                    <span asp-validation-for="Tag" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="MoTa" class="control-label"></label>
+                    <textarea asp-for="MoTa" class="form-control" rows="5" placeholder="Nhập mô tả sản phẩm"></textarea>
+                    <span asp-validation-for="MoTa" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ThongSo" class="control-label"></label>
+                    <textarea asp-for="ThongSo" class="form-control" rows="5" placeholder="Nhập thông số kỹ thuật"></textarea>
+                    <span asp-validation-for="ThongSo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+            <a asp-action="Index" asp-controller="Products" asp-area="Admins" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+@* // KhoaTr - END *@

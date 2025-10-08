@@ -1,0 +1,32 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Admin</title>
+    <link rel="stylesheet" href="~/admins/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/admins/css/sb-admin-2.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admins/css/timeline.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/admins/css/metisMenu.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/admins/css/font-awesome.min.css" asp-append-version="true" />
+</head>
+<body>
+	<div id="wrapper">
+    @await Html.PartialAsync("_Sidebar")
+	<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">@ViewData["PageTitle"]</h1>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+	  @RenderBody()
+	</div>
+	</div>
+	<script src="~/admins/js/jquery.min.js"></script>
+	<script src="~/admins/js/bootstrap.min.js"></script>
+	<script src="~/admins/js/metisMenu.min.js" asp-append-version="true"></script>
+	<script src="~/admins/js/sb-admin-2.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

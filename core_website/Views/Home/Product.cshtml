@@ -1,0 +1,44 @@
+﻿@{
+	ViewData["ActivePage"] = "Product";
+}
+@model List<SanPham>
+<div class="product-model">
+	<div class="container">
+		@await Html.PartialAsync("_Breadcrumb")
+		<h2>Our Products</h2>
+		<div class="col-md-9 product-model-sec">
+			@foreach (var item in Model)
+			{
+				  <div class="product-grid">
+				<a asp-controller="home" asp-action="single" asp-route-id="@item.MaSP">
+					<div class="more-product"><span> </span></div>
+					<div class="product-img b-link-stripe b-animate-go thickbox">
+						<img src="~/images/@item.HinhAnh[0]" class="img-responsive" alt="@item.TenSP" style="max-width:240px;height:240px"/>
+						<div class="b-wrapper">
+							<h4 class="b-animate b-from-left b-delay03">
+								<button><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>Quick View</button>
+							</h4>
+						</div>
+					</div>
+				</a>
+				  <div class="product-info simpleCart_shelfItem">
+					<div class="product-info-cust prt_name">
+					  <h4 style="max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.TenSP</h4>
+					  @* // KhoaTr - Sửa lại thuộc tính dựa trên model mới *@
+					  <span class="item_price">@item.KhuyenMai.ToString("N0") ₫</span>
+					  @* // KhoaTr - END *@
+					  <div class="ofr">
+						<p class="pric1"><del>@item.DonGia.ToString("N0") ₫</del></p>
+						<p class="disc">[Khuyến mãi]</p>
+					  </div>
+						<input type="text" class="item_quantity" value="1" />
+						<input type="button" class="item_add items" value="ADD" />
+						<div class="clearfix"></div>
+					  </div>
+					</div>
+				  </div>
+			}
+		</div>
+@await Html.PartialAsync("_Sidebar")
+	</div>
+</div>

@@ -1,0 +1,124 @@
+﻿@{
+
+}
+<div class="header-top">
+	<div class="header-bottom">
+		<div class="logo">
+			<h1><a asp-controller="home" asp-action="index">Lighting</a></h1>
+		</div>
+		<!---->
+		<div class="top-nav">
+			<ul class="memenu skyblue">
+				<li class="@(ViewData["CurrentPage"] as string == "Home" ? "active" : "")"><a asp-controller="home" asp-action="index">Home</a></li>
+				<li class="@(ViewData["CurrentPage"] as string == "Products" ? "active" : "") grid">
+					<a asp-controller="home" asp-action="product">Products</a>
+					<div class="mepanel">
+						<div class="row">
+							<div class="col1 me-one">
+								<h4>Shop</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">New Arrivals</a></li>
+									<li><a asp-controller="home" asp-action="index">Home</a></li>
+									<li><a asp-controller="home" asp-action="index">Decorates</a></li>
+									<li><a asp-controller="home" asp-action="index">Accessories</a></li>
+									<li><a asp-controller="home" asp-action="index">Kids</a></li>
+									<li><a asp-controller="home" asp-action="index">Login</a></li>
+									<li><a asp-controller="home" asp-action="index">Brands</a></li>
+									<li><a asp-controller="home" asp-action="index">My Shopping Bag</a></li>
+								</ul>
+							</div>
+							<div class="col1 me-one">
+								<h4>Type</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">Diwali Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Tube Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Bulbs</a></li>
+									<li><a asp-controller="home" asp-action="index">Ceiling Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Accessories</a></li>
+									<li><a asp-controller="home" asp-action="index">Lanterns</a></li>
+								</ul>
+							</div>
+							<div class="col1 me-one">
+								<h4>Popular Brands</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">Everyday</a></li>
+									<li><a asp-controller="home" asp-action="index">Philips</a></li>
+									<li><a asp-controller="home" asp-action="index">Havells</a></li>
+									<li><a asp-controller="home" asp-action="index">Wipro</a></li>
+									<li><a asp-controller="home" asp-action="index">Jaguar</a></li>
+									<li><a asp-controller="home" asp-action="index">Ave</a></li>
+									<li><a asp-controller="home" asp-action="index">Gold Medal</a></li>
+									<li><a asp-controller="home" asp-action="index">Anchor</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="grid">
+					<a href="#">Accessories</a>
+					<div class="mepanel">
+						<div class="row">
+							<div class="col1 me-one">
+								<h4>Shop</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">New Arrivals</a></li>
+									<li><a asp-controller="home" asp-action="index">Home</a></li>
+									<li><a asp-controller="home" asp-action="index">Decorates</a></li>
+									<li><a asp-controller="home" asp-action="index">Accessories</a></li>
+									<li><a asp-controller="home" asp-action="index">Kids</a></li>
+									<li><a asp-controller="home" asp-action="index">Login</a></li>
+									<li><a asp-controller="home" asp-action="index">Brands</a></li>
+									<li><a asp-controller="home" asp-action="index">My Shopping Bag</a></li>
+								</ul>
+							</div>
+							<div class="col1 me-one">
+								<h4>Type</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">Diwali Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Tube Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Bulbs</a></li>
+									<li><a asp-controller="home" asp-action="index">Ceiling Lights</a></li>
+									<li><a asp-controller="home" asp-action="index">Accessories</a></li>
+									<li><a asp-controller="home" asp-action="index">Lanterns</a></li>
+								</ul>
+							</div>
+							<div class="col1 me-one">
+								<h4>Popular Brands</h4>
+								<ul>
+									<li><a asp-controller="home" asp-action="index">Everyday</a></li>
+									<li><a asp-controller="home" asp-action="index">Philips</a></li>
+									<li><a asp-controller="home" asp-action="index">Havells</a></li>
+									<li><a asp-controller="home" asp-action="index">Wipro</a></li>
+									<li><a asp-controller="home" asp-action="index">Jaguar</a></li>
+									<li><a asp-controller="home" asp-action="index">Ave</a></li>
+									<li><a asp-controller="home" asp-action="index">Gold Medal</a></li>
+									<li><a asp-controller="home" asp-action="index">Anchor</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="@(ViewData["CurrentPage"] as string == "Typo" ? "active" : "") grid">
+					<a asp-controller="home" asp-action="typo">Typo</a>
+				</li>
+				<li class="@(ViewData["CurrentPage"] as string == "Contact" ? "active" : "") grid">
+					<a asp-controller="home" asp-action="contact">Contact</a>
+				</li>
+			</ul>
+		</div>
+		<!---->
+		<div class="cart box_1">
+			<a asp-controller="home" asp-action="checkout">
+				<div class="total">
+					<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>)
+				</div>
+				<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+			</a>
+			<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+			<div class="clearfix"> </div>
+		</div>
+		<div class="clearfix"> </div>
+		<!---->
+	</div>
+	<div class="clearfix"> </div>
+</div>
