@@ -1,0 +1,27 @@
+﻿@model YourNamespace.Models.LoginViewModel;
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Login</h2>
+                    <form asp-controller="Auth" asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label asp-for="TenDN" class="form-label">Tên đăng nhập</label>
+                            <input asp-for="TenDN" class="form-control" placeholder="Nhập tên đăng nhập" required />
+                            <span asp-validation-for="TenDN" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MatKhau" class="form-label">Mật khẩu</label>
+                            <input asp-for="MatKhau" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
+                            <span asp-validation-for="MatKhau" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
