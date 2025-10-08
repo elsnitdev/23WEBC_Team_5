@@ -35,7 +35,10 @@ app.UseAuthorization();
 //Custom MiddleWares
 app.UseMiddleware<ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
-
+// Tinsle : cap nhat duong dan Login
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Admin}/{action=Login}/{id?}");
 // KhoaTr - 28/09/2025: Sửa lại route controller
 app.MapControllerRoute(  
     name: "areas",
