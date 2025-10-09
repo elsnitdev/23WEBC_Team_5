@@ -1,7 +1,7 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
 using core_website.Areas.Admins.Middlewares;
 using core_website.Areas.Admins.Services;
-using core_website.MiddleWares;
+using core_website.Areas.Api.Services;
 using core_website.Services;
 // KhoaTr - END
 
@@ -11,9 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
-builder.Services.AddSingleton<ISanPhamService, SanPhamService>();
-builder.Services.AddScoped<IRequestLogger, RequestLogger>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 // Tinsle code end
 var app = builder.Build();
 
