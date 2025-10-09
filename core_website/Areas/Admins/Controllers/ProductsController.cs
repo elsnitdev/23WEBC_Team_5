@@ -1,8 +1,9 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại model + namespace + logic xử lý
 using Microsoft.AspNetCore.Mvc;
-using core_website.Services;
 using core_website.Models;
 using core_website.Areas.Admins.Services;
+using core_website.Areas.Api.Services;
+using core_website.Areas.Api.Models;
 
 namespace core_website.Areas.Admins.Controllers
 {

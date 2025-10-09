@@ -1,77 +1,81 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 
 namespace core_website.Areas.Admins.Services
 {
   public class ImageProcessingService : IImageProcessingService
   {
+    // Kiểm tra tính hợp lệ của tệp hình ảnh
     public async Task<(bool IsValid, string ErrorMessage)> ValidateImageAsync(IFormFile file, long maxSizeBytes = 5 * 1024 * 1024)
     {
-      // Kiểm tra nếu file null hoặc rỗng
+      // Kiểm tra nếu tệp rỗng hoặc null
       if (file == null || file.Length == 0)
-        return (false, "No file uploaded");
+        return (false, "Không có tệp nào được tải lên");
 
-      // Kiểm tra kích thước file
+      // Kiểm tra kích thước tệp
       if (file.Length > maxSizeBytes)
-        return (false, $"File size exceeds the limit of {maxSizeBytes / (1024 * 1024)} MB");
+        return (false, $"Kích thước tệp vượt quá giới hạn {maxSizeBytes / (1024 * 1024)} MB");
 
-      // Kiểm tra định dạng file
+      // Kiểm tra định dạng tệp (phần mở rộng)
       var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
       var extension = Path.GetExtension(file.FileName).ToLower();
       if (!allowedExtensions.Contains(extension))
-        return (false, "Unsupported file format");
+        return (false, "Định dạng tệp không được hỗ trợ");
 
-      // Kiểm tra nếu file có phải hình ảnh không
+      // Kiểm tra xem tệp có phải là hình ảnh hợp lệ không
       try
       {
-        // Sử dụng System.Drawing để kiểm tra tính hợp lệ của hình ảnh
-        // Hiện tại chỉ hỗ trợ windows
-        // Nếu cần hỗ trợ đa nền tảng, có thể cài thêm thư viện khác như ImageSharp
-        using var image = Image.FromStream(file.OpenReadStream());
+        using var image = await Image.LoadAsync(file.OpenReadStream());
         return (true, string.Empty);
       }
       catch (Exception)
       {
-        return (false, "File is not a valid image");
+        return (false, "Tệp không phải là hình ảnh hợp lệ");
       }
     }
+
+    // Xử lý và lưu hình ảnh vào thư mục chỉ định
     public async Task<string> ProcessAndSaveImageAsync(IFormFile file, string destinationPath, string? fileName)
     {
-      // Validate file trước khi lưu
+      // Kiểm tra tính hợp lệ của tệp trước khi lưu
       var (isValid, errorMessage) = await ValidateImageAsync(file);
       if (!isValid)
         throw new InvalidOperationException(errorMessage);
 
-      // Tạo thư mục nếu chưa tồn tại
+      // Tạo thư mục đích nếu chưa tồn tại
       if (!Directory.Exists(destinationPath))
       {
         Directory.CreateDirectory(destinationPath);
       }
-      // Tạo tên file duy nhất để tránh ghi đè
+
+      // Tạo tên tệp duy nhất để tránh ghi đè
       var uniqueFileName = $"{(fileName != null ? fileName : Guid.NewGuid())}{Path.GetExtension(file.FileName)}";
       var filePath = Path.Combine(destinationPath, uniqueFileName);
-      // Lưu file vào đường dẫn đã chỉ định
-      using (var stream = new FileStream(filePath, FileMode.Create))
-      {
-        await file.CopyToAsync(stream);
-      }
-      return filePath;
+
+      // Lưu tệp vào đường dẫn được chỉ định
+      using var stream = new FileStream(filePath, FileMode.Create);
+      await file.CopyToAsync(stream);
+
+      return filePath; // Trả về đường dẫn của tệp đã lưu
     }
+
+    // Thay đổi kích thước hình ảnh
     public async Task<Stream> ResizeImageAsync(IFormFile file, int maxWidth, int maxHeight, bool preserveAspectRatio = true)
     {
-      // Validate file trước khi xử lý
+      // Kiểm tra tính hợp lệ của tệp trước khi xử lý
       var (isValid, errorMessage) = await ValidateImageAsync(file);
       if (!isValid)
         throw new InvalidOperationException(errorMessage);
 
-      // Hiện tại chỉ hỗ trợ windows
-      // Nếu cần hỗ trợ đa nền tảng, có thể cài thêm thư viện khác như ImageSharp
-      using var image = Image.FromStream(file.OpenReadStream());
-
+      // Tải hình ảnh từ luồng
+      using var image = await Image.LoadAsync(file.OpenReadStream());
       int targetWidth = maxWidth;
       int targetHeight = maxHeight;
 
-      // Tính toán kích thước mới nếu cần giữ tỉ lệ hình
+      // Tính toán kích thước mới nếu giữ tỉ lệ hình
       if (preserveAspectRatio)
       {
         var ratioX = (double)maxWidth / image.Width;
@@ -81,50 +85,45 @@ namespace core_website.Areas.Admins.Services
         targetHeight = (int)(image.Height * ratio);
       }
 
-      // Thực hiện resize
-      // Hiện tại chỉ hỗ trợ windows
-      // Nếu cần hỗ trợ đa nền tảng, có thể cài thêm thư viện khác
-      using var resizedImage = new Bitmap(targetWidth, targetHeight);
-      using (var graphics = Graphics.FromImage(resizedImage))
+      // Thực hiện thay đổi kích thước hình ảnh
+      image.Mutate(x => x.Resize(new ResizeOptions
       {
-        graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-        graphics.DrawImage(image, 0, 0, targetWidth, targetHeight);
-      }
+        Size = new Size(targetWidth, targetHeight),
+        Mode = preserveAspectRatio ? ResizeMode.Max : ResizeMode.Stretch,
+        Sampler = KnownResamplers.Lanczos3 // Sử dụng thuật toán Lanczos3 cho chất lượng cao
+      }));
 
+      // Lưu hình ảnh đã thay đổi vào luồng đầu ra
       var outputStream = new MemoryStream();
-      resizedImage.Save(outputStream, image.RawFormat);
+      await image.SaveAsync(outputStream, image.Metadata.DecodedImageFormat ?? PngFormat.Instance);
       outputStream.Position = 0;
-      return outputStream;
+      return outputStream; // Trả về luồng chứa hình ảnh đã thay đổi kích thước
     }
+
+    // Chuyển đổi định dạng hình ảnh
     public async Task<Stream> ConvertImageFormatAsync(IFormFile file, string format)
     {
+      // Kiểm tra tính hợp lệ của tệp trước khi xử lý
       var (isValid, errorMessage) = await ValidateImageAsync(file);
       if (!isValid)
         throw new InvalidOperationException(errorMessage);
 
-      // Hiện tại chỉ hỗ trợ windows
-      // Nếu cần hỗ trợ đa nền tảng, có thể cài thêm thư viện khác
-      using var stream = file.OpenReadStream();
-      using var image = Image.FromStream(stream);
-
+      // Tải hình ảnh từ luồng
+      using var image = await Image.LoadAsync(file.OpenReadStream());
       var outputStream = new MemoryStream();
-      switch (format.ToLower())
-      {
-        case "jpeg":
-        case "jpg":
-          image.Save(outputStream, ImageFormat.Jpeg);
-          break;
-        case "png":
-          image.Save(outputStream, ImageFormat.Png);
-          break;
-        default:
-          throw new NotSupportedException("Định dạng không được hỗ trợ");
-      }
 
+      // Chọn định dạng đầu ra dựa trên tham số format
+      IImageFormat imageFormat = format.ToLower() switch
+      {
+        "jpeg" or "jpg" => JpegFormat.Instance,
+        "png" => PngFormat.Instance,
+        _ => throw new NotSupportedException("Định dạng không được hỗ trợ")
+      };
+
+      // Lưu hình ảnh với định dạng mới vào luồng đầu ra
+      await image.SaveAsync(outputStream, imageFormat);
       outputStream.Position = 0;
-      return outputStream;
+      return outputStream; // Trả về luồng chứa hình ảnh với định dạng mới
     }
   }
 }

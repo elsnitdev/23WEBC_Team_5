@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using core_website.Areas.Api.Models;
 //Tin cập nhật Model  ct giỏ hàng
 namespace core_website.Models
 {
