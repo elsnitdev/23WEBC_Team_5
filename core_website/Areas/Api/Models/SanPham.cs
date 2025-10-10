@@ -30,8 +30,6 @@ namespace core_website.Areas.Api.Models
     public string Tag { get; set; }
 
     public int SoLuong { get; set; }
-
-    [Column(TypeName = "text")]
     public string HinhAnh { get; set; }
 
     public DateTime ThoiGianTao { get; set; }
