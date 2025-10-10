@@ -5,7 +5,7 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <h2 class="text-center mb-4">Login</h2>
-                    <form asp-controller="Auth" asp-action="Login" method="post">
+                    <form asp-area="Admins" asp-controller="Auth" asp-action="Login" method="post">
                         <div class="mb-3">
                             <label asp-for="TenDN" class="form-label">Tên đăng nhập</label>
                             <input asp-for="TenDN" class="form-control" placeholder="Nhập tên đăng nhập" required />

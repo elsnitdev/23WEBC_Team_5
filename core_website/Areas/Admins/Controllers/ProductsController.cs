@@ -27,7 +27,7 @@ namespace core_website.Areas.Admins.Controllers
             _sanPhamService = sanPhamService;
             _env = env;
             _imageService = imageService;
-    }
+        }
 
         // GET: Admins/Products/Add
         [HttpGet]
