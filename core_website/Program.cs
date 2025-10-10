@@ -12,6 +12,9 @@ builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+//Huy - 10/10/25: đăng ký DI NguoiDung
+builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
+//Huy END
 // Tinsle code end
 var app = builder.Build();
 
@@ -36,7 +39,7 @@ app.UseMiddleware<ProductFormValidation>();
 // Tinsle : cap nhat duong dan Login
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Admin}/{action=Login}/{id?}");
+    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}"); //Huy - 10/10/25: mặc định mở trang login khi vào /admins
 // KhoaTr - 28/09/2025: Sửa lại route controller
 app.MapControllerRoute(  
     name: "areas",

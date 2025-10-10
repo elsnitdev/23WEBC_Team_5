@@ -1,4 +1,5 @@
 ﻿using core_website.Areas.Admins.Models;
+using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,17 +9,14 @@ namespace core_website.Areas.Admins.Controllers
     {
         //Huy - 10/10/25
         private readonly ILogger<AuthController> _logger;
-        private readonly IConfiguration _configuration;
-        //private readonly INguoiDungService _nguoiDungService;
+        private readonly INguoiDungService _nguoiDungService;
 
         public AuthController(ILogger<AuthController> logger, 
-            IConfiguration configuration
-            //,INguoiDungService nguoiDungService
+            INguoiDungService nguoiDungService
             )
         {
             _logger = logger;
-            _configuration = configuration;
-            //_nguoiDungService = nguoiDungService;
+            _nguoiDungService = nguoiDungService;
         }
 
         [Area("Admins")]
@@ -37,8 +35,8 @@ namespace core_website.Areas.Admins.Controllers
         public async Task<IActionResult> Login([FromForm] LoginViewModel login)
         {
             //log kiểm tra thông tin trong form
-            _logger.LogInformation("Tên đăng nhập: ", login.TenDN);
-            _logger.LogInformation("Mật khẩu: ", login.MatKhau);
+            _logger.LogInformation("Tên đăng nhập: {TenND}", login.TenND);
+            _logger.LogInformation("Mật khẩu: {MatKhau}", login.MatKhau);
 
             //validate
             if (!ModelState.IsValid)
@@ -47,12 +45,17 @@ namespace core_website.Areas.Admins.Controllers
                 return View("Login", login);
             }
             //Kiểm tra đăng nhập
-            if(login.TenDN != "admin" ||  login.MatKhau != "admin")
+            var loginRequest = new NguoiDungLoginRequest()
             {
-                return Unauthorized();
-            }
-
-            return View("~/Views/Home/Index.cshtml", login);
+                TenND = login.TenND,
+                MatKhau = login.MatKhau,
+            };
+            var loginResult = _nguoiDungService.Login(loginRequest);
+            if (!loginResult.Success)
+            {
+                return View("Login", login);
+            } 
+            return View("~/Views/Home/Index.cshtml", loginResult.User);
         }
     }
 }

@@ -8,11 +8,9 @@ namespace core_website.Areas.Api.Services
 {
   public class NguoiDungService : INguoiDungService
   {
-    private readonly ILogger _logger;
     private readonly string _connectionString;
-    public NguoiDungService(ILogger logger, IConfiguration configuration)
+    public NguoiDungService(IConfiguration configuration)
     {
-      _logger = logger;
       _connectionString = configuration.GetConnectionString("DefaultConnectionString");
     }
     public NguoiDungResponse Login(NguoiDungLoginRequest data)
@@ -23,9 +21,9 @@ namespace core_website.Areas.Api.Services
         using (var connection = new SqlConnection(_connectionString))
         {
           var cmd = new SqlCommand(@"" +
-            "SELECT *" +
-            "FROM NguoiDung" +
-            "WHERE TenND = @TenND AND TrangThai = 1"
+            "SELECT * " +
+            "FROM NguoiDung " +
+            "WHERE TenND LIKE @TenND AND TrangThai = 1"
           , connection);
 
           cmd.Parameters.AddWithValue("@TenND", data.TenND ?? string.Empty);
@@ -47,20 +45,17 @@ namespace core_website.Areas.Api.Services
                   VaiTro = user.VaiTro
                 };
                 result.Message = "Đăng nhập thành công";
-                _logger.LogInformation($"User {data.TenND} logged in successfully");
               }
               else
               {
                 result.Success = false;
                 result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
-                _logger.LogWarning($"Invalid password attempt for user: {data.TenND}");
               }
             }
             else
             {
               result.Success = false;
               result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
-              _logger.LogWarning($"User not found or inactive: {data.TenND}");
             }
           }
         }

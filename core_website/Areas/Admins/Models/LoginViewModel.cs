@@ -6,11 +6,11 @@ namespace core_website.Areas.Admins.Models
   {
     [Required(ErrorMessage = "Tên đăng nhập là bắt buộc")]
     [Display(Name = "Tên đăng nhập")]
-    public string TenND;
+    public string TenND { get; set; }
 
     [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
     [DataType(DataType.Password)]
     [Display(Name = "Mật khẩu")]
-    public string MatKhau;
+    public string MatKhau { get; set; }
   }
 }

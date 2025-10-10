@@ -7,7 +7,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h2 class="text-center" style="margin-bottom: 20px; font-weight: bold; color: #337ab7;">Login</h2>
-                <form asp-controller="Auth" asp-action="Login" method="post">
+                <form asp-area="Admins" asp-controller="Auth" asp-action="Login" method="post">
                     <div class="form-group">
                         <label asp-for="TenND" class="control-label">Tên đăng nhập</label>
                         <input asp-for="TenND" class="form-control input-lg" placeholder="Nhập tên đăng nhập" required />
