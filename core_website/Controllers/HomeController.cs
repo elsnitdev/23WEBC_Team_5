@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
+using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
 
 // KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
@@ -15,7 +17,12 @@ namespace core_website.Controllers
     private readonly IConfiguration _configuration;
     private readonly ISanPhamService _sanPhamService;
 
-    public HomeController(ILogger<HomeController> logger, IConfiguration configuration, ISanPhamService sanPhamService)
+    public HomeController(
+      ILogger<HomeController> logger,
+      IConfiguration configuration,
+      ISanPhamService sanPhamService,
+      IViewComponentHelper viewComponentHelper
+    )
     {
       _logger = logger;
       _configuration = configuration;
@@ -54,10 +61,13 @@ namespace core_website.Controllers
       return View();
     }
     // View Components
-    public IActionResult GetProductList()
+    public IActionResult GetProductList([FromBody] IEnumerable<SanPham> data)
     {
-      var products = _sanPhamService.GetAll();
-      return ViewComponent("ProductList", products);
+      if (data == null)
+      {
+        return BadRequest(new { Status = "Error", Message = "Invalid data" });
+      }
+      return ViewComponent("ProductList", data);
     }
   }
 }
