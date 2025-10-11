@@ -12,10 +12,10 @@ builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+// Tinsle code end
 //Huy - 10/10/25: đăng ký DI NguoiDung
 builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
 //Huy END
-// Tinsle code end
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
