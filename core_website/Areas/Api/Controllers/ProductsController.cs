@@ -12,15 +12,18 @@ namespace core_website.Areas.Api.Controllers
   public class ProductsController : ControllerBase
   {
     private readonly ISanPhamService _sanPhamService;
+    private readonly IDanhMucService _danhMucService;
     private readonly IWebHostEnvironment _env;
     private readonly IImageProcessingService _imageService;
     public ProductsController(
       ISanPhamService sanPhamService,
+      IDanhMucService danhMucService,
       IWebHostEnvironment env,
       IImageProcessingService imageService
     )
     {
       _sanPhamService = sanPhamService;
+      _danhMucService = danhMucService;
       _env = env;
       _imageService = imageService;
     }
@@ -107,6 +110,12 @@ namespace core_website.Areas.Api.Controllers
           TrangThai = true // Mặc định là true khi tạo mới
         };
         _sanPhamService.Add(newSanPham);
+
+        if (sanPham.DanhMucId > 0)
+        {
+          _danhMucService.Categorize(newMaSP, sanPham.DanhMucId);
+        }
+
         return CreatedAtAction(nameof(Get), new { id = newSanPham.MaSP }, sanPham);
       }
       catch (Exception ex)

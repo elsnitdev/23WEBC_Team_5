@@ -1,11 +1,11 @@
-﻿@* // KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website + chỉnh sửa giao diện *@
+﻿@* // KhoaTr - 11/10/2025: Updated for single category, fixed AJAX logic, and removed Select2 *@
 @using core_website.Models
 @model SanPhamViewModel
 @{
     ViewData["PageTitle"] = "Thêm Sản Phẩm Mới";
 }
 <div class="container mt-4">
-    <div class="alert" id="formMessage"></div>
+    <div class="alert" id="formMessage" style="display: none;"></div>
     <form method="post" enctype="multipart/form-data" id="productForm">
         <div class="row">
             <div class="col-md-6">
@@ -31,7 +31,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @* Nếu chọn danh mục từ danh sách có sẵn sẽ lấy giá trị từ option value*@
                 <div class="form-group mb-3">
                     <label asp-for="DanhMucId" class="control-label">Danh Mục</label>
                     <select asp-for="DanhMucId" class="form-control" asp-items="@Model.DanhMucList">
@@ -39,8 +38,6 @@
                     </select>
                     <span asp-validation-for="DanhMucId" class="text-danger"></span>
                 </div>
-                @* Nhập danh mục mới sẽ tạo danh mục mới cho sản phẩm cho dù đã chọn danh mục từ ô select trên*@
-                @* Để chọn lại danh mục từ danh sách thì cần xóa sạch giá trị trong ô danh mục mới *@
                 <div class="form-group mb-3">
                     <label asp-for="NewDanhMucName" class="control-label">Hoặc nhập danh mục mới</label>
                     <input asp-for="NewDanhMucName" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
@@ -74,45 +71,107 @@
         </div>
     </form>
 </div>
+
 @section Scripts {
     <script>
         $(document).ready(function () {
+            // Disable select if NewDanhMucName has data
+            $('#NewDanhMucName').on('input', function () {
+                if ($(this).val().trim() !== '') {
+                    $('#DanhMucId').val('');
+                    $('#DanhMucId').prop('disabled', true);
+                } else {
+                    $('#DanhMucId').prop('disabled', false);
+                }
+            });
+
+            // Disable NewDanhMucName input if a category is selected
+            $('#DanhMucId').on('change', function () {
+                if ($(this).val()) {
+                    $('#NewDanhMucName').val('');
+                    $('#NewDanhMucName').prop('disabled', true);
+                } else {
+                    $('#NewDanhMucName').prop('disabled', false);
+                }
+            });
+
+            // Form submission
             $('#productForm').on('submit', function (event) {
                 event.preventDefault();
-
                 var $form = $(this);
                 var formData = new FormData($form[0]);
                 var $formMessage = $('#formMessage');
+                var newDanhMucName = $('#NewDanhMucName').val().trim();
+                var danhMucId = $('#DanhMucId').val();
 
-                $.ajax({
-                    url: '/api/Products',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        $formMessage
-                            .removeClass('alert-danger')
-                            .addClass('alert-success')
-                            .text('Sản phẩm đã được thêm thành công!')
-                            .show();
-                        $form[0].reset();
-                    },
-                    error: function (xhr) {
-                        $formMessage.removeClass('alert-success').addClass('alert-danger').show();
-                        if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errors) {
-                            var errorMessages = Object.entries(xhr.responseJSON.errors)
-                                .map(([key, messages]) => `${key}: ${messages.join(', ')}`)
-                                .join('; ');
-                            $formMessage.text(`Lỗi: ${errorMessages}`);
-                        } else {
-                            var errorText = xhr.responseJSON && xhr.responseJSON.message
-                                ? xhr.responseJSON.message
-                                : 'Đã xảy ra lỗi khi thêm sản phẩm.';
-                            $formMessage.text(errorText);
-                        }
+                // Function to post product and categorize
+                function postProduct(MaDM) {
+                    // Set DanhMucId in formData
+                    if (MaDM) {
+                        formData.set('DanhMucId', MaDM);
+                    } else {
+                        formData.delete('DanhMucId');
                     }
-                });
+
+                    $.ajax({
+                        url: '/api/Products',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                                $formMessage
+                                    .removeClass('alert-danger')
+                                    .addClass('alert-success')
+                                    .text('Sản phẩm đã được thêm thành công!')
+                                    .show();
+                                $form[0].reset();
+                                $('#DanhMucId').val('');
+                        },
+                        error: function (xhr) {
+                            $formMessage.removeClass('alert-success').addClass('alert-danger').show();
+                            if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errors) {
+                                var errorMessages = Object.entries(xhr.responseJSON.errors)
+                                    .map(([key, messages]) => `${key}: ${messages.join(', ')}`)
+                                    .join('; ');
+                                $formMessage.text(`Lỗi: ${errorMessages}`);
+                            } else {
+                                var errorText = xhr.responseJSON && xhr.responseJSON.message
+                                    ? xhr.responseJSON.message
+                                    : 'Đã xảy ra lỗi khi thêm sản phẩm.';
+                                $formMessage.text(errorText);
+                            }
+                        }
+                    });
+                }
+
+                // Check if NewDanhMucName is filled
+                if (newDanhMucName !== '') {
+                    $.ajax({
+                        url: '/api/Categories',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ TenDM: newDanhMucName }),
+                        success: function (response) {
+                            postProduct(response.MaDM);
+                        },
+                        error: function (xhr) {
+                            $formMessage
+                                .removeClass('alert-success')
+                                .addClass('alert-danger')
+                                .text('Lỗi khi tạo danh mục mới: ' + (xhr.responseJSON?.message || xhr.statusText))
+                                .show();
+                        }
+                    });
+                } else if (danhMucId) {
+                    postProduct(danhMucId);
+                } else {
+                    $formMessage
+                        .removeClass('alert-success')
+                        .addClass('alert-danger')
+                        .text('Vui lòng chọn một danh mục hoặc nhập danh mục mới.')
+                        .show();
+                }
             });
         });
     </script>

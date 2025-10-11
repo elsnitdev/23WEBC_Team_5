@@ -45,7 +45,7 @@ namespace core_website.Models
     [DataType(DataType.Upload)]
     public IFormFile[] HinhAnh { get; set; }
     public int DanhMucId { get; set; }
-    public string NewDanhMucName { get; set; }
-    public List<SelectListItem> DanhMucList { get; set; }
+    public string? NewDanhMucName { get; set; }
+    public List<SelectListItem>? DanhMucList { get; set; }
   }
 }

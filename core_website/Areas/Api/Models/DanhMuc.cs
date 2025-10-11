@@ -13,4 +13,9 @@ namespace core_website.Areas.Api.Models
     [StringLength(50, ErrorMessage = "Tên danh mục không được vượt quá 50 ký tự.")]
     public string TenDM { get; set; }
   }
+  public class PhanLoai
+  {
+    public int MaSP { get; set; }
+    public int MaDM { get; set; }
+  }
 }

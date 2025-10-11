@@ -12,6 +12,7 @@ builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+builder.Services.AddScoped<IDanhMucService, DanhMucService>();
 // Tinsle code end
 //Huy - 10/10/25: đăng ký DI NguoiDung
 builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
