@@ -42,6 +42,21 @@
                 </div>
             </div>
             <div class="col-md-6">
+                @* Nếu chọn danh mục từ danh sách có sẵn sẽ lấy giá trị từ option value*@
+                <div class="form-group mb-3">
+                    <label asp-for="DanhMucId" class="control-label">Danh Mục</label>
+                    <select asp-for="DanhMucId" class="form-control" asp-items="@Model.DanhMucList">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                    <span asp-validation-for="DanhMucId" class="text-danger"></span>
+                </div>
+                @* Nhập danh mục mới sẽ tạo danh mục mới cho sản phẩm cho dù đã chọn danh mục từ ô select trên*@
+                @* Để chọn lại danh mục từ danh sách thì cần xóa sạch giá trị trong ô danh mục mới *@
+                <div class="form-group mb-3">
+                    <label asp-for="NewDanhMucName" class="control-label">Hoặc nhập danh mục mới</label>
+                    <input asp-for="NewDanhMucName" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
+                    <span asp-validation-for="NewDanhMucName" class="text-danger"></span>
+                </div>
                 <div class="form-group mb-3">
                     <label asp-for="HinhAnh" class="control-label"></label>
                     <input asp-for="HinhAnh" type="file" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
