@@ -23,7 +23,7 @@ namespace core_website.Areas.Api.Services
           var cmd = new SqlCommand(@"" +
             "SELECT * " +
             "FROM NguoiDung " +
-            "WHERE TenND LIKE @TenND AND TrangThai = 1"
+            "WHERE TenND = @TenND AND TrangThai = 1"
           , connection);
 
           cmd.Parameters.AddWithValue("@TenND", data.TenND ?? string.Empty);

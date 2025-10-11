@@ -1,5 +1,4 @@
-﻿using core_website.Areas.Admins.Models;
-using core_website.Areas.Api.Models;
+﻿using core_website.Areas.Api.Models;
 
 namespace core_website.Areas.Api.Services
 {
@@ -16,3 +15,4 @@ namespace core_website.Areas.Api.Services
         //Tan END
     }
 }
+ 
