@@ -48,9 +48,9 @@ public class SanPhamService : ISanPhamService
       {
         var cmd = new SqlCommand(@"
                     INSERT INTO SanPham (TenSp, DonGia, KhuyenMai, MoTa, ThongSo, Tag, 
-                    SoLuong, HinhAnh, ThoiGianTao, ThoiGianCapNhat, TrangThai))
+                    SoLuong, HinhAnh, ThoiGianTao, ThoiGianCapNhat, TrangThai)
                     VALUES (@TenSp, @DonGia, @KhuyenMai, @MoTa, @ThongSo, @Tag, 
-                    @SoLuong, @HinhAnh, ThoiGianTao, ThoiGianCapNhat, TrangThai);
+                    @SoLuong, @HinhAnh, @ThoiGianTao, @ThoiGianCapNhat, @TrangThai);
                     SELECT SCOPE_IDENTITY();
                 ", connection);
 
@@ -103,6 +103,25 @@ public class SanPhamService : ISanPhamService
   {
     //_dsSanPham.Clear();
     //_dsSanPham.AddRange(list);
+  }
+  public int GetLastestProductId()
+  {
+    try
+    {
+      using (var connection = new SqlConnection(_connectionString))
+      {
+        var cmd = new SqlCommand(@"
+          SELECT TOP 1 MaSP FROM SanPham ORDER BY MaSP DESC
+        ", connection);
+
+        connection.Open();
+        return Convert.ToInt32(cmd.ExecuteScalar());
+      }
+    }
+    catch (Exception ex)
+    {
+      throw new Exception("Error adding product", ex);
+    }
   }
   public SanPham? GetById(int id)
   {

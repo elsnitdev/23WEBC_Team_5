@@ -1,6 +1,8 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại model + namespace + logic xử lý
+using core_website.Areas.Admins.Services;
 using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
+using core_website.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Api.Controllers
@@ -10,9 +12,17 @@ namespace core_website.Areas.Api.Controllers
   public class ProductsController : ControllerBase
   {
     private readonly ISanPhamService _sanPhamService;
-    public ProductsController(ISanPhamService sanPhamService)
+    private readonly IWebHostEnvironment _env;
+    private readonly IImageProcessingService _imageService;
+    public ProductsController(
+      ISanPhamService sanPhamService,
+      IWebHostEnvironment env,
+      IImageProcessingService imageService
+    )
     {
       _sanPhamService = sanPhamService;
+      _env = env;
+      _imageService = imageService;
     }
 
     // GET: api/Products
@@ -51,18 +61,57 @@ namespace core_website.Areas.Api.Controllers
 
     // POST: api/Products
     [HttpPost] 
-    public ActionResult<SanPham> Post([FromBody] SanPham sanPham)
+    public async Task<ActionResult<SanPham>> Post([FromForm] SanPhamViewModel sanPham)
     {
+      if (!ModelState.IsValid)
+      {
+        var errors = ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+        return BadRequest(new { Message = "Validation failed", Errors = errors });
+      }
       try
       {
-        sanPham.ThoiGianTao = DateTime.Now;
-        sanPham.ThoiGianCapNhat = DateTime.Now;
-        _sanPhamService.Add(sanPham);
-        return CreatedAtAction(nameof(Get), new { id = sanPham.MaSP }, sanPham);
+        int newMaSP = _sanPhamService.GetLastestProductId() + 1;
+        var newImageFilePaths = "";
+        int index = 1;
+        foreach (var file in sanPham.HinhAnh)
+        {
+          if (file.Length > 0)
+          {
+            var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
+              file: file,
+              destinationPath: Path.Combine(_env.WebRootPath, "images"),
+              name: $"{newMaSP}_{index}"
+            );
+            newImageFilePaths += Path.GetFileName(newImageFilePath) + ';';
+            index++;
+          }
+        }
+        newImageFilePaths = newImageFilePaths.TrimEnd(';'); // Xoá dấu chấm phẩy cuối cùng
+
+        var newSanPham = new SanPham()
+        {
+          MaSP = newMaSP,
+          TenSP = sanPham.TenSP,
+          DonGia = sanPham.DonGia,
+          KhuyenMai = sanPham.KhuyenMai ?? 0,
+          MoTa = sanPham.MoTa == null ? "" : sanPham.MoTa,
+          ThongSo = sanPham.ThongSo == null ? "" : sanPham.ThongSo,
+          Tag = sanPham.Tag == null ? "" : sanPham.Tag,
+          SoLuong = sanPham.SoLuong,
+          HinhAnh = newImageFilePaths,
+          ThoiGianTao = DateTime.Now,
+          ThoiGianCapNhat = DateTime.Now,
+          TrangThai = true // Mặc định là true khi tạo mới
+        };
+        _sanPhamService.Add(newSanPham);
+        return CreatedAtAction(nameof(Get), new { id = newSanPham.MaSP }, sanPham);
       }
       catch (Exception ex)
       {
-        return StatusCode(500, $"Error creating product: {ex.Message}");
+        return BadRequest($"Error creating product: {ex.Message}");
       }
     }
 

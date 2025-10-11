@@ -22,6 +22,7 @@ namespace core_website.Areas.Api.Services
         List<SanPham> GetKhuyenMai();
         //Huy code
         void UpdateList(List<SanPham> list);
+        int GetLastestProductId();
     //Huy end
   }
 }

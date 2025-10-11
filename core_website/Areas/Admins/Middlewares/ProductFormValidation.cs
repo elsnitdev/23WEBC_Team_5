@@ -19,7 +19,7 @@ namespace core_website.Areas.Admins.Middlewares
         {
             if (
               httpContext.Request.Method == HttpMethods.Post &&
-              httpContext.Request.Path.StartsWithSegments("/Api/Products/Create"))
+              httpContext.Request.Path.StartsWithSegments("/Api/Products"))
             {
                 try
                 {

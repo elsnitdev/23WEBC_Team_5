@@ -53,7 +53,9 @@ namespace core_website.Areas.Admins.Controllers
             var loginResult = _nguoiDungService.Login(loginRequest);
             if (!loginResult.Success)
             {
-                return View("Login", login);
+              ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc mật khẩu không đúng.");
+              _logger.LogWarning("Đăng nhập thất bại: Tên đăng nhập hoặc mật khẩu không đúng.");
+              return View("Login", login);
             } 
             return View("~/Views/Home/Index.cshtml", loginResult.User);
         }

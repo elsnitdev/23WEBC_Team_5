@@ -7,6 +7,15 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h2 class="text-center" style="margin-bottom: 20px; font-weight: bold; color: #337ab7;">Login</h2>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
                 <form asp-area="Admins" asp-controller="Auth" asp-action="Login" method="post">
                     <div class="form-group">
                         <label asp-for="TenND" class="control-label">Tên đăng nhập</label>
