@@ -40,7 +40,6 @@ namespace core_website.Models
       public int SoLuong { get; set; }
 
       [Required(ErrorMessage = "Hình ảnh là bắt buộc")]
-      [StringLength(2000, ErrorMessage = "Đường dẫn hình ảnh không được vượt quá 2000 ký tự")]
       [Display(Name = "Hình ảnh")]
       [DataType(DataType.Upload)]
       public IFormFile[] HinhAnh { get; set; }
