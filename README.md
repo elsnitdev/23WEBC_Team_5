@@ -1,20 +1,36 @@
-# core_w1
+# Cấu trúc thư mục dự án
 
-1. Xây dựng DI cấu hình:
-
-✓ Sử dụng IConfiguration lưu các thông tin từ tập tinh appSetting.json
-✓ Tạo tập tin cấu hình lưu thông tin dung lượng file tối đa và danh sách các
-IP bị cấm truy cập
-
-2. Xây dựng Middleware lưu trữ lại các thông tin của Request gồm: URL, thời gian nhận
-yêu cầu, IP gửi yêu cầu đến vào tập tin văn bản request.log với cấu trúc tùy chọn
-3. Xây dựng DI dạng Scoped chứa danh sách người dùng với các thông tin Username,
-Password, Vai trò (1|2|3)
-4. Xây dựng Middleware load danh sách User vào DI trên. (Từ tập tin, khởi tạo danh
-sách, CSDL, ... tùy lựa chọn của nhóm)
-5. Xây dựng trang web (Routing theo ý nhóm, yêu cầu không phù hợp thì trả về trang
-404 được nhóm thiết kế) chứa danh sách người dùng dạng table có các thông tin
-trên. Danh sách này được đưa lên từ DI ở trên và có phân trang.
-Hình thức nộp bài:
-- Tập tin word Ten_Nhom.docx chứa nội dung trả lời, chụp hình ảnh minh hoạ, giải
-thích. Chụp hình phân công và thống kê phân công.
+```
+├── # README - Cấu trúc thư mục dự án ASP.NET Core
+├── ## Cấu trúc thư mục
+├── wwwroot: Tài nguyên tĩnh phục vụ client./
+│   ├── admins: Tài nguyên cho admin./
+│   │   ├── css: CSS cho admin.
+│   │   └── js: JavaScript cho admin.
+│   ├── users: Tài nguyên cho người dùng./
+│   │   ├── css: CSS cho người dùng.
+│   │   └── js: JavaScript cho người dùng.
+│   ├── fonts: Font chữ.
+│   ├── lib: Thư viện bên thứ ba.
+│   ├── uploads: Tệp tải lên.
+│   └── favicon.ico: Biểu tượng favicon.
+├── Areas: Phân tách module chức năng./
+│   ├── Admins: Khu vực admin./
+│   │   ├── Controllers: Controller admins.
+│   │   ├── Middlewares: Middleware admins tùy chỉnh.
+│   │   ├── Models: Model dữ liệu cho view admins.
+│   │   ├── Services: dịch vụ admin.
+│   │   └── Views: Giao diện.
+│   │      └── Shared: View dùng chung.
+│   └── Api: Khu vực api/
+│       ├── Controllers: Controller api.
+│       ├── Models: Model dữ liệu
+│       └── Services: dịch vụ của api
+├── Models: Model dữ liệu cho view.
+├── Controllers: Controller chính.
+├── Middlewares: Middleware tùy chỉnh.
+├── Views: Giao diện.
+│   └── Shared: View dùng chung.
+├── Program.cs: Khởi chạy web.
+└── appsettings.json: Cấu hình web.
+```

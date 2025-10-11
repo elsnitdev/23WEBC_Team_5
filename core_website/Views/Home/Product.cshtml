@@ -1,45 +1,53 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-	ViewData["ActivePage"] = "Product";
+﻿@{
+    ViewData["ActivePage"] = "Product";
 }
 @model List<SanPham>
 <div class="product-model">
-	<div class="container">
-		@await Html.PartialAsync("_Breadcrumb")
-		<h2>Our Products</h2>
-		<div class="col-md-9 product-model-sec">
-			@foreach (var item in Model)
-			{
-				  <div class="product-grid">
-				<a asp-controller="home" asp-action="single" asp-route-id="@item.MaSP">
-					<div class="more-product"><span> </span></div>
-					<div class="product-img b-link-stripe b-animate-go thickbox">
-						<img src="~/images/@item.HinhAnh" class="img-responsive" alt="@item.TenSP" style="max-width:240px;height:240px"/>
-						<div class="b-wrapper">
-							<h4 class="b-animate b-from-left b-delay03">
-								<button><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>Quick View</button>
-							</h4>
-						</div>
-					</div>
-				</a>
-				  <div class="product-info simpleCart_shelfItem">
-					<div class="product-info-cust prt_name">
-					  <h4 style="max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.TenSP</h4>
-					  <span class="item_price">@item.DonGiaKhuyenMai.ToString("N0") ₫</span>
-					  <div class="ofr">
-						<p class="pric1"><del>@item.DonGia.ToString("N0") ₫</del></p>
-						<p class="disc">[Khuyến mãi]</p>
-					  </div>
-						<input type="text" class="item_quantity" value="1" />
-						<input type="button" class="item_add items" value="ADD" />
-						<div class="clearfix"></div>
-					  </div>
-					</div>
-				  </div>
-			}
-		</div>
-@await Html.PartialAsync("_Sidebar")
-	</div>
+    <div class="container">
+        @await Html.PartialAsync("_Breadcrumb")
+        <h2>Our Products</h2>
+        <div class="col-md-9 product-model-sec" id="product-list">
+        </div>
+        @await Html.PartialAsync("_Sidebar")
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function loadProducts() {
+                // Call API to fetch data
+                $.ajax({
+                    url: '/api/products',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // Call ViewComponent route
+                        $.ajax({
+                            url: '/Home/GetProductList',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            accepts: 'text/html',
+                            data: JSON.stringify(data),
+                            success: function (html) {
+                                // Update the DOM with the rendered HTML
+                                $('#product-list').html(html);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error rendering view component:', error);
+                                $('#product-list').html('<p>Error loading products.</p>');
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching products:', error);
+                        $('#product-list').html('<p>Error loading products.</p>');
+                    }
+                });
+            }
+
+            // Execute the function
+            loadProducts();
+        });
+    </script>
+}

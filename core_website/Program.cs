@@ -1,16 +1,21 @@
-﻿using core_w2.Areas.Admins.Middlewares;
-using core_w2.MiddleWares;
-using core_w2.Services;
+﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+using core_website.Areas.Admins.Middlewares;
+using core_website.Areas.Admins.Services;
+using core_website.Areas.Api.Services;
+using core_website.Services;
+// KhoaTr - END
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Tinsle code
-builder.Services.AddSingleton<ISanPhamService, SanPhamService>();
-builder.Services.AddScoped<IRequestLogger, RequestLogger>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
+builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 // Tinsle code end
+//Huy - 10/10/25: đăng ký DI NguoiDung
+builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
+//Huy END
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,9 +34,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 //Custom MiddleWares
-app.UseMiddleware<ReadingJsonData>();
+//app.UseMiddleware<ReadingJsonData>();
 app.UseMiddleware<ProductFormValidation>();
-
+// Tinsle : cap nhat duong dan Login
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}"); //Huy - 10/10/25: mặc định mở trang login khi vào /admins
 // KhoaTr - 28/09/2025: Sửa lại route controller
 app.MapControllerRoute(  
     name: "areas",

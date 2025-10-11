@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// KhoaTr - 5/10/2025: Sửa lại model + namespace + logic xử lý
 using Microsoft.AspNetCore.Mvc;
-using core_w2.Areas.Admins.Services;
-using core_w2.Models;
+using core_website.Models;
+using core_website.Areas.Admins.Services;
+using core_website.Areas.Api.Services;
+using core_website.Areas.Api.Models;
 
-namespace core_w2.Areas.Admins.Controllers
+namespace core_website.Areas.Admins.Controllers
 {
   [Area("Admins")]
     public class ProductsController : Controller
@@ -11,48 +13,43 @@ namespace core_w2.Areas.Admins.Controllers
         private readonly ILogger<ProductsController> _logger;
         private readonly ISanPhamService _sanPhamService;
         private readonly IWebHostEnvironment _env;
+        private readonly IImageProcessingService _imageService;
 
         // inject Logger + Service + Hosting Environment
         public ProductsController(
             ILogger<ProductsController> logger,
             ISanPhamService sanPhamService,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            IImageProcessingService imageService
+         )
         {
             _logger = logger;
             _sanPhamService = sanPhamService;
             _env = env;
+            _imageService = imageService;
         }
 
         // GET: Admins/Products/Add
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new SanPham());
+            return View(new SanPhamViewModel());
         }
 
         // POST: Api/Products/Create
         [HttpPost]
         [Route("Api/Products/Create")]
-        public async Task<IActionResult> Create([FromForm] SanPham sanPham, IFormFile? hinhAnh)
+        public async Task<IActionResult> Create([FromForm] SanPhamViewModel sanPham, IFormFile? hinhAnh)
         {
             _logger.LogInformation("Nhận POST request /Api/Products/Create");
 
             // Log dữ liệu sản phẩm từ form
             _logger.LogInformation("Tên SP: {TenSP}", sanPham.TenSP);
             _logger.LogInformation("Đơn giá: {DonGia}", sanPham.DonGia);
-            _logger.LogInformation("Đơn giá KM: {DonGiaKhuyenMai}", sanPham.DonGiaKhuyenMai);
+            _logger.LogInformation("KM: {KhuyenMai}", sanPham.KhuyenMai);
             _logger.LogInformation("Mô tả: {MoTa}", sanPham.MoTa);
-            _logger.LogInformation("Loại SP: {LoaiSP}", sanPham.LoaiSP);
+            _logger.LogInformation("Tag: {LoaiSP}", sanPham.Tag);
             _logger.LogInformation("Ảnh (form binding): {HinhAnh}", sanPham.HinhAnh);
-
-            if (hinhAnh != null)
-            {
-                _logger.LogInformation("File upload: {FileName}, size: {Size} bytes", hinhAnh.FileName, hinhAnh.Length);
-            }
-            else
-            {
-                _logger.LogWarning("Không có file ảnh nào được upload");
-            }
 
             // Validate
             if (!ModelState.IsValid)
@@ -61,29 +58,44 @@ namespace core_w2.Areas.Admins.Controllers
                 return View("Add", sanPham);
             }
 
-            // Upload ảnh
-            if (hinhAnh != null && hinhAnh.Length > 0)
+            var newList = _sanPhamService.GetAll();
+            int newMaSP = (newList.Count > 0) ? newList.Max(sp => sp.MaSP) + 1 : 1;
+
+            // KhoaTr - 7/10/2025: Upload hình
+            var newImageFilePaths = "";
+            int index = 1;
+            foreach (var file in sanPham.HinhAnh)
             {
-                var fileName = Path.GetFileName(hinhAnh.FileName);
-                var uploadPath = Path.Combine(_env.WebRootPath, "uploads");
-
-                if (!Directory.Exists(uploadPath))
-                {
-                    Directory.CreateDirectory(uploadPath);
-                }
-
-                var filePath = Path.Combine(uploadPath, fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await hinhAnh.CopyToAsync(stream);
-                }
-
-                sanPham.HinhAnh = "/uploads/" + fileName;
-                _logger.LogInformation("Đã lưu ảnh vào {FilePath}", filePath);
+              if (file.Length > 0)
+              {
+                var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
+                  file: file,
+                  destinationPath: Path.Combine(_env.WebRootPath, "uploads"),
+                  name: $"{newMaSP}_{index}"
+                );
+                newImageFilePaths += newImageFilePath + ';';
+                index++;
+              }
             }
+            newImageFilePaths = newImageFilePaths.TrimEnd(';'); // Xoá dấu chấm phẩy cuối cùng
 
             // Lưu DB
-            _sanPhamService.LuuSanPham(sanPham);
+            var newSanPham = new SanPham() {
+              MaSP = newMaSP,
+              TenSP = sanPham.TenSP,
+              DonGia = sanPham.DonGia,
+              KhuyenMai = sanPham.KhuyenMai ?? 0,
+              MoTa = sanPham.MoTa == null ? "" : sanPham.MoTa,
+              ThongSo = sanPham.ThongSo == null ? "" : sanPham.ThongSo,
+              Tag = sanPham.Tag == null ? "" : sanPham.Tag,
+              SoLuong = sanPham.SoLuong,
+              HinhAnh = newImageFilePaths,
+              ThoiGianTao = DateTime.Now,
+              ThoiGianCapNhat = DateTime.Now,
+              TrangThai = true // Mặc định là true khi tạo mới
+            };
+            newList.Add(newSanPham);
+            _sanPhamService.UpdateList(newList);
             _logger.LogInformation("Đã lưu sản phẩm thành công: {TenSP}", sanPham.TenSP);
 
             TempData["SuccessMessage"] = "Tạo sản phẩm thành công";
@@ -92,3 +104,4 @@ namespace core_w2.Areas.Admins.Controllers
 
     }
 }
+// KhoaTr - END

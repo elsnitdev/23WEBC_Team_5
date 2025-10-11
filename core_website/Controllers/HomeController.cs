@@ -1,9 +1,15 @@
-using System.Diagnostics;
-using core_w2.Models;
-using core_w2.Services;
+﻿using System.Diagnostics;
+using System.Reflection;
+using core_website.Areas.Api.Models;
+using core_website.Areas.Api.Services;
+
+// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+using core_website.Models;
+using core_website.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace core_w2.Controllers
+namespace core_website.Controllers
+// KhoaTr - END
 {
   public class HomeController : Controller
   {
@@ -11,7 +17,12 @@ namespace core_w2.Controllers
     private readonly IConfiguration _configuration;
     private readonly ISanPhamService _sanPhamService;
 
-    public HomeController(ILogger<HomeController> logger, IConfiguration configuration, ISanPhamService sanPhamService)
+    public HomeController(
+      ILogger<HomeController> logger,
+      IConfiguration configuration,
+      ISanPhamService sanPhamService,
+      IViewComponentHelper viewComponentHelper
+    )
     {
       _logger = logger;
       _configuration = configuration;
@@ -49,28 +60,14 @@ namespace core_w2.Controllers
     {
       return View();
     }
-    public IActionResult TestAppSettings()
+    // View Components
+    public IActionResult GetProductList([FromBody] IEnumerable<SanPham> data)
     {
-      long maxFileSize = _configuration.GetValue<long>("AppSettings:MaxFileSize");
-      Console.WriteLine("Max file size: " + maxFileSize);
-      string[] listBannedIPs = _configuration.GetSection("AppSettings:ListBannedIPs").Get<string[]>();
-      Console.WriteLine("List banned IPs: " + string.Join(", ", listBannedIPs));
-      return View("Index");
-    }
-
-    public IActionResult TestCustomAppSettings()
-    {
-      long maxFileSize = _configuration.GetValue<long>("CustomAppSettings:MaxFileSize");
-      Console.WriteLine("Max file size (file customappsettings): " + maxFileSize);
-      string[] listBannedIPs = _configuration.GetSection("CustomAppSettings:ListBannedIPs").Get<string[]>();
-      Console.WriteLine("List banned IPs (file customappsettings): " + string.Join(", ", listBannedIPs));
-      return View("Index");
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-      return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+      if (data == null)
+      {
+        return BadRequest(new { Status = "Error", Message = "Invalid data" });
+      }
+      return ViewComponent("ProductList", data);
     }
   }
 }

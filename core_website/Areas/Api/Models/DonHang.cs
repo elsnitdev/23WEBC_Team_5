@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace core_website.Areas.Admins.Models
+namespace core_website.Models
 {
     [Table("DonHang")]
     public class DonHang
