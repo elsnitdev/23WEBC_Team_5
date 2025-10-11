@@ -1,4 +1,4 @@
-﻿@model List<SanPham>
+﻿@model List<core_website.Areas.Api.Models.SanPham>
 @foreach (var item in Model)
 {
 	var ListHinhAnh = item.HinhAnh.Split(';').ToList();

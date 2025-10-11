@@ -12,6 +12,14 @@ builder.Services.AddControllersWithViews();
 // Tinsle code
 builder.Services.AddTransient<IImageProcessingService, ImageProcessingService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+builder.Services.AddControllers();  
+
+// Thêm HttpClient để MVC gọi API
+builder.Services.AddHttpClient("ProductApiClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5299/");  //thay bang địa chỉ API 
+    client.DefaultRequestHeaders.Add("Accept", "application/json");  // Nhận JSON
+});
 //Huy - 10/10/25: đăng ký DI NguoiDung
 builder.Services.AddScoped<INguoiDungService, NguoiDungService>();
 //Huy END
