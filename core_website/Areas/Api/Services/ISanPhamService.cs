@@ -7,7 +7,8 @@ namespace core_website.Areas.Api.Services
   public interface ISanPhamService
   {
         /// Lấy tất cả sản phẩm
-        List<SanPham> GetAll();
+        /// Huy -11/10/25: thêm itemsPerPage để lấy số lượng item cần để hiển thị/trang
+        List<SanPham> GetAll(int? itemsPerPage = null); 
         /// Lấy sản phẩm theo ID
         SanPham? GetById(int id);
         /// Tìm kiếm sản phẩm theo tên (hoặc keyword)

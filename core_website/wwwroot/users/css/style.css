@@ -274,8 +274,10 @@ display:inline-block;
 	padding:4em 0;
 }
 .feature-grid img {
-    width: 100%;
-    padding: 0em 2em 1em 2em;
+	width: 100%;
+	padding: 0em 2em 1em 2em;
+	height: 260px;
+	object-fit: contain;
 }
 .feature-grid {
     position: relative;

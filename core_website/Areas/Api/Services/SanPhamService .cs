@@ -1,6 +1,7 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
 using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
+using Humanizer;
 using Microsoft.Data.SqlClient;
 using System.Data;
 namespace core_website.Services;
@@ -14,14 +15,23 @@ public class SanPhamService : ISanPhamService
   {
     _connectionString = configuration.GetConnectionString("DefaultConnectionString");
   }
-  public List<SanPham> GetAll()
+  public List<SanPham> GetAll(int? itemsPerPage = null)
   {
     var result = new List<SanPham>();
     try
     {
       using (var connection = new SqlConnection(_connectionString))
       {
-        var cmd = new SqlCommand("SELECT * FROM SanPham", connection);
+        //Huy - 11/10/25: sửa câu truy vấn chỉ lấy số lượng item cần
+        string sql = itemsPerPage != null ? "SELECT TOP (@Ipp) *" : "SELECT *";
+        sql += " FROM SanPham ORDER BY ThoiGianTao DESC";
+
+        var cmd = new SqlCommand(sql, connection);
+        if (itemsPerPage != null)
+        {
+            cmd.Parameters.AddWithValue("@Ipp", itemsPerPage);
+        }
+
         connection.Open();
 
         using (var reader = cmd.ExecuteReader())
