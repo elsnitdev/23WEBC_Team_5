@@ -66,12 +66,78 @@ namespace core_website.Areas.Api.Services
       }
       return result;
     }
-    // Map dữ liệu từ SqlDataReader sang đối tượng NguoiDung
-    private NguoiDung MapToNguoiDung(SqlDataReader reader)
+    //Tan - 11/10/2025 - Chỉnh sửa NguoiDungService
+    public List<NguoiDung> GetAll()
+    {
+        var list = new List<NguoiDung>();
+        using (var conn = new SqlConnection(_connectionString))
+        {
+            conn.Open();
+            using var cmd = new SqlCommand("SELECT * FROM NguoiDung", conn);
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(MapToNguoiDung(r));
+            }
+        }
+        return list;
+    }
+
+    public NguoiDung? GetById(int id)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new SqlCommand("SELECT * FROM NguoiDung WHERE MaND = @id", conn);
+        cmd.Parameters.AddWithValue("@id", id);
+        using var r = cmd.ExecuteReader();
+        if (r.Read()) return MapToNguoiDung(r);
+        return null;
+    }
+
+    public bool Create(NguoiDung nguoiDung)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new SqlCommand(
+            "INSERT INTO NguoiDung (TenND, MatKhau, VaiTro, TrangThai) VALUES (@TenND, @MatKhau, @VaiTro, @TrangThai)",
+            conn);
+        cmd.Parameters.AddWithValue("@TenND", nguoiDung.TenND);
+        cmd.Parameters.AddWithValue("@MatKhau", nguoiDung.MatKhau);
+        cmd.Parameters.AddWithValue("@VaiTro", nguoiDung.VaiTro);
+        cmd.Parameters.AddWithValue("@TrangThai", nguoiDung.TrangThai);
+        return cmd.ExecuteNonQuery() > 0;
+    }
+
+    public bool Update(NguoiDung nguoiDung)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new SqlCommand(
+            "UPDATE NguoiDung SET TenND=@TenND, MatKhau=@MatKhau, VaiTro=@VaiTro, TrangThai=@TrangThai WHERE MaND=@MaND",
+            conn);
+        cmd.Parameters.AddWithValue("@TenND", nguoiDung.TenND);
+        cmd.Parameters.AddWithValue("@MatKhau", nguoiDung.MatKhau);
+        cmd.Parameters.AddWithValue("@VaiTro", nguoiDung.VaiTro);
+        cmd.Parameters.AddWithValue("@TrangThai", nguoiDung.TrangThai);
+        cmd.Parameters.AddWithValue("@MaND", nguoiDung.MaND);
+        return cmd.ExecuteNonQuery() > 0;
+    }
+
+    public bool Delete(int id)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new SqlCommand("DELETE FROM NguoiDung WHERE MaND = @id", conn);
+        cmd.Parameters.AddWithValue("@id", id);
+        return cmd.ExecuteNonQuery() > 0;
+    }
+        //Tan END
+        // Map dữ liệu từ SqlDataReader sang đối tượng NguoiDung
+        private NguoiDung MapToNguoiDung(SqlDataReader reader)
     {
       return new NguoiDung
       {
-        MaND = reader.GetInt32("MaND"),
+        MaND = Convert.ToInt32(reader["MaND"]), //Phải Convert qua
         TenND = reader.GetString("TenND"),
         MatKhau = reader.GetString("MatKhau"), // Don't return password in production
         VaiTro = reader.IsDBNull("VaiTro") ? null : reader.GetString("VaiTro"),

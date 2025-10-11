@@ -12,30 +12,42 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function loadProducts() {
-            fetch('/Home/GetProductList', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'text/html'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(html => {
-                document.getElementById('product-list').innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-                document.getElementById('product-list').innerHTML = '<p>Error loading products.</p>';
-            });
-        }
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function loadProducts() {
+                // Call API to fetch data
+                $.ajax({
+                    url: '/api/products',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // Call ViewComponent route
+                        $.ajax({
+                            url: '/Home/GetProductList',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            accepts: 'text/html',
+                            data: JSON.stringify(data),
+                            success: function (html) {
+                                // Update the DOM with the rendered HTML
+                                $('#product-list').html(html);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error rendering view component:', error);
+                                $('#product-list').html('<p>Error loading products.</p>');
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching products:', error);
+                        $('#product-list').html('<p>Error loading products.</p>');
+                    }
+                });
+            }
 
-        loadProducts();
-    });
-</script>
+            // Execute the function
+            loadProducts();
+        });
+    </script>
+}
