@@ -15,13 +15,13 @@ namespace core_website.Areas.Api.Controllers
       _sanPhamService = sanPhamService;
     }
 
-    // GET: api/Products
+    // GET: api/Products?itemsPerPage=8
     [HttpGet]
-    public ActionResult<IEnumerable<SanPham>> Get()
+    public ActionResult<IEnumerable<SanPham>> Get([FromQuery] int? itemsPerPage)
     {
       try
       {
-        var sanPhams = _sanPhamService.GetAll();
+        var sanPhams = _sanPhamService.GetAll(itemsPerPage);
         return Ok(sanPhams);
       }
       catch (Exception ex)
