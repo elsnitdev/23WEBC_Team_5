@@ -70,7 +70,7 @@ namespace core_website.Areas.Admins.Controllers
               {
                 var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
                   file: file,
-                  destinationPath: Path.Combine(_env.WebRootPath, "uploads"),
+                  destinationPath: Path.Combine(_env.WebRootPath, "images"),
                   name: $"{newMaSP}_{index}"
                 );
                 newImageFilePaths += newImageFilePath + ';';
