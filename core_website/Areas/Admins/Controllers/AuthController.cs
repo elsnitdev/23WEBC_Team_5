@@ -1,10 +1,14 @@
-﻿using core_website.Areas.Admins.Models;
+﻿using System.Security.Claims;
+using core_website.Areas.Admins.Models;
 using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Admins.Controllers
 {
+    [Area("Admins")]
     public class AuthController : Controller
     {
         //Huy - 10/10/25
@@ -19,7 +23,6 @@ namespace core_website.Areas.Admins.Controllers
             _nguoiDungService = nguoiDungService;
         }
 
-        [Area("Admins")]
         [HttpGet]// Tin : cập nhật action Login 
         public IActionResult Login()
         {
@@ -30,7 +33,6 @@ namespace core_website.Areas.Admins.Controllers
             return View();
         }
 
-        [Area("Admins")]
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] LoginViewModel login)
         {
@@ -53,11 +55,22 @@ namespace core_website.Areas.Admins.Controllers
             var loginResult = _nguoiDungService.Login(loginRequest);
             if (!loginResult.Success)
             {
-              ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc mật khẩu không đúng.");
-              _logger.LogWarning("Đăng nhập thất bại: Tên đăng nhập hoặc mật khẩu không đúng.");
+              ModelState.AddModelError(string.Empty, loginResult.Message ?? "Đã có lỗi xảy ra, vui lòng thử lại!");
+              _logger.LogWarning($"Đăng nhập thất bại: {loginResult.Message ?? "Đã có lỗi xảy ra, vui lòng thử lại!"}");
               return View("Login", login);
-            } 
-            return View("~/Views/Home/Index.cshtml", loginResult.User);
+            }
+            var claims = new[] { 
+              new Claim(ClaimTypes.Name, loginResult.User.TenND),
+              new Claim(ClaimTypes.Role, loginResult.User.VaiTro)
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(new ClaimsPrincipal(identity));
+            return RedirectToAction("Index", "Home");
         }
-    }
+        public async Task<IActionResult> Logout()
+        {
+          await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+          return RedirectToAction("Login");
+        }
+  }
 }

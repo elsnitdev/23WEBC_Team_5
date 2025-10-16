@@ -20,6 +20,17 @@ namespace core_website.Areas.Api.Services
       {
         using (var connection = new SqlConnection(_connectionString))
         {
+          try
+          {
+            connection.Open();
+          }
+          catch (SqlException ex)
+          {
+            result.Success = false;
+            result.Message = "Không thể kết nối đến cơ sở dữ liệu. Vui lòng thử lại sau.";
+            return result;
+          }
+
           var cmd = new SqlCommand(@"" +
             "SELECT * " +
             "FROM NguoiDung " +
@@ -28,23 +39,30 @@ namespace core_website.Areas.Api.Services
 
           cmd.Parameters.AddWithValue("@TenND", data.TenND ?? string.Empty);
 
-          connection.Open();
-
-          using (var reader = cmd.ExecuteReader())
+          try
           {
-            if (reader.Read())
+            using (var reader = cmd.ExecuteReader())
             {
-              var user = MapToNguoiDung(reader);
-
-              if (VerifyPassword(data.MatKhau, user.MatKhau))
+              if (reader.Read())
               {
-                result.Success = true;
-                result.User = new NguoiDungInfo(){
-                  TenND = user.TenND,
-                  MaND = user.MaND,
-                  VaiTro = user.VaiTro
-                };
-                result.Message = "Đăng nhập thành công";
+                var user = MapToNguoiDung(reader);
+
+                if (VerifyPassword(data.MatKhau, user.MatKhau))
+                {
+                  result.Success = true;
+                  result.User = new NguoiDungInfo()
+                  {
+                    TenND = user.TenND,
+                    MaND = user.MaND,
+                    VaiTro = user.VaiTro
+                  };
+                  result.Message = "Đăng nhập thành công";
+                }
+                else
+                {
+                  result.Success = false;
+                  result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
+                }
               }
               else
               {
@@ -52,11 +70,16 @@ namespace core_website.Areas.Api.Services
                 result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
               }
             }
-            else
-            {
-              result.Success = false;
-              result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
-            }
+          }
+          catch (SqlException ex)
+          {
+            result.Success = false;
+            result.Message = "Đã có lỗi xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau.";
+            return result;
+          }
+          finally
+          {
+            connection.Close();
           }
         }
       }

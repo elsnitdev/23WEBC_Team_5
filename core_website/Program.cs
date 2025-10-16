@@ -3,9 +3,21 @@ using core_website.Areas.Admins.Middlewares;
 using core_website.Areas.Admins.Services;
 using core_website.Areas.Api.Services;
 using core_website.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 // KhoaTr - END
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Sử dụng dịch vụ xác thực cookie
+// Admins
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+      options.LoginPath = "/Admins/Auth/Login";
+      options.LogoutPath = "/Admins/Auth/Logout";
+      options.Cookie.HttpOnly = true; // Chống XSS
+      options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hạn cookie
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -29,18 +41,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 //Custom MiddleWares
-//app.UseMiddleware<ReadingJsonData>();
-app.UseMiddleware<ProductFormValidation>();
-// Tinsle : cap nhat duong dan Login
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}"); //Huy - 10/10/25: mặc định mở trang login khi vào /admins
+app.UseAuthCheckMiddleware();
+app.UseProductFormValidation();
 // KhoaTr - 28/09/2025: Sửa lại route controller
 app.MapControllerRoute(  
     name: "areas",
