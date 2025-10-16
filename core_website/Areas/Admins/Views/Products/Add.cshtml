@@ -1,4 +1,4 @@
-﻿@* // KhoaTr - 11/10/2025: Updated for single category, fixed AJAX logic, and removed Select2 *@
+﻿@* // KhoaTr - 10/16/2025: Refactored image upload with hidden previews until upload, balanced columns *@
 @using core_website.Models
 @model SanPhamViewModel
 @{
@@ -29,6 +29,11 @@
                     <input asp-for="SoLuong" class="form-control" type="number" min="0" placeholder="Nhập số lượng" />
                     <span asp-validation-for="SoLuong" class="text-danger"></span>
                 </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Tag" class="control-label"></label>
+                    <input asp-for="Tag" class="form-control" placeholder="Nhập tag (ví dụ: điện tử, laptop, mới)" />
+                    <span asp-validation-for="Tag" class="text-danger"></span>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group mb-3">
@@ -43,25 +48,34 @@
                     <input asp-for="NewDanhMucName" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
                     <span asp-validation-for="NewDanhMucName" class="text-danger"></span>
                 </div>
-                <div class="form-group mb-3">
-                    <label asp-for="HinhAnh" class="control-label"></label>
-                    <input asp-for="HinhAnh" type="file" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
-                    <span asp-validation-for="HinhAnh" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="Tag" class="control-label"></label>
-                    <input asp-for="Tag" class="form-control" placeholder="Nhập tag (ví dụ: điện tử, laptop, mới)" />
-                    <span asp-validation-for="Tag" class="text-danger"></span>
-                </div>
+                
                 <div class="form-group mb-3">
                     <label asp-for="MoTa" class="control-label"></label>
-                    <textarea asp-for="MoTa" class="form-control" rows="5" placeholder="Nhập mô tả sản phẩm"></textarea>
+                    <textarea asp-for="MoTa" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
                     <span asp-validation-for="MoTa" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-3">
                     <label asp-for="ThongSo" class="control-label"></label>
-                    <textarea asp-for="ThongSo" class="form-control" rows="5" placeholder="Nhập thông số kỹ thuật"></textarea>
+                    <textarea asp-for="ThongSo" class="form-control" rows="3" placeholder="Nhập thông số kỹ thuật"></textarea>
                     <span asp-validation-for="ThongSo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label class="control-label">Tải ảnh Thumbnail</label>
+                    <div class="image-preview"
+                      style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
+                    </div>
+                    <input type="file" name="HinhAnhThumbnail" class="form-control" accept="image/png,image/jpeg,image/gif" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                     <label class="control-label">Tải ảnh Chi Tiết</label>
+                    <div class="image-preview"
+                         style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
+                    </div>
+                     <input type="file" name="HinhAnhDetails" id="HinhAnhDetailsInput" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
                 </div>
             </div>
         </div>
@@ -71,7 +85,6 @@
         </div>
     </form>
 </div>
-
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -84,7 +97,6 @@
                     $('#DanhMucId').prop('disabled', false);
                 }
             });
-
             // Disable NewDanhMucName input if a category is selected
             $('#DanhMucId').on('change', function () {
                 if ($(this).val()) {
@@ -95,6 +107,70 @@
                 }
             });
 
+            // Hàm tạo container và in hình vào trong container đó
+            function handleImagePreview(event, previewSize) {
+                const files = event.target.files;
+                const $previewContainer = $(event.target).prev('.image-preview');
+
+                $previewContainer.empty();
+
+                if (files.length === 0) {
+                    $previewContainer.hide();
+                    return;
+                }
+
+                if (files.length > 1) {
+                    $previewContainer.css({
+                        'display': 'flex',
+                        'flex-wrap': 'wrap',
+                        'gap': '10px',
+                        'width': 'auto',
+                        'height': 'auto',
+                        'padding': '5px'
+                    }).show();
+                } else {
+                    $previewContainer.css({
+                        'display': 'flex',
+                        'flex-wrap': 'nowrap',
+                        'gap': '0',
+                        'width': `${previewSize}px`,
+                        'height': `${previewSize}px`,
+                        'padding': '0'
+                    }).show();
+                }
+
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+
+                    const $imageWrapper = $('<div>').css({
+                        'width': `${previewSize}px`,
+                        'height': `${previewSize}px`,
+                        'border': '1px solid #ddd',
+                        'display': 'flex',
+                        'align-items': 'center',
+                        'justify-content': 'center',
+                        'background': '#f8f8f8',
+                        'overflow': 'hidden'
+                    });
+
+                    reader.onload = function (e) {
+                        const $img = $('<img>').attr('src', e.target.result).css({
+                            'width': '100%',
+                            'height': '100%',
+                            'object-fit': 'contain'
+                        });
+                        $imageWrapper.html($img);
+                        $previewContainer.append($imageWrapper);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Xử lý upload hình tạo preview
+            $('input[type="file"]').on('change', function (e) {
+                handleImagePreview(e, 200);
+            });
+
             // Form submission
             $('#productForm').on('submit', function (event) {
                 event.preventDefault();
@@ -103,16 +179,13 @@
                 var $formMessage = $('#formMessage');
                 var newDanhMucName = $('#NewDanhMucName').val().trim();
                 var danhMucId = $('#DanhMucId').val();
-
                 // Function to post product and categorize
                 function postProduct(MaDM) {
-                    // Set DanhMucId in formData
                     if (MaDM) {
                         formData.set('DanhMucId', MaDM);
                     } else {
                         formData.delete('DanhMucId');
                     }
-
                     $.ajax({
                         url: '/api/Products',
                         type: 'POST',
@@ -120,13 +193,16 @@
                         processData: false,
                         contentType: false,
                         success: function () {
-                                $formMessage
-                                    .removeClass('alert-danger')
-                                    .addClass('alert-success')
-                                    .text('Sản phẩm đã được thêm thành công!')
-                                    .show();
-                                $form[0].reset();
-                                $('#DanhMucId').val('');
+                            $formMessage
+                                .removeClass('alert-danger')
+                                .addClass('alert-success')
+                                .text('Sản phẩm đã được thêm thành công!')
+                                .show();
+                            $form[0].reset();
+                            $('#DanhMucId').val('');
+                            $('.image-preview').hide().empty();
+                            container.empty();
+                            addImageInput();
                         },
                         error: function (xhr) {
                             $formMessage.removeClass('alert-success').addClass('alert-danger').show();
@@ -144,7 +220,6 @@
                         }
                     });
                 }
-
                 // Check if NewDanhMucName is filled
                 if (newDanhMucName !== '') {
                     $.ajax({
