@@ -75,7 +75,7 @@
                     <div class="image-preview"
                          style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
                     </div>
-                     <input type="file" name="HinhAnhDetails" id="HinhAnhDetailsInput" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
+                     <input type="file" name="HinhAnhDetails" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
                 </div>
             </div>
         </div>
@@ -179,6 +179,31 @@
                 var $formMessage = $('#formMessage');
                 var newDanhMucName = $('#NewDanhMucName').val().trim();
                 var danhMucId = $('#DanhMucId').val();
+
+				// Clear previous messages
+				$formMessage.hide().removeClass('alert-success alert-danger').text('');
+
+                // Get images
+                var thumbnailFile = $('input[name="HinhAnhThumbnail"]')[0].files[0];
+                var detailFiles = $('input[name="HinhAnhDetails"]')[0].files;
+
+                // Validate thumbnail
+                if (!thumbnailFile) {
+                    $formMessage
+                        .removeClass('alert-success')
+                        .addClass('alert-danger')
+                        .text('Vui lòng chọn ít nhất một ảnh thumbnail.')
+                        .show();
+                    return;
+                }
+
+                var imageList = [thumbnailFile, ...detailFiles];
+
+                // Append all images under "HinhAnh" key
+                imageList.forEach(file => {
+                    formData.append('HinhAnh', file);
+                });
+
                 // Function to post product and categorize
                 function postProduct(MaDM) {
                     if (MaDM) {
@@ -200,9 +225,6 @@
                                 .show();
                             $form[0].reset();
                             $('#DanhMucId').val('');
-                            $('.image-preview').hide().empty();
-                            container.empty();
-                            addImageInput();
                         },
                         error: function (xhr) {
                             $formMessage.removeClass('alert-success').addClass('alert-danger').show();

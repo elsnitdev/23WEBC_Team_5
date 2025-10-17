@@ -55,7 +55,7 @@ namespace core_website.Areas.Admins.Services
         return null;
       }
 
-      // ✅ Thêm mới danh mục
+      // Thêm mới danh mục
       public void Add(DanhMuc danhMuc)
       {
         const string query = @"
@@ -73,7 +73,7 @@ namespace core_website.Areas.Admins.Services
         danhMuc.MaDM = Convert.ToInt32(command.ExecuteScalar());
       }
 
-      // ✅ Cập nhật danh mục
+      // Cập nhật danh mục
       public void Update(DanhMuc danhMuc)
       {
         const string query = @"
