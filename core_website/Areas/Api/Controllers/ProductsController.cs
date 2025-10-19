@@ -126,8 +126,13 @@ namespace core_website.Areas.Api.Controllers
         }
 
         return CreatedAtAction(nameof(Get), new { id = newSanPham.MaSP }, sanPham);
-      }
-      catch (Exception ex)
+            }
+            catch (InvalidOperationException ex)
+            {
+            
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
       {
         return BadRequest($"Error creating product: {ex.Message}");
       }

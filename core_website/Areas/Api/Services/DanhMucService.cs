@@ -63,19 +63,32 @@ namespace core_website.Areas.Admins.Services
       // Thêm mới danh mục
       public DanhMuc Add(DanhMuc danhMuc)
       {
-        const string query = @"
+            // 19/10 trung tin: thêm kiểm tra trùng tên danh mục
+            const string checkQuery = @"
+        SELECT TOP 1 MaDM FROM DanhMuc WHERE TenDM = @TenDanhMuc
+    ";
+            const string query = @"
                 INSERT INTO DanhMuc (TenDM)
                 VALUES (@TenDanhMuc);
                 SELECT SCOPE_IDENTITY();
             ";
 
-        using var connection = new SqlConnection(_connectionString);
-        using var command = new SqlCommand(query, connection);
-        command.Parameters.AddWithValue("@TenDanhMuc", danhMuc.TenDM);
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            // 19/10 trung tin: thêm kiểm tra trùng tên danh mục
+            using var checkCommand = new SqlCommand(checkQuery, connection);
+
+            checkCommand.Parameters.AddWithValue("@TenDanhMuc", danhMuc.TenDM);
+            var existId = checkCommand.ExecuteScalar();
+            if (existId != null)
+            {
+                throw new InvalidOperationException("Tên danh mục đã tồn tại.");
+            }
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@TenDanhMuc", danhMuc.TenDM);
 
 
-        connection.Open();
-        danhMuc.MaDM = Convert.ToInt32(command.ExecuteScalar());
+            danhMuc.MaDM = Convert.ToInt32(command.ExecuteScalar());
       _logger.LogInformation($"Thêm danh mục có mã {danhMuc.MaDM} thành công");
       return danhMuc;
     }
@@ -129,7 +142,7 @@ namespace core_website.Areas.Admins.Services
           var count = (int)command.ExecuteScalar();
           if (count == 0)
           {
-            throw new ArgumentException("MaSP không tồn tại.");
+            throw new InvalidOperationException("MaSP không tồn tại.");
           }
         }
 
