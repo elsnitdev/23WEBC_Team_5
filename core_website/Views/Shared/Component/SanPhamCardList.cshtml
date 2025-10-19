@@ -18,12 +18,18 @@
 			<div class="product-info-cust prt_name">
 				<h4 style="max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.TenSP</h4>
 				@* // KhoaTr - Sửa lại thuộc tính dựa trên model mới *@
-				<span class="item_price">@item.DonGia.ToString("N0") ₫</span>
+				<span class="item_price">@((item.DonGia - (item.DonGia * item.KhuyenMai / 100)).ToString("N0")) ₫</span>
+
+
 				@* // KhoaTr - END *@
-				<div class="ofr">
-					<p class="pric1"><del>@item.KhuyenMai.ToString("N0") ₫</del></p>
-					<p class="disc">[Khuyến mãi]</p>
-				</div>
+				@* @if (item.KhuyenMai > 0)
+				{ *@
+					<div class="ofr">
+						<p class="pric1"><del>@item.DonGia.ToString("N0") ₫</del></p>
+						<p class="disc">[@item.KhuyenMai% Khuyến mãi]</p>
+					</div>
+				@* } *@
+			
 				<input type="text" class="item_quantity" value="1" />
 				<input type="button" class="item_add items" value="ADD" />
 				<div class="clearfix"></div>
