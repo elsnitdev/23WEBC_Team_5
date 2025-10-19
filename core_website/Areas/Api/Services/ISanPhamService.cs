@@ -1,29 +1,71 @@
-﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
-using core_website.Areas.Api.Models;
+﻿using core_website.Areas.Api.Models;
 
 namespace core_website.Areas.Api.Services
-// KhoaTr - END
 {
+  /// <summary>
+  /// Dịch vụ liên quan đến quản lý sản phẩm.
+  /// </summary>
+  /// <remarks>KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website.</remarks>
   public interface ISanPhamService
   {
-        /// Lấy tất cả sản phẩm
-        /// Huy -11/10/25: thêm itemsPerPage để lấy số lượng item cần để hiển thị/trang
-        List<SanPham> GetAll(int? itemsPerPage = null); 
-        /// Lấy sản phẩm theo ID
-        SanPham? GetById(int id);
-        /// Tìm kiếm sản phẩm theo tên (hoặc keyword)
-        List<SanPham> Search(string keyword);
-        /// Thêm sản phẩm mới
-        void Add(SanPham sp);
-        /// Cập nhật thông tin sản phẩm
-        void Update(SanPham sp);
-        /// Xóa sản phẩm theo ID
-        void Delete(int id);
-        /// Lấy top sản phẩm có khuyến mãi
-        List<SanPham> GetKhuyenMai();
-        //Huy code
-        void UpdateList(List<SanPham> list);
-        int GetLastestProductId();
-    //Huy end
+    /// <summary>
+    /// Lấy danh sách tất cả sản phẩm.
+    /// </summary>
+    /// <param name="itemsPerPage">Số lượng sản phẩm cần lấy mỗi trang. Nếu null, lấy tất cả sản phẩm.</param>
+    /// <returns>Danh sách các sản phẩm.</returns>
+    /// <remarks>Huy - 11/10/25: Thêm itemsPerPage để lấy số lượng item cần để hiển thị/trang.</remarks>
+    List<SanPham> GetAll(int? itemsPerPage = null);
+
+    /// <summary>
+    /// Lấy thông tin sản phẩm theo ID.
+    /// </summary>
+    /// <param name="id">ID của sản phẩm cần lấy.</param>
+    /// <returns>Đối tượng sản phẩm tương ứng với ID, hoặc null nếu không tìm thấy.</returns>
+    SanPham? GetById(int id);
+
+    /// <summary>
+    /// Tìm kiếm sản phẩm theo từ khóa.
+    /// </summary>
+    /// <param name="keyword">Từ khóa để tìm kiếm sản phẩm (ví dụ: tên sản phẩm).</param>
+    /// <returns>Danh sách các sản phẩm khớp với từ khóa.</returns>
+    List<SanPham> Search(string keyword);
+
+    /// <summary>
+    /// Thêm một sản phẩm mới.
+    /// </summary>
+    /// <param name="sp">Đối tượng sản phẩm cần thêm.</param>
+    void Add(SanPham sp);
+
+    /// <summary>
+    /// Cập nhật thông tin của một sản phẩm.
+    /// </summary>
+    /// <param name="sp">Đối tượng sản phẩm với thông tin đã được cập nhật.</param>
+    void Update(SanPham sp);
+
+    /// <summary>
+    /// Xóa một sản phẩm theo ID.
+    /// </summary>
+    /// <param name="id">ID của sản phẩm cần xóa.</param>
+    void Delete(int id);
+
+    /// <summary>
+    /// Lấy danh sách các sản phẩm có khuyến mãi.
+    /// </summary>
+    /// <returns>Danh sách các sản phẩm đang có khuyến mãi.</returns>
+    List<SanPham> GetKhuyenMai();
+
+    /// <summary>
+    /// Cập nhật danh sách các sản phẩm.
+    /// </summary>
+    /// <param name="list">Danh sách các sản phẩm cần cập nhật.</param>
+    /// <remarks>Huy code.</remarks>
+    void UpdateList(List<SanPham> list);
+
+    /// <summary>
+    /// Lấy ID của sản phẩm mới nhất.
+    /// </summary>
+    /// <returns>ID của sản phẩm mới nhất.</returns>
+    /// <remarks>Huy code.</remarks>
+    int GetLastestProductId();    
   }
 }

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace core_website.Models
+namespace core_website.Areas.Admins.Models
 {
-  public class SanPhamViewModel
+  public class SanPhamFormViewModel
   {
     [Required(ErrorMessage = "Tên sản phẩm là bắt buộc")]
     [StringLength(100, MinimumLength = 3, ErrorMessage = "Tên sản phẩm phải từ 3 đến 100 ký tự")]
@@ -44,8 +44,8 @@ namespace core_website.Models
     [Display(Name = "Hình ảnh")]
     [DataType(DataType.Upload)]
     public IFormFile[] HinhAnh { get; set; }
-    public int DanhMucId { get; set; }
-    public string? NewDanhMucName { get; set; }
+    public int MaDM { get; set; }
+    public string? NewTenDM { get; set; }
     public List<SelectListItem>? DanhMucList { get; set; }
   }
 }

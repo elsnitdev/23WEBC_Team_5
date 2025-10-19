@@ -1,6 +1,6 @@
 ﻿@* // KhoaTr - 10/16/2025: Refactored image upload with hidden previews until upload, balanced columns *@
 @using core_website.Models
-@model SanPhamViewModel
+@model SanPhamFormViewModel
 @{
     ViewData["PageTitle"] = "Thêm Sản Phẩm Mới";
 }
@@ -37,18 +37,17 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group mb-3">
-                    <label asp-for="DanhMucId" class="control-label">Danh Mục</label>
-                    <select asp-for="DanhMucId" class="form-control" asp-items="@Model.DanhMucList">
+                    <label asp-for="MaDM" class="control-label">Danh Mục</label>
+                    <select asp-for="MaDM" class="form-control" asp-items="@Model.DanhMucList">
                         <option value="">-- Chọn danh mục --</option>
                     </select>
-                    <span asp-validation-for="DanhMucId" class="text-danger"></span>
+                    <span asp-validation-for="MaDM" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-3">
-                    <label asp-for="NewDanhMucName" class="control-label">Hoặc nhập danh mục mới</label>
-                    <input asp-for="NewDanhMucName" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
-                    <span asp-validation-for="NewDanhMucName" class="text-danger"></span>
+                    <label asp-for="NewTenDM" class="control-label">Hoặc nhập danh mục mới</label>
+                    <input asp-for="NewTenDM" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
+                    <span asp-validation-for="NewTenDM" class="text-danger"></span>
                 </div>
-                
                 <div class="form-group mb-3">
                     <label asp-for="MoTa" class="control-label"></label>
                     <textarea asp-for="MoTa" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
@@ -64,18 +63,18 @@
                 <div class="form-group mb-3">
                     <label class="control-label">Tải ảnh Thumbnail</label>
                     <div class="image-preview"
-                      style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
+                         style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
                     </div>
                     <input type="file" name="HinhAnhThumbnail" class="form-control" accept="image/png,image/jpeg,image/gif" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group mb-3">
-                     <label class="control-label">Tải ảnh Chi Tiết</label>
+                    <label class="control-label">Tải ảnh Chi Tiết</label>
                     <div class="image-preview"
                          style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
                     </div>
-                     <input type="file" name="HinhAnhDetails" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
+                    <input type="file" name="HinhAnhDetails" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
                 </div>
             </div>
         </div>
@@ -88,37 +87,33 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Disable select if NewDanhMucName has data
-            $('#NewDanhMucName').on('input', function () {
+            // Disable select if NewTenDM has data
+            $('#NewTenDM').on('input', function () {
                 if ($(this).val().trim() !== '') {
-                    $('#DanhMucId').val('');
-                    $('#DanhMucId').prop('disabled', true);
+                    $('#MaDM').val('');
+                    $('#MaDM').prop('disabled', true);
                 } else {
-                    $('#DanhMucId').prop('disabled', false);
+                    $('#MaDM').prop('disabled', false);
                 }
             });
-            // Disable NewDanhMucName input if a category is selected
-            $('#DanhMucId').on('change', function () {
+            // Disable NewTenDM input if a category is selected
+            $('#MaDM').on('change', function () {
                 if ($(this).val()) {
-                    $('#NewDanhMucName').val('');
-                    $('#NewDanhMucName').prop('disabled', true);
+                    $('#NewTenDM').val('');
+                    $('#NewTenDM').prop('disabled', true);
                 } else {
-                    $('#NewDanhMucName').prop('disabled', false);
+                    $('#NewTenDM').prop('disabled', false);
                 }
             });
-
             // Hàm tạo container và in hình vào trong container đó
             function handleImagePreview(event, previewSize) {
                 const files = event.target.files;
                 const $previewContainer = $(event.target).prev('.image-preview');
-
                 $previewContainer.empty();
-
                 if (files.length === 0) {
                     $previewContainer.hide();
                     return;
                 }
-
                 if (files.length > 1) {
                     $previewContainer.css({
                         'display': 'flex',
@@ -138,10 +133,8 @@
                         'padding': '0'
                     }).show();
                 }
-
                 Array.from(files).forEach(file => {
                     const reader = new FileReader();
-
                     const $imageWrapper = $('<div>').css({
                         'width': `${previewSize}px`,
                         'height': `${previewSize}px`,
@@ -152,7 +145,6 @@
                         'background': '#f8f8f8',
                         'overflow': 'hidden'
                     });
-
                     reader.onload = function (e) {
                         const $img = $('<img>').attr('src', e.target.result).css({
                             'width': '100%',
@@ -165,28 +157,23 @@
                     reader.readAsDataURL(file);
                 });
             }
-
             // Xử lý upload hình tạo preview
             $('input[type="file"]').on('change', function (e) {
                 handleImagePreview(e, 200);
             });
-
             // Form submission
             $('#productForm').on('submit', function (event) {
                 event.preventDefault();
                 var $form = $(this);
                 var formData = new FormData($form[0]);
                 var $formMessage = $('#formMessage');
-                var newDanhMucName = $('#NewDanhMucName').val().trim();
-                var danhMucId = $('#DanhMucId').val();
-
-				// Clear previous messages
-				$formMessage.hide().removeClass('alert-success alert-danger').text('');
-
+                var NewTenDM = $('#NewTenDM').val().trim();
+                var MaDM = $('#MaDM').val();
+                // Clear previous messages
+                $formMessage.hide().removeClass('alert-success alert-danger').text('');
                 // Get images
                 var thumbnailFile = $('input[name="HinhAnhThumbnail"]')[0].files[0];
                 var detailFiles = $('input[name="HinhAnhDetails"]')[0].files;
-
                 // Validate thumbnail
                 if (!thumbnailFile) {
                     $formMessage
@@ -196,20 +183,17 @@
                         .show();
                     return;
                 }
-
                 var imageList = [thumbnailFile, ...detailFiles];
-
                 // Append all images under "HinhAnh" key
                 imageList.forEach(file => {
                     formData.append('HinhAnh', file);
                 });
-
                 // Function to post product and categorize
                 function postProduct(MaDM) {
                     if (MaDM) {
-                        formData.set('DanhMucId', MaDM);
+                        formData.set('MaDM', MaDM);
                     } else {
-                        formData.delete('DanhMucId');
+                        formData.delete('MaDM');
                     }
                     $.ajax({
                         url: '/api/Products',
@@ -224,7 +208,18 @@
                                 .text('Sản phẩm đã được thêm thành công!')
                                 .show();
                             $form[0].reset();
-                            $('#DanhMucId').val('');
+                            $('#MaDM').val('');
+                            // Clear image previews
+                            $('.image-preview').empty().hide().css({
+                                'width': '200px',
+                                'height': '200px',
+                                'padding': '0',
+                                'flex-wrap': 'nowrap',
+                                'gap': '0'
+                            });
+                            // Reset file inputs
+                            $('input[name="HinhAnhThumbnail"]').val('');
+                            $('input[name="HinhAnhDetails"]').val('');
                         },
                         error: function (xhr) {
                             $formMessage.removeClass('alert-success').addClass('alert-danger').show();
@@ -242,15 +237,15 @@
                         }
                     });
                 }
-                // Check if NewDanhMucName is filled
-                if (newDanhMucName !== '') {
+                // Check if NewTenDM is filled
+                if (NewTenDM !== '') {
                     $.ajax({
                         url: '/api/Categories',
                         type: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ TenDM: newDanhMucName }),
+                        data: JSON.stringify({ TenDM: NewTenDM }),
                         success: function (response) {
-                            postProduct(response.MaDM);
+                            postProduct(response.maDM);
                         },
                         error: function (xhr) {
                             $formMessage
@@ -260,8 +255,8 @@
                                 .show();
                         }
                     });
-                } else if (danhMucId) {
-                    postProduct(danhMucId);
+                } else if (MaDM) {
+                    postProduct(MaDM);
                 } else {
                     $formMessage
                         .removeClass('alert-success')

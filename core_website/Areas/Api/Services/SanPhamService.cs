@@ -1,7 +1,6 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
 using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
-using Humanizer;
 using Microsoft.Data.SqlClient;
 using System.Data;
 namespace core_website.Services;

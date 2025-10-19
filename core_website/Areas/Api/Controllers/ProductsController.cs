@@ -1,8 +1,8 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại model + namespace + logic xử lý
+using core_website.Areas.Admins.Models;
 using core_website.Areas.Admins.Services;
 using core_website.Areas.Api.Models;
 using core_website.Areas.Api.Services;
-using core_website.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Api.Controllers
@@ -15,6 +15,7 @@ namespace core_website.Areas.Api.Controllers
     private readonly IDanhMucService _danhMucService;
     private readonly IWebHostEnvironment _env;
     private readonly IImageProcessingService _imageService;
+    // Khởi tạo
     public ProductsController(
       ISanPhamService sanPhamService,
       IDanhMucService danhMucService,
@@ -34,12 +35,14 @@ namespace core_website.Areas.Api.Controllers
     {
       try
       {
+        // Lấy tất cả sản phẩm
+        // 
         var sanPhams = _sanPhamService.GetAll(itemsPerPage);
         return Ok(sanPhams);
       }
       catch (Exception ex)
       {
-        return StatusCode(500, $"Error retrieving products: {ex.Message}");
+        return StatusCode(500, $"Lỗi khi lấy Sản Phẩm: {ex.Message}");
       }
     }
 
@@ -49,6 +52,7 @@ namespace core_website.Areas.Api.Controllers
     {
       try
       {
+        // Lấy sản phẩm theo MaSP (ID)
         var sanPham = _sanPhamService.GetById(id);
         if (sanPham == null)
         {
@@ -58,35 +62,39 @@ namespace core_website.Areas.Api.Controllers
       }
       catch (Exception ex)
       {
-        return StatusCode(500, $"Error retrieving product: {ex.Message}");
+        return StatusCode(500, $"Lỗi khi lấy sản phẩm: {ex.Message}");
       }
     }
 
     // POST: api/Products
     [HttpPost] 
-    public async Task<ActionResult<SanPham>> Post([FromForm] SanPhamViewModel sanPham)
+    public async Task<ActionResult<SanPham>> Post([FromForm] SanPhamFormViewModel sanPham)
     {
+      // Kiểm tra tính hợp lệ của dữ liệu đầu vào
       if (!ModelState.IsValid)
       {
         var errors = ModelState.Values
             .SelectMany(v => v.Errors)
             .Select(e => e.ErrorMessage)
             .ToList();
-        return BadRequest(new { Message = "Validation failed", Errors = errors });
+        return BadRequest(new { Message = "Dữ liệu không hợp lệ", Errors = errors });
       }
       try
       {
         int newMaSP = _sanPhamService.GetLastestProductId() + 1;
         var newImageFilePaths = "";
         int index = 1;
+
+        // Xử lý và lưu các hình ảnh
         foreach (var file in sanPham.HinhAnh)
         {
           if (file.Length > 0)
           {
+            var shortenedProductName = string.Join(" ", sanPham.TenSP.Split(" ").Select(w => char.ToUpper(w[0])).ToList());
             var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
               file: file,
               destinationPath: Path.Combine(_env.WebRootPath, "images"),
-              name: $"{newMaSP}_{index}"
+              name: $"{shortenedProductName}_{index}"
             );
             newImageFilePaths += Path.GetFileName(newImageFilePath) + ';';
             index++;
@@ -107,13 +115,14 @@ namespace core_website.Areas.Api.Controllers
           HinhAnh = newImageFilePaths,
           ThoiGianTao = DateTime.Now,
           ThoiGianCapNhat = DateTime.Now,
-          TrangThai = true // Mặc định là true khi tạo mới
+          TrangThai = true, // Mặc định là true khi tạo mới
         };
         _sanPhamService.Add(newSanPham);
 
-        if (sanPham.DanhMucId > 0)
+        // Phân loại sản phẩm nếu có DanhMucId
+        if (sanPham.MaDM > 0)
         {
-          _danhMucService.Categorize(newMaSP, sanPham.DanhMucId);
+          _danhMucService.Categorize(newMaSP, sanPham.MaDM);
         }
 
         return CreatedAtAction(nameof(Get), new { id = newSanPham.MaSP }, sanPham);

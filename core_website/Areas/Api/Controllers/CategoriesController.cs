@@ -67,8 +67,8 @@ namespace core_website.Areas.Api.Controllers
 
       try
       {
-        _danhMucService.Add(danhMuc);
-        return CreatedAtAction(nameof(Get), new { id = danhMuc.MaDM }, danhMuc);
+        var newDanhMuc = _danhMucService.Add(danhMuc);
+        return Ok(newDanhMuc);
       }
       catch (Exception ex)
       {

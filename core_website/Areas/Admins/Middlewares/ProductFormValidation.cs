@@ -1,5 +1,6 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại model
 using System.ComponentModel.DataAnnotations;
+using core_website.Areas.Admins.Models;
 using core_website.Areas.Admins.Services;
 using core_website.Models;
 
@@ -24,7 +25,7 @@ namespace core_website.Areas.Admins.Middlewares
                 try
                 {
                     var form = await httpContext.Request.ReadFormAsync();
-                    var sanPham = new SanPhamViewModel
+                    var sanPham = new SanPhamFormViewModel
                     {
                         TenSP = form["TenSP"],
                         DonGia = decimal.TryParse(form["DonGia"], out var donGia) ? donGia : 0,

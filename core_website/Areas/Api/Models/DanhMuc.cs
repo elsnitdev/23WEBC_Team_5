@@ -18,4 +18,10 @@ namespace core_website.Areas.Api.Models
     public int MaSP { get; set; }
     public int MaDM { get; set; }
   }
+  public class ThongKeDanhMuc
+  {
+    public int MaDM { get; set; }
+    public string TenDM { get; set; }
+    public int SoLuongSanPham { get; set; }
+  }
 }

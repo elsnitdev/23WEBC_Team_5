@@ -8,10 +8,15 @@ namespace core_website.Areas.Admins.Services
     public class DanhMucService : IDanhMucService
     {
       private readonly string _connectionString;
+      private readonly ILogger<DanhMucService> _logger;
 
-      public DanhMucService(IConfiguration configuration)
+      public DanhMucService(
+        IConfiguration configuration,
+        ILogger<DanhMucService> logger
+      )
       {
         _connectionString = configuration.GetConnectionString("DefaultConnectionString");
+        _logger = logger;
       }
 
       // Lấy tất cả danh mục
@@ -19,7 +24,7 @@ namespace core_website.Areas.Admins.Services
       {
         var danhMucs = new List<DanhMuc>();
 
-        const string query = "SELECT MaDM, TenDM = FROM DanhMuc";
+        const string query = "SELECT MaDM, TenDM FROM DanhMuc";
 
         using var connection = new SqlConnection(_connectionString);
         using var command = new SqlCommand(query, connection);
@@ -56,7 +61,7 @@ namespace core_website.Areas.Admins.Services
       }
 
       // Thêm mới danh mục
-      public void Add(DanhMuc danhMuc)
+      public DanhMuc Add(DanhMuc danhMuc)
       {
         const string query = @"
                 INSERT INTO DanhMuc (TenDM)
@@ -71,7 +76,9 @@ namespace core_website.Areas.Admins.Services
 
         connection.Open();
         danhMuc.MaDM = Convert.ToInt32(command.ExecuteScalar());
-      }
+      _logger.LogInformation($"Thêm danh mục có mã {danhMuc.MaDM} thành công");
+      return danhMuc;
+    }
 
       // Cập nhật danh mục
       public void Update(DanhMuc danhMuc)
@@ -144,7 +151,8 @@ namespace core_website.Areas.Admins.Services
           var count = (int)command.ExecuteScalar();
           if (count > 0)
           {
-            return; // Pair already exists, no need to insert
+            _logger.LogInformation($"Cặp MaSP: {MaSP} và MaDM: {MaDM} đã tồn tại trong bảng PhanLoai.");
+            return;
           }
         }
 
@@ -152,6 +160,7 @@ namespace core_website.Areas.Admins.Services
         using (var command = new SqlCommand(insertQuery, connection))
         {
           command.ExecuteNonQuery();
+          _logger.LogInformation($"Đã thêm cặp MaSP: {MaSP} và MaDM: {MaDM} vào bảng PhanLoai.");
         }
       }
     }
@@ -161,8 +170,8 @@ namespace core_website.Areas.Admins.Services
       {
         return new DanhMuc
         {
-          MaDM = reader.GetInt32(reader.GetOrdinal("MaDanhMuc")),
-          TenDM = reader.GetString(reader.GetOrdinal("TenDanhMuc")),
+          MaDM = reader.GetInt32(reader.GetOrdinal("MaDM")),
+          TenDM = reader.GetString(reader.GetOrdinal("TenDM")),
         };
       }
     }
