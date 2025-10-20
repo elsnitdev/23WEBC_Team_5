@@ -90,7 +90,7 @@ namespace core_website.Areas.Api.Controllers
         {
           if (file.Length > 0)
           {
-            var shortenedProductName = string.Join(" ", sanPham.TenSP.Split(" ").Select(w => char.ToUpper(w[0])).ToList());
+            var shortenedProductName = string.Join("", sanPham.TenSP.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(w => char.ToUpper(w[0])).ToList());
             var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
               file: file,
               destinationPath: Path.Combine(_env.WebRootPath, "images"),
