@@ -1,47 +1,35 @@
 ﻿@using core_website.Areas.Api.Models
-@model List<SanPham>
+@model List<ThongKeDanhMuc>
 @{
 	ViewData["PageTitle"] = "Home Page";
 }
 <div class="container">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Mã SP</th>
-                <th>Hình Ảnh</th>
-                <th>Tên SP</th>
-                <th>Đơn Giá</th>
-                <th>Khuyến Mãi</th>
-                <th>Mô Tả</th>
-                <th>Thông Số</th>
-                <th>Tag</th>
-                <th>Số Lượng</th>
-                <th>Thời Gian Tạo</th>
-                <th>Thời Gian Cập Nhật</th>
-                <th>Trạng Thái</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
-            {
-                var ListHinhAnh = product.HinhAnh?.Split(';').ToList();
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@product.MaSP</td>
-                    <td>
-                        <img src="~/images/@ListHinhAnh[0]" alt="@product.TenSP" style="max-width: 100px; height: auto;" />
-                    </td>
-                    <td>@product.TenSP</td>
-                    <td>@product.DonGia.ToString("C")</td>
-                    <td>@product.KhuyenMai.ToString("C")</td>
-                    <td>@product.MoTa</td>
-                    <td>@product.ThongSo</td>
-                    <td>@product.Tag</td>
-                    <td>@product.SoLuong</td>
-                    <td>@product.ThoiGianTao.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@product.ThoiGianCapNhat.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@(product.TrangThai ? "Active" : "Inactive")</td>
+                    <th scope="col">Category ID</th>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Product Count</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaDM</td>
+                        <td>@item.TenDM</td>
+                        <td>@item.SoLuongSanPham</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            No category statistics available.
+        </div>
+    }
 </div>

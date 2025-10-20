@@ -19,11 +19,11 @@ namespace core_website.Areas.Api.Services
         using (var connection = new SqlConnection(_connectionString))
         {
           string sql = "" +
-            "SELECT MaDM, TenDM, COUNT(pl.MaSP) AS SoLuongSanPham" +
-            "FROM DanhMuc LEFT JOIN PhanLoai pl ON" +
-            "d.MaDM = pl.MaDM" +
-            "GROUP BY d.MaDM, d.TenDM" +
-            "ORDER BY d.MaDM;"
+            "SELECT d.MaDM, d.TenDM, COUNT(pl.MaSP) AS SoLuongSanPham " +
+            "FROM DanhMuc d LEFT JOIN PhanLoai pl ON " +
+            "d.MaDM = pl.MaDM " +
+            "GROUP BY d.MaDM, d.TenDM " +
+            "ORDER BY d.MaDM "
           ;
 
           var cmd = new SqlCommand(sql, connection);

@@ -10,9 +10,14 @@ namespace core_website.Areas.Admins.Controllers
     public class HomeController : Controller
     {
         private readonly ISanPhamService _sanPhamService;
-        public HomeController(ISanPhamService sanPhamService)
+        private readonly IThongKeService _thongKeService;
+        public HomeController(
+          ISanPhamService sanPhamService,
+          IThongKeService thongKeService
+        )
         {
           _sanPhamService = sanPhamService;
+          _thongKeService = thongKeService;
         }
       
         public IActionResult Blank()
@@ -21,8 +26,8 @@ namespace core_website.Areas.Admins.Controllers
         }
         public IActionResult Index()
         {
-            List<SanPham> dsSanPham = _sanPhamService.GetAll().OrderBy(sp => sp.MaSP).ToList();
-            return View(dsSanPham);
+            List<ThongKeDanhMuc> thongKeDanhMuc = _thongKeService.GetCategoryStatistics();
+            return View(thongKeDanhMuc);
         }
   }
 }
