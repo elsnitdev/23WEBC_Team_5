@@ -49,7 +49,7 @@ public class SanPhamService : ISanPhamService
     return result;
   }
 
-  public void Add(SanPham sanPhamMoi)
+  public SanPham Add(SanPham sanPhamMoi)
   {
     try
     {

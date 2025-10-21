@@ -34,7 +34,7 @@ namespace core_website.Areas.Api.Services
     /// Thêm một sản phẩm mới.
     /// </summary>
     /// <param name="sp">Đối tượng sản phẩm cần thêm.</param>
-    void Add(SanPham sp);
+    SanPham Add(SanPham sp);
 
     /// <summary>
     /// Cập nhật thông tin của một sản phẩm.

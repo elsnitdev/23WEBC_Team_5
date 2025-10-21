@@ -43,8 +43,9 @@ namespace core_website.Areas.Admins.Models
     [Required(ErrorMessage = "Hình ảnh là bắt buộc")]
     [Display(Name = "Hình ảnh")]
     [DataType(DataType.Upload)]
-    public IFormFile[] HinhAnh { get; set; }
-    public int MaDM { get; set; }
+    public IFormFile Thumbnail { get; set; }
+    public IFormFile[] HinhAnhChiTiet { get; set; }
+        public int MaDM { get; set; }
     public string? NewTenDM { get; set; }
     public List<SelectListItem>? DanhMucList { get; set; }
   }
