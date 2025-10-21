@@ -37,10 +37,12 @@ namespace core_website.Areas.Api.Services
     SanPham Add(SanPham sp);
 
     /// <summary>
-    /// Cập nhật thông tin của một sản phẩm.
+    /// Cập nhật đường dẫn hình ảnh của một sản phẩm.
     /// </summary>
-    /// <param name="sp">Đối tượng sản phẩm với thông tin đã được cập nhật.</param>
-    void Update(SanPham sp);
+    /// <param name="MaSP">Mã sản phẩm của sản phẩm sẽ được cập nhật</param>
+    /// <param name="imagePaths">Đường dẫn hình ảnh mới của sản phẩm, là chuỗi liên tiếp các nhau dấu ';'</param>
+    /// <returns>Sản phẩm đã được cập nhật hình ảnh.</returns>
+    SanPham UpdateImage(int MaSP, string imagePaths);
 
     /// <summary>
     /// Xóa một sản phẩm theo ID.

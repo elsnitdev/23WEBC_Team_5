@@ -66,6 +66,8 @@ public class SanPhamService : ISanPhamService
         AddSanPhamParameters(cmd, sanPhamMoi);
         connection.Open();
         sanPhamMoi.MaSP = Convert.ToInt32(cmd.ExecuteScalar());
+
+        return sanPhamMoi;
       }
     }
     catch (Exception ex)
@@ -142,7 +144,37 @@ public class SanPhamService : ISanPhamService
     return null;
   }
 
-  public void Update(SanPham sp) { }
+  public SanPham UpdateImage(int MaSP, string imagePaths) {
+    try
+    {
+      using (var connection = new SqlConnection(_connectionString))
+      {
+        var cmd = new SqlCommand(@"
+          UPDATE SanPham
+          SET HinhAnh = @HinhAnh
+          WHERE MaSP = @MaSP;
+          SELECT * FROM SanPham WHERE MaSP = @MaSP;
+        ", connection);
+
+        cmd.Parameters.AddWithValue("@MaSP", MaSP);
+        cmd.Parameters.AddWithValue("@HinhAnh", imagePaths ?? (object)DBNull.Value);
+
+        connection.Open();
+        using (var reader = cmd.ExecuteReader())
+        {
+          if (reader.Read())
+          {
+            return MapToSanPham(reader);
+          }
+          throw new Exception($"Không có Sản Phẩm có MaSP: {MaSP}");
+        }
+      }
+    }
+    catch (Exception ex)
+    {
+      throw new Exception("Error adding product", ex);
+    }
+  }
 
   public void Delete(int id) { }
 

@@ -7,6 +7,7 @@ using core_website.Models;
 using core_website.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace core_website.Areas.Admins.Controllers
 {
@@ -15,12 +16,14 @@ namespace core_website.Areas.Admins.Controllers
     {
         private readonly ILogger<ProductsController> _logger;
         private readonly IImageProcessingService _imageService;
+        private readonly IWebHostEnvironment _env;
         private readonly ISanPhamService _sanPhamService;
         private readonly IDanhMucService _danhMucService;
         private readonly IConfiguration _configuration;
         // inject Logger + Service + Hosting Environment
         public ProductsController(
             ILogger<ProductsController> logger,
+            IWebHostEnvironment env,
             IImageProcessingService imageService,
             ISanPhamService sanPhamService,
             IDanhMucService danhMucService,
@@ -28,6 +31,7 @@ namespace core_website.Areas.Admins.Controllers
         )
         {
             _logger = logger;
+            _env = env;
             _imageService = imageService;
             _sanPhamService = sanPhamService;
             _danhMucService = danhMucService;
@@ -45,6 +49,11 @@ namespace core_website.Areas.Admins.Controllers
               Text = d.TenDM
             })
             .ToList();
+            if (TempData["Message"] != null && TempData["MessageType"] != null)
+            {
+              newProduct.Message = TempData["Message"]?.ToString();
+              newProduct.MessageType = TempData["MessageType"]?.ToString();
+            }
             return View(newProduct);
         }
         [HttpPost]
@@ -56,8 +65,11 @@ namespace core_website.Areas.Admins.Controllers
                 var errors = ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
-                    .ToList();
-                return View("Add", new { Message = "Dữ liệu không hợp lệ", Errors = errors });
+                    .FirstOrDefault();
+                TempData["Message"] = $"Dữ liệu gửi lên không hợp lệ ({errors})";
+                TempData["MessageType"] = "Failed";
+
+                return RedirectToAction("Add");
             }
             try
             {
@@ -87,8 +99,9 @@ namespace core_website.Areas.Admins.Controllers
                     {
                         var newImageFilePath = await _imageService.ProcessAndSaveImageAsync(
                           file: file,
-                          destinationPath: _configuration.GetSection("App.Common.ImageUploadFolderPath").ToString(),
-                          name: $"{newSanPham.MaSP}_{index}"
+                          destinationPath: Path.Combine(_env.WebRootPath, _configuration["AppSettings:Common:ImageUploadFolderPath"]),
+                          // Tên là "nămthángngàygiờphútgiâymiligiây_index"
+                          name: $"{(DateTime.Now).ToString("yyyyMMddHHmmssfff")}_{index}"
                         );
                         newImageFilePaths += Path.GetFileName(newImageFilePath) + ';';
                         index++;
@@ -96,17 +109,25 @@ namespace core_website.Areas.Admins.Controllers
                 }
                 newImageFilePaths = newImageFilePaths.TrimEnd(';'); // Xoá dấu chấm phẩy cuối cùng
 
+                _sanPhamService.UpdateImage(newSanPham.MaSP, newImageFilePaths);
+
                 // Phân loại sản phẩm nếu có DanhMucId
                 if (sanPham.MaDM > 0)
                 {
                     _danhMucService.Categorize(newSanPham.MaSP, sanPham.MaDM);
                 }
 
-                //return CreatedAtAction(nameof(Get), new { id = newSanPham.MaSP }, sanPham);
+                TempData["Message"] = "Sản phẩm thêm thành công";
+                TempData["MessageType"] = "Success";
+
+              return RedirectToAction("Add");
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error creating product: {ex.Message}");
+              TempData["Message"] = $"Đã có lỗi xảy ra: {ex.Message}";
+              TempData["MessageType"] = "Failed";
+
+              return RedirectToAction("Add");
             }
         }
     }

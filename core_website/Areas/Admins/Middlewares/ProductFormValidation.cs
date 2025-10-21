@@ -42,7 +42,9 @@ namespace core_website.Areas.Admins.Middlewares
                         true);
 
                     // KhoaTr - 7/10/2025: Kiểm tra file hình ảnh
-                    var imageFiles = httpContext.Request.Form.Files.GetFiles("HinhAnh");
+                    var imageFiles = new List<IFormFile>();
+                    imageFiles.AddRange(httpContext.Request.Form.Files.GetFiles("Thumbnail"));
+                    imageFiles.AddRange(httpContext.Request.Form.Files.GetFiles("HinhAnhChiTiet"));
                     if (imageFiles != null && imageFiles.Any())
                     {
                       foreach (var imageFile in imageFiles)

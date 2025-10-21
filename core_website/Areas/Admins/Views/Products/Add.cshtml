@@ -5,8 +5,13 @@
     ViewData["PageTitle"] = "Thêm Sản Phẩm Mới";
 }
 <div class="container mt-4">
-    <div class="alert" id="formMessage" style="display: none;"></div>
-    <form method="post" enctype="multipart/form-data" id="productForm">
+    @if (!string.IsNullOrEmpty(Model?.MessageType) && !string.IsNullOrEmpty(Model?.Message))
+    {
+        <div class="@(Model.MessageType == "Success" ? "alert-success" : "alert-danger")" id="formMessage">
+            @Model.Message
+        </div>
+    }
+    <form asp-area="Admins" asp-controller="Products" asp-action="Create" enctype="multipart/form-data" id="productForm">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group mb-3">
@@ -61,20 +66,22 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group mb-3">
-                    <label class="control-label">Tải ảnh Thumbnail</label>
+                    <label asp-for="Thumbnail" class="control-label"></label>
                     <div class="image-preview"
                          style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
                     </div>
-                    <input type="file" name="HinhAnhThumbnail" class="form-control" accept="image/png,image/jpeg,image/gif" />
+                    <input asp-for="Thumbnail" type="file" class="form-control" accept="image/png,image/jpeg,image/gif" />
+                    <span asp-validation-for="Thumbnail" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group mb-3">
-                    <label class="control-label">Tải ảnh Chi Tiết</label>
+                    <label asp-for="HinhAnhChiTiet" class="control-label"></label>
                     <div class="image-preview"
                          style="width: 200px; height: 200px; border: 1px solid #ddd; margin-bottom: 10px; display: none; align-items: center; justify-content: center; background: #f8f8f8; overflow: hidden;">
                     </div>
-                    <input type="file" name="HinhAnhDetails" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
+                    <input asp-for="HinhAnhChiTiet" type="file" class="form-control" accept="image/png,image/jpeg,image/gif" multiple />
+                    <span asp-validation-for="HinhAnhChiTiet" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -160,110 +167,6 @@
             // Xử lý upload hình tạo preview
             $('input[type="file"]').on('change', function (e) {
                 handleImagePreview(e, 200);
-            });
-            // Form submission
-            $('#productForm').on('submit', function (event) {
-                event.preventDefault();
-                var $form = $(this);
-                var formData = new FormData($form[0]);
-                var $formMessage = $('#formMessage');
-                var NewTenDM = $('#NewTenDM').val().trim();
-                var MaDM = $('#MaDM').val();
-                // Clear previous messages
-                $formMessage.hide().removeClass('alert-success alert-danger').text('');
-                // Get images
-                var thumbnailFile = $('input[name="HinhAnhThumbnail"]')[0].files[0];
-                var detailFiles = $('input[name="HinhAnhDetails"]')[0].files;
-                // Validate thumbnail
-                if (!thumbnailFile) {
-                    $formMessage
-                        .removeClass('alert-success')
-                        .addClass('alert-danger')
-                        .text('Vui lòng chọn ít nhất một ảnh thumbnail.')
-                        .show();
-                    return;
-                }
-                var imageList = [thumbnailFile, ...detailFiles];
-                // Append all images under "HinhAnh" key
-                imageList.forEach(file => {
-                    formData.append('HinhAnh', file);
-                });
-                // Function to post product and categorize
-                function postProduct(MaDM) {
-                    if (MaDM) {
-                        formData.set('MaDM', MaDM);
-                    } else {
-                        formData.delete('MaDM');
-                    }
-                    $.ajax({
-                        url: '/api/Products',
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function () {
-                            $formMessage
-                                .removeClass('alert-danger')
-                                .addClass('alert-success')
-                                .text('Sản phẩm đã được thêm thành công!')
-                                .show();
-                            $form[0].reset();
-                            $('#MaDM').val('');
-                            // Clear image previews
-                            $('.image-preview').empty().hide().css({
-                                'width': '200px',
-                                'height': '200px',
-                                'padding': '0',
-                                'flex-wrap': 'nowrap',
-                                'gap': '0'
-                            });
-                            // Reset file inputs
-                            $('input[name="HinhAnhThumbnail"]').val('');
-                            $('input[name="HinhAnhDetails"]').val('');
-                        },
-                        error: function (xhr) {
-                            $formMessage.removeClass('alert-success').addClass('alert-danger').show();
-                            if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errors) {
-                                var errorMessages = Object.entries(xhr.responseJSON.errors)
-                                    .map(([key, messages]) => `${key}: ${messages.join(', ')}`)
-                                    .join('; ');
-                                $formMessage.text(`Lỗi: ${errorMessages}`);
-                            } else {
-                                var errorText = xhr.responseJSON && xhr.responseJSON.message
-                                    ? xhr.responseJSON.message
-                                    : 'Đã xảy ra lỗi khi thêm sản phẩm.';
-                                $formMessage.text(errorText);
-                            }
-                        }
-                    });
-                }
-                // Check if NewTenDM is filled
-                if (NewTenDM !== '') {
-                    $.ajax({
-                        url: '/api/Categories',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ TenDM: NewTenDM }),
-                        success: function (response) {
-                            postProduct(response.maDM);
-                        },
-                        error: function (xhr) {
-                            $formMessage
-                                .removeClass('alert-success')
-                                .addClass('alert-danger')
-                                .text('Lỗi khi tạo danh mục mới: ' + (xhr.responseJSON?.message || xhr.statusText))
-                                .show();
-                        }
-                    });
-                } else if (MaDM) {
-                    postProduct(MaDM);
-                } else {
-                    $formMessage
-                        .removeClass('alert-success')
-                        .addClass('alert-danger')
-                        .text('Vui lòng chọn một danh mục hoặc nhập danh mục mới.')
-                        .show();
-                }
             });
         });
     </script>

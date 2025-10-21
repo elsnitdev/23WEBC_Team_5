@@ -40,13 +40,18 @@ namespace core_website.Areas.Admins.Models
     [Display(Name = "Số lượng")]
     public int SoLuong { get; set; }
 
-    [Required(ErrorMessage = "Hình ảnh là bắt buộc")]
-    [Display(Name = "Hình ảnh")]
+    [Required(ErrorMessage = "Hình ảnh thumbnail là bắt buộc")]
+    [Display(Name = "Thumbnail")]
     [DataType(DataType.Upload)]
     public IFormFile Thumbnail { get; set; }
-    public IFormFile[] HinhAnhChiTiet { get; set; }
+    [Display(Name = "Hình ảnh chi tiết")]
+    [DataType(DataType.Upload)]
+    public IFormFile[]? HinhAnhChiTiet { get; set; }
         public int MaDM { get; set; }
     public string? NewTenDM { get; set; }
     public List<SelectListItem>? DanhMucList { get; set; }
+    // additional props
+    public string? Message { get; set; } // Add to view model
+    public string? MessageType { get; set; }
   }
 }
