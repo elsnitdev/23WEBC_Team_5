@@ -43,15 +43,15 @@
             <div class="col-md-6">
                 <div class="form-group mb-3">
                     <label asp-for="MaDM" class="control-label">Danh Mục</label>
-                    <select asp-for="MaDM" class="form-control" asp-items="@Model.DanhMucList">
-                        <option value="">-- Chọn danh mục --</option>
-                    </select>
+                    <div style="display:flex;gap:4px">
+                        <select asp-for="MaDM" class="form-control" asp-items="@Model.DanhMucList">
+                            <option value="">-- Chọn danh mục --</option>
+                        </select>
+                        <button style="width:fit-content" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddNewDanhMucModal">
+                            + Thêm Danh Mục
+                        </button>
+                    </div>
                     <span asp-validation-for="MaDM" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="NewTenDM" class="control-label">Hoặc nhập danh mục mới</label>
-                    <input asp-for="NewTenDM" class="form-control" placeholder="Nhập tên danh mục mới (nếu cần)" />
-                    <span asp-validation-for="NewTenDM" class="text-danger"></span>
                 </div>
                 <div class="form-group mb-3">
                     <label asp-for="MoTa" class="control-label"></label>
@@ -90,6 +90,24 @@
             <a asp-action="Index" asp-controller="Products" asp-area="Admins" class="btn btn-secondary">Hủy</a>
         </div>
     </form>
+    @* Modal thêm danh mục mới *@
+    <div class="modal fade" id="AddNewDanhMucModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Thêm danh mục mới</h4>
+                </div>
+                <div class="modal-body">
+                    <input asp-for="NewTenDM" id="NewTenDMInput" class="form-control" placeholder="Nhập tên danh mục mới" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="AddNewDanhMucBtn" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @section Scripts {
     <script>
@@ -112,6 +130,30 @@
                     $('#NewTenDM').prop('disabled', false);
                 }
             });
+            // Xử lý sự kiên thêm danh mục mới
+            $("#AddNewDanhMucBtn").on("click", function () {
+                const NewDanhMuc = $("#NewTenDMInput").val();
+                $.ajax({
+                    url: '/api/Categories',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ TenDM: NewDanhMuc }),
+                    success: function (response) {
+                        // Thêm vào select
+                        $('#DanhMucSelect').append($('<option>', {
+                            value: response.value,
+                            text: response.text
+                        }));
+                        // Dọn input và đóng modal
+                        $('#NewDanhMucName').val('');
+                        $('#AddNewDanhMucModal').modal('hide');
+                        alert('Thêm danh mục thành công!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert(`Lỗi khi thêm danh mục mới (${xhr.responseText})`);
+                    }
+                })
+            })
             // Hàm tạo container và in hình vào trong container đó
             function handleImagePreview(event, previewSize) {
                 const files = event.target.files;
