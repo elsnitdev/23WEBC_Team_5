@@ -8,72 +8,28 @@ namespace core_website.Services;
 
 public class SanPhamService : ISanPhamService
 {
-  //Huy - 06/10/25
-  private readonly string _connectionString;
   public SanPhamService(IConfiguration configuration)
   {
-    _connectionString = configuration.GetConnectionString("DefaultConnectionString");
+
   }
   public List<SanPham> GetAll(int? itemsPerPage = null)
   {
-    var result = new List<SanPham>();
-    try
-    {
-      using (var connection = new SqlConnection(_connectionString))
-      {
-        //Huy - 11/10/25: sửa câu truy vấn chỉ lấy số lượng item cần
-        string sql = itemsPerPage != null ? "SELECT TOP (@Ipp) *" : "SELECT *";
-        sql += " FROM SanPham ORDER BY ThoiGianTao DESC";
-
-        var cmd = new SqlCommand(sql, connection);
-        if (itemsPerPage != null)
-        {
-            cmd.Parameters.AddWithValue("@Ipp", itemsPerPage);
-        }
-
-        connection.Open();
-
-        using (var reader = cmd.ExecuteReader())
-        {
-          while (reader.Read())
-          {
-            result.Add(MapToSanPham(reader));
-          }
-        }
-      }
-    }
-    catch (Exception ex)
-    {
-      throw new Exception("Error getting all products", ex);
-    }
-    return result;
+    
+        //string sql = itemsPerPage != null ? "SELECT TOP (@Ipp) *" : "SELECT *";
+        //sql += " FROM SanPham ORDER BY ThoiGianTao DESC";
+    return null;
   }
 
   public SanPham Add(SanPham sanPhamMoi)
   {
-    try
-    {
-      using (var connection = new SqlConnection(_connectionString))
-      {
-        var cmd = new SqlCommand(@"
-                    INSERT INTO SanPham (TenSp, DonGia, KhuyenMai, MoTa, ThongSo, Tag, 
-                    SoLuong, HinhAnh, ThoiGianTao, ThoiGianCapNhat, TrangThai)
-                    VALUES (@TenSp, @DonGia, @KhuyenMai, @MoTa, @ThongSo, @Tag, 
-                    @SoLuong, @HinhAnh, @ThoiGianTao, @ThoiGianCapNhat, @TrangThai);
-                    SELECT SCOPE_IDENTITY();
-                ", connection);
-
-        AddSanPhamParameters(cmd, sanPhamMoi);
-        connection.Open();
-        sanPhamMoi.MaSP = Convert.ToInt32(cmd.ExecuteScalar());
-
-        return sanPhamMoi;
-      }
-    }
-    catch (Exception ex)
-    {
-      throw new Exception("Error adding product", ex);
-    }
+        //var cmd = new SqlCommand(@"
+        //            INSERT INTO SanPham (TenSp, DonGia, KhuyenMai, MoTa, ThongSo, Tag, 
+        //            SoLuong, HinhAnh, ThoiGianTao, ThoiGianCapNhat, TrangThai)
+        //            VALUES (@TenSp, @DonGia, @KhuyenMai, @MoTa, @ThongSo, @Tag, 
+        //            @SoLuong, @HinhAnh, @ThoiGianTao, @ThoiGianCapNhat, @TrangThai);
+        //            SELECT SCOPE_IDENTITY();
+        //        ", connection);
+        return null;
   }
 
   private SanPham MapToSanPham(SqlDataReader reader)
@@ -117,22 +73,10 @@ public class SanPhamService : ISanPhamService
   }
   public int GetLastestProductId()
   {
-    try
-    {
-      using (var connection = new SqlConnection(_connectionString))
-      {
-        var cmd = new SqlCommand(@"
-          SELECT TOP 1 MaSP FROM SanPham ORDER BY MaSP DESC
-        ", connection);
-
-        connection.Open();
-        return Convert.ToInt32(cmd.ExecuteScalar());
-      }
-    }
-    catch (Exception ex)
-    {
-      throw new Exception("Error adding product", ex);
-    }
+        //var cmd = new SqlCommand(@"
+        //  SELECT TOP 1 MaSP FROM SanPham ORDER BY MaSP DESC
+        //", connection);
+        return 1;
   }
   public SanPham? GetById(int id)
   {
@@ -145,35 +89,14 @@ public class SanPhamService : ISanPhamService
   }
 
   public SanPham UpdateImage(int MaSP, string imagePaths) {
-    try
-    {
-      using (var connection = new SqlConnection(_connectionString))
-      {
-        var cmd = new SqlCommand(@"
-          UPDATE SanPham
-          SET HinhAnh = @HinhAnh
-          WHERE MaSP = @MaSP;
-          SELECT * FROM SanPham WHERE MaSP = @MaSP;
-        ", connection);
+        //var cmd = new SqlCommand(@"
+        //  UPDATE SanPham
+        //  SET HinhAnh = @HinhAnh
+        //  WHERE MaSP = @MaSP;
+        //  SELECT * FROM SanPham WHERE MaSP = @MaSP;
+        //", connection);
 
-        cmd.Parameters.AddWithValue("@MaSP", MaSP);
-        cmd.Parameters.AddWithValue("@HinhAnh", imagePaths ?? (object)DBNull.Value);
-
-        connection.Open();
-        using (var reader = cmd.ExecuteReader())
-        {
-          if (reader.Read())
-          {
-            return MapToSanPham(reader);
-          }
-          throw new Exception($"Không có Sản Phẩm có MaSP: {MaSP}");
-        }
-      }
-    }
-    catch (Exception ex)
-    {
-      throw new Exception("Error adding product", ex);
-    }
+        return null;
   }
 
   public void Delete(int id) { }

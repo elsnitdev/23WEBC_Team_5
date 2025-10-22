@@ -1,9 +1,11 @@
 ﻿// KhoaTr - 5/10/2025: Sửa lại namespace từ core_w2 thành core_website
+using core_website;
 using core_website.Areas.Admins.Middlewares;
 using core_website.Areas.Admins.Services;
 using core_website.Areas.Api.Services;
 using core_website.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 // KhoaTr - END
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
       options.Cookie.HttpOnly = true; // Chống XSS
       options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Hạn cookie
     });
+
+//Huy - 22/10/25: sử dụng dịch vụ DbContext của Entity Framework
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -20,7 +20,7 @@ namespace core_website.Areas.Api.Controllers
 
     // GET: api/Categories
     [HttpGet]
-    public ActionResult<IEnumerable<DanhMuc>> Get()
+    public ActionResult<IEnumerable<Object>> Get()
     {
       try
       {
@@ -35,7 +35,7 @@ namespace core_website.Areas.Api.Controllers
 
     // GET: api/Categories/5
     [HttpGet("{id}")]
-    public ActionResult<DanhMuc> Get(int id)
+    public ActionResult<Object> Get(int id)
     {
       try
       {
@@ -54,7 +54,7 @@ namespace core_website.Areas.Api.Controllers
 
     // POST: api/Categories
     [HttpPost]
-    public ActionResult<DanhMuc> Post([FromBody] DanhMuc danhMuc)
+    public ActionResult<Object> Post([FromBody] DanhMuc danhMuc)
     {
       if (!ModelState.IsValid)
       {

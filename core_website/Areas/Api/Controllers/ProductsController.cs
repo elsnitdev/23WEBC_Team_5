@@ -31,7 +31,7 @@ namespace core_website.Areas.Api.Controllers
 
     // GET: api/Products?itemsPerPage=8
     [HttpGet]
-    public ActionResult<IEnumerable<SanPham>> Get([FromQuery] int? itemsPerPage)
+    public ActionResult<IEnumerable<Object>> Get([FromQuery] int? itemsPerPage)
     {
       try
       {
@@ -48,7 +48,7 @@ namespace core_website.Areas.Api.Controllers
 
     // GET: api/Products/5
     [HttpGet("{id}")]
-    public ActionResult<SanPham> Get(int id)
+    public ActionResult<Object> Get(int id)
     {
       try
       {

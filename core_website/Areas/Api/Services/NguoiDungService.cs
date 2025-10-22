@@ -8,86 +8,13 @@ namespace core_website.Areas.Api.Services
 {
   public class NguoiDungService : INguoiDungService
   {
-    private readonly string _connectionString;
     public NguoiDungService(IConfiguration configuration)
     {
-      _connectionString = configuration.GetConnectionString("DefaultConnectionString");
+
     }
     public NguoiDungResponse Login(NguoiDungLoginRequest data)
     {
-      var result = new NguoiDungResponse();
-      try
-      {
-        using (var connection = new SqlConnection(_connectionString))
-        {
-          try
-          {
-            connection.Open();
-          }
-          catch (SqlException ex)
-          {
-            result.Success = false;
-            result.Message = "Không thể kết nối đến cơ sở dữ liệu. Vui lòng thử lại sau.";
-            return result;
-          }
-
-          var cmd = new SqlCommand(@"" +
-            "SELECT * " +
-            "FROM NguoiDung " +
-            "WHERE TenND LIKE @TenND AND TrangThai = 1"
-          , connection);
-
-          cmd.Parameters.AddWithValue("@TenND", data.TenND ?? string.Empty);
-
-          try
-          {
-            using (var reader = cmd.ExecuteReader())
-            {
-              if (reader.Read())
-              {
-                var user = MapToNguoiDung(reader);
-
-                if (VerifyPassword(data.MatKhau, user.MatKhau))
-                {
-                  result.Success = true;
-                  result.User = new NguoiDungInfo()
-                  {
-                    TenND = user.TenND,
-                    MaND = user.MaND,
-                    VaiTro = user.VaiTro
-                  };
-                  result.Message = "Đăng nhập thành công";
-                }
-                else
-                {
-                  result.Success = false;
-                  result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
-                }
-              }
-              else
-              {
-                result.Success = false;
-                result.Message = "Tên đăng nhập hoặc mật khẩu không đúng";
-              }
-            }
-          }
-          catch (SqlException ex)
-          {
-            result.Success = false;
-            result.Message = "Đã có lỗi xảy ra khi truy vấn dữ liệu. Vui lòng thử lại sau.";
-            return result;
-          }
-          finally
-          {
-            connection.Close();
-          }
-        }
-      }
-      catch (Exception ex)
-      {
-        throw new Exception("Error authenticating", ex);
-      }
-      return result;
+        return null;
     }
     // Map dữ liệu từ SqlDataReader sang đối tượng NguoiDung
     private NguoiDung MapToNguoiDung(SqlDataReader reader)
