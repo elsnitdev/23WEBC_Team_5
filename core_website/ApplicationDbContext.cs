@@ -5,7 +5,7 @@ namespace core_website
     public class ApplicationDbContext: DbContext
     {
         //Huy - 23/10/25: khai báo DbSet cho bảng SanPham
-        DbSet<SanPham> SanPham { get; set; }
+        public DbSet<SanPham> SanPham { get; set; }
         //Huy - end
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -22,32 +22,47 @@ namespace core_website
         {
             modelBuilder.Entity<SanPham>(entity =>
             {
+                //Cấu hình tên bảng
                 entity.ToTable("SanPham");
-                entity.HasKey("MaSP");
-                entity.Property("TenSP")
+
+                //Cấu hình các thuộc tính
+                entity.HasKey(e => e.MaSP);
+                entity.Property(e => e.TenSP)
                     .IsRequired()
                     .HasMaxLength(100);
-                entity.Property("DonGia")
+                entity.Property(e => e.DonGia)
                     .IsRequired()
                     .HasColumnType("Decimal(18,2)");
-                entity.Property("KhuyenMai")
+                entity.Property(e => e.KhuyenMai)
                     .IsRequired()
                     .HasColumnType("Decimal(18,2)");
-                entity.Property("MoTa")
+                entity.Property(e => e.MoTa)
                     .IsRequired()
                     .HasMaxLength(255);
-                entity.Property("ThongSo")
+                entity.Property(e => e.ThongSo)
                     .IsRequired()
                     .HasMaxLength(255);
-                //entity.Property("Tag");
-                entity.Property("SoLuong")
-                    .HasDefaultValue(0);
-                entity.Property("HinhAnh")
+                entity.Property(e => e.SoLuong)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                entity.Property(e => e.HinhAnh)
                     .IsRequired()
                     .HasMaxLength(255);
-                entity.Property("ThoiGianTao");
-                entity.Property("ThoiGianCapNhat");
-                entity.Property("TrangThai");
+                entity.Property(e => e.ThoiGianTao)
+                    .HasColumnType("datetime")
+                    .IsRequired(false); 
+                entity.Property(e => e.ThoiGianCapNhat)
+                    .HasColumnType("datetime")
+                    .IsRequired(false); 
+                entity.Property(e => e.TrangThai)
+                    .HasColumnType("bit")
+                    .IsRequired();
+
+                //cấu hình khoá ngoại
+                entity
+                    .HasMany(sp => sp.DanhMuc)
+                    .WithMany(dm => dm.SanPham)
+                    .UsingEntity(j => j.ToTable("PhanLoai"));
             });
         }
         //Huy - end
