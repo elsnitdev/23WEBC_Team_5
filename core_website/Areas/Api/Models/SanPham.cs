@@ -16,16 +16,19 @@ namespace core_website.Areas.Api.Models
     public decimal DonGia { get; set; }
     [Column(TypeName = "decimal(18,2)")]
     public decimal KhuyenMai { get; set; }
-    [Column(TypeName = "text")]
+    [StringLength(255)]
     public string MoTa { get; set; }
-    [Column(TypeName = "text")]
+    [StringLength(255)]
     public string ThongSo { get; set; }
     [StringLength(100)]
     public string Tag { get; set; }
     public int SoLuong { get; set; }
+    [StringLength(255)]
     public string HinhAnh { get; set; }
     public DateTime ThoiGianTao { get; set; }
     public DateTime ThoiGianCapNhat { get; set; }
     public bool TrangThai { get; set; }
+
+    public virtual ICollection<PhanLoai> PhanLoai { get; set; } = new List <PhanLoai>();
   }
 }
