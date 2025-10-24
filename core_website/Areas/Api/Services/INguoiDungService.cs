@@ -12,6 +12,6 @@ namespace core_website.Areas.Api.Services
     /// </summary>
     /// <param name="data">Thông tin đăng nhập của người dùng</param>
     /// <returns>Thông tin người dùng nếu tồn tại, ngược lại trả về null</returns>
-    NguoiDungResponse Login(NguoiDungLoginRequest data);
+    Task<NguoiDungResponse> Login(NguoiDungLoginRequest data);
   }
 }

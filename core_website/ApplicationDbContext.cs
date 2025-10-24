@@ -6,6 +6,7 @@ namespace core_website
     {
         //Huy - 23/10/25: khai báo DbSet cho bảng SanPham
         public DbSet<SanPham> SanPham { get; set; }
+        public DbSet<NguoiDung> NguoiDung { get; set; }
         //Huy - end
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -63,6 +64,26 @@ namespace core_website
                     .HasMany(sp => sp.DanhMuc)
                     .WithMany(dm => dm.SanPham)
                     .UsingEntity(j => j.ToTable("PhanLoai"));
+            });
+
+            // KhoaTr - 24/10/2025: Entity config cho bảng NguoiDung
+            modelBuilder.Entity<NguoiDung>(entity =>
+            {
+              //Cấu hình tên bảng
+              entity.ToTable("NguoiDung");
+
+              //Cấu hình các thuộc tính
+              entity.HasKey(e => e.MaND);
+              entity.Property(e => e.TenND)
+                  .IsRequired()
+                  .HasMaxLength(50);
+              entity.Property(e => e.MatKhau)
+                  .IsRequired();
+              entity.Property(e => e.VaiTro)
+                  .IsRequired()
+                  .HasMaxLength(20);
+              entity.Property(e => e.TrangThai)
+                  .IsRequired();
             });
         }
         //Huy - end

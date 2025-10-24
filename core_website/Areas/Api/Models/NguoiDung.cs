@@ -24,7 +24,7 @@ namespace core_website.Areas.Api.Models
     [Display(Name = "Vai trò", Prompt = "Chọn vai trò")]
     public string? VaiTro { get; set; } // 'admin' or 'user'
     [Required(ErrorMessage = "{0} là bắt buộc!")]
-    [Display(Name = "Trại thái hoạt động")]
+    [Display(Name = "Trạng thái hoạt động")]
     public bool TrangThai { get; set; }
   }
   public class NguoiDungLoginRequest
