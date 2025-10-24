@@ -1,4 +1,5 @@
 ﻿using core_website.Areas.Api.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Api.Services
 {
@@ -7,11 +8,11 @@ namespace core_website.Areas.Api.Services
   /// </summary>
   public interface IDanhMucService
   {
-    /// <summary>
-    /// Lấy danh sách tất cả các danh mục.
-    /// </summary>
-    /// <returns>Danh sách các đối tượng <see cref="DanhMuc"/>.</returns>
-    List<DanhMuc> GetAll();
+        /// <summary>
+        /// Lấy danh sách tất cả các danh mục.
+        /// </summary>
+        /// <returns>Danh sách các đối tượng <see cref="DanhMuc"/>.</returns>
+        Task<ActionResult<IEnumerable<DanhMuc>>> GetAll();
 
     /// <summary>
     /// Lấy thông tin danh mục theo ID.

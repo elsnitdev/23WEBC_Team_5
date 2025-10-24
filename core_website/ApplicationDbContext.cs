@@ -7,6 +7,10 @@ namespace core_website
         //Huy - 23/10/25: khai báo DbSet cho bảng SanPham
         public DbSet<SanPham> SanPham { get; set; }
         //Huy - end
+        //Tin -24/10 : khai báo DbSet cho bảng DanhMuc
+        public DbSet<DanhMuc> DanhMuc { get; set; }
+        public DbSet<PhanLoai> PhanLoai { get; set; }
+        //Tin - end
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -20,6 +24,14 @@ namespace core_website
         //Huy - 23/10/25: Entity config cho bảng SanPham
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DanhMuc>(entity =>
+            {
+                entity.ToTable("DanhMuc");
+                entity.HasKey(e => e.MaDM);
+                entity.Property(e => e.TenDM)
+                .IsRequired()
+                .HasMaxLength(50);
+            });
             modelBuilder.Entity<SanPham>(entity =>
             {
                 //Cấu hình tên bảng
