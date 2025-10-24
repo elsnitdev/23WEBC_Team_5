@@ -21,7 +21,7 @@ namespace core_website.Areas.Api.Models
     [StringLength(255)]
     public string ThongSo { get; set; }
     [StringLength(100)]
-    public string Tag { get; set; }
+    //public string Tag { get; set; }
     public int SoLuong { get; set; }
     [StringLength(255)]
     public string HinhAnh { get; set; }
@@ -29,6 +29,6 @@ namespace core_website.Areas.Api.Models
     public DateTime ThoiGianCapNhat { get; set; }
     public bool TrangThai { get; set; }
 
-    public virtual ICollection<PhanLoai> PhanLoai { get; set; } = new List <PhanLoai>();
+    public virtual ICollection<DanhMuc> DanhMuc { get; set; } = new List <DanhMuc>();
   }
 }

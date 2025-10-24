@@ -1,4 +1,5 @@
 ﻿using core_website.Areas.Api.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace core_website.Areas.Api.Services
 {
@@ -14,7 +15,7 @@ namespace core_website.Areas.Api.Services
     /// <param name="itemsPerPage">Số lượng sản phẩm cần lấy mỗi trang. Nếu null, lấy tất cả sản phẩm.</param>
     /// <returns>Danh sách các sản phẩm.</returns>
     /// <remarks>Huy - 11/10/25: Thêm itemsPerPage để lấy số lượng item cần để hiển thị/trang.</remarks>
-    List<SanPham> GetAll(int? itemsPerPage = null);
+    Task<ActionResult<IEnumerable<object>>> GetAll(int? itemsPerPage = null);
 
     /// <summary>
     /// Lấy thông tin sản phẩm theo ID.
@@ -34,7 +35,7 @@ namespace core_website.Areas.Api.Services
     /// Thêm một sản phẩm mới.
     /// </summary>
     /// <param name="sp">Đối tượng sản phẩm cần thêm.</param>
-    SanPham Add(SanPham sp);
+    Task<SanPham> Add(SanPham sanPhamMoi, List<int> danhMucIds);
 
     /// <summary>
     /// Cập nhật đường dẫn hình ảnh của một sản phẩm.

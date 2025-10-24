@@ -12,6 +12,8 @@ namespace core_website.Areas.Api.Models
     [Required(ErrorMessage = "Tên danh mục là bắt buộc.")]
     [StringLength(50, ErrorMessage = "Tên danh mục không được vượt quá 50 ký tự.")]
     public string TenDM { get; set; }
+
+    public virtual ICollection<SanPham> SanPham { get; set; } = new List<SanPham>();
   }
   public class PhanLoai
   {
