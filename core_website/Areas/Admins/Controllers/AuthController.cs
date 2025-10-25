@@ -52,7 +52,7 @@ namespace core_website.Areas.Admins.Controllers
                 TenND = login.TenND,
                 MatKhau = login.MatKhau,
             };
-            var loginResult = _nguoiDungService.Login(loginRequest);
+            var loginResult = await _nguoiDungService.Login(loginRequest);
             if (!loginResult.Success)
             {
               ModelState.AddModelError(string.Empty, loginResult.Message ?? "Đã có lỗi xảy ra, vui lòng thử lại!");
