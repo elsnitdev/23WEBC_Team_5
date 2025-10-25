@@ -48,6 +48,7 @@ namespace core_website.Areas.Admins.Models
     [DataType(DataType.Upload)]
     public IFormFile[]? HinhAnhChiTiet { get; set; }
     public int MaDM { get; set; }
+    public string NewTenDM { get; set; }
     public List<SelectListItem>? DanhMucList { get; set; }
     // additional props
     public string? Message { get; set; } // Add to view model
