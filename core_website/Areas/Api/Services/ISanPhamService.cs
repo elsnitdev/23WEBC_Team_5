@@ -15,14 +15,14 @@ namespace core_website.Areas.Api.Services
     /// <param name="itemsPerPage">Số lượng sản phẩm cần lấy mỗi trang. Nếu null, lấy tất cả sản phẩm.</param>
     /// <returns>Danh sách các sản phẩm.</returns>
     /// <remarks>Huy - 11/10/25: Thêm itemsPerPage để lấy số lượng item cần để hiển thị/trang.</remarks>
-    Task<ActionResult<IEnumerable<object>>> GetAll(int? itemsPerPage = null);
+    Task<IEnumerable<object>> GetAll(int? itemsPerPage = null);
 
     /// <summary>
     /// Lấy thông tin sản phẩm theo ID.
     /// </summary>
     /// <param name="id">ID của sản phẩm cần lấy.</param>
     /// <returns>Đối tượng sản phẩm tương ứng với ID, hoặc null nếu không tìm thấy.</returns>
-    SanPham? GetById(int id);
+    Task<SanPham?> GetById(int id);
 
     /// <summary>
     /// Tìm kiếm sản phẩm theo từ khóa.
@@ -43,7 +43,7 @@ namespace core_website.Areas.Api.Services
     /// <param name="MaSP">Mã sản phẩm của sản phẩm sẽ được cập nhật</param>
     /// <param name="imagePaths">Đường dẫn hình ảnh mới của sản phẩm, là chuỗi liên tiếp các nhau dấu ';'</param>
     /// <returns>Sản phẩm đã được cập nhật hình ảnh.</returns>
-    SanPham UpdateImage(int MaSP, string imagePaths);
+    Task<SanPham> UpdateImage(int MaSP, string imagePaths);
 
     /// <summary>
     /// Xóa một sản phẩm theo ID.

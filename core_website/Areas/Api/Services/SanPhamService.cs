@@ -17,9 +17,11 @@ public class SanPhamService : ISanPhamService
     {
         _context = context;
     }
-    public async Task<ActionResult<IEnumerable<object>>> GetAll(int? itemsPerPage = null)
+    public async Task<IEnumerable<object>> GetAll(int? itemsPerPage = null)
     {
-        var query = _context.SanPham
+        try
+        {
+            var query = _context.SanPham
             .Include(sp => sp.DanhMuc)
             .Select(sp => new
             {
@@ -39,36 +41,52 @@ public class SanPhamService : ISanPhamService
 
             );
 
-        query.OrderByDescending(sp => sp.ThoiGianTao);
+            query = query.OrderByDescending(sp => sp.ThoiGianTao);
 
-        if (itemsPerPage.HasValue && itemsPerPage.Value > 0)
-        {
-            query = query.Take(itemsPerPage.Value);
+            if (itemsPerPage.HasValue && itemsPerPage.Value > 0)
+            {
+                query = query.Take(itemsPerPage.Value);
+            }
+
+            return await query.ToListAsync();
         }
-
-        return await query.ToListAsync();
+        catch (Exception ex)
+        {
+            throw new Exception($"Lỗi khi Get All Sản phẩm: {ex.Message}");
+        }
     }
 
     public async Task<SanPham> Add(SanPham sanPhamMoi, List<int> danhMucIds)
     {
-        sanPhamMoi.ThoiGianTao = DateTime.UtcNow;
-        sanPhamMoi.ThoiGianCapNhat = DateTime.UtcNow;
-        sanPhamMoi.DanhMuc = new List<DanhMuc>();
-
-        if(danhMucIds != null && danhMucIds.Any())
+        try
         {
-            var dsDanhMuc = await _context.DanhMuc
-                .Where(dm => danhMucIds.Contains(dm.MaDM))
-                .ToListAsync();
+            sanPhamMoi.ThoiGianTao = DateTime.UtcNow;
+            sanPhamMoi.ThoiGianCapNhat = DateTime.UtcNow;
+            sanPhamMoi.DanhMuc = new List<DanhMuc>();
 
-            sanPhamMoi.DanhMuc = dsDanhMuc;
+            if (danhMucIds != null && danhMucIds.Any())
+            {
+                var dsDanhMuc = await _context.DanhMuc
+                    .Where(dm => danhMucIds.Contains(dm.MaDM))
+                    .ToListAsync();
+
+                sanPhamMoi.DanhMuc = dsDanhMuc;
+            }
+            else
+            {
+                throw new Exception("Không có danh sách mã danh mục cho việc thêm sản phẩm");
+            }
+
+            _context.SanPham.Add(sanPhamMoi);
+
+            await _context.SaveChangesAsync();
+
+            return sanPhamMoi;
         }
-
-        _context.SanPham.Add(sanPhamMoi);
-
-        await _context.SaveChangesAsync();
-
-        return sanPhamMoi;
+        catch (Exception ex)
+        {
+            throw new Exception($"Lỗi trong lúc thêm sản phẩm: {ex.Message}");
+        }
     }
 
     public void UpdateList(List<SanPham> list)
@@ -83,9 +101,13 @@ public class SanPhamService : ISanPhamService
         //", connection);
         return 1;
     }
-    public SanPham? GetById(int id)
+    public async Task<SanPham?> GetById(int id)
     {
-    return null;
+        var sanPham = await _context.SanPham.FirstOrDefaultAsync(s => s.MaSP == id);
+        if (sanPham == null) { 
+            throw new Exception($"Không tìm thấy sản phẩm có mã: {id}");
+        }
+        return sanPham;
     }
 
     public List<SanPham> Search(string keyword)
@@ -93,18 +115,42 @@ public class SanPhamService : ISanPhamService
     return null;
     }
 
-    public SanPham UpdateImage(int MaSP, string imagePaths) {
-        //var cmd = new SqlCommand(@"
-        //  UPDATE SanPham
-        //  SET HinhAnh = @HinhAnh
-        //  WHERE MaSP = @MaSP;
-        //  SELECT * FROM SanPham WHERE MaSP = @MaSP;
-        //", connection);
-
-        return null;
+    public async Task<SanPham> UpdateImage(int MaSP, string imagePaths) {
+        try
+        {
+            var sanPham = await _context.SanPham.FirstOrDefaultAsync(s => s.MaSP == MaSP);
+            if (sanPham == null)
+            {
+                throw new Exception($"Không tìm thấy sản phẩm có mã: {MaSP}");
+            }
+            sanPham.HinhAnh = imagePaths;
+            _context.Update(sanPham);
+            await _context.SaveChangesAsync();
+            return sanPham;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Lỗi trong lúc cập nhật đường dẫn hình ảnh: {ex.Message}");
+        }
     }
 
-    public void Delete(int id) { }
+    public async void Delete(int id) {
+        try
+        {
+            var sanPham = await _context.SanPham.FirstOrDefaultAsync(s => s.MaSP == id);
+            if (sanPham == null)
+            {
+                throw new Exception($"Không tìm thấy sản phẩm có mã: {id}");
+            }
+            sanPham.TrangThai = false;
+            _context.Update(sanPham);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex) 
+        {
+            throw new Exception($"Lỗi trong lúc xoá sản phẩm: {ex.Message}");
+        }
+    }
 
     public List<SanPham> GetKhuyenMai()
     {
