@@ -42,19 +42,19 @@ namespace core_website.Areas.Admins.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            var newProduct = new SanPhamFormViewModel();
-            newProduct.DanhMucList = _danhMucService.GetAll().Select(d => new SelectListItem
-            {
-              Value = d.MaDM.ToString(),
-              Text = d.TenDM
-            })
-            .ToList();
-            if (TempData["Message"] != null && TempData["MessageType"] != null)
-            {
-              newProduct.Message = TempData["Message"]?.ToString();
-              newProduct.MessageType = TempData["MessageType"]?.ToString();
-            }
-            return View(newProduct);
+            //var newProduct = new SanPhamFormViewModel();
+            //newProduct.DanhMucList = _danhMucService.GetAll().Select(d => new SelectListItem
+            //{
+            //  Value = d.MaDM.ToString(),
+            //  Text = d.TenDM
+            //})
+            //.ToList();
+            //if (TempData["Message"] != null && TempData["MessageType"] != null)
+            //{
+            //  newProduct.Message = TempData["Message"]?.ToString();
+            //  newProduct.MessageType = TempData["MessageType"]?.ToString();
+            //}
+            return View();//return View(newProduct);
         }
         [HttpPost]
         public async Task<ActionResult<SanPham>> Create([FromForm] SanPhamFormViewModel sanPham)
@@ -73,19 +73,19 @@ namespace core_website.Areas.Admins.Controllers
             }
             try
             {
-                var newSanPham = _sanPhamService.Add(new SanPham()
-                {
-                    TenSP = sanPham.TenSP,
-                    DonGia = sanPham.DonGia,
-                    KhuyenMai = sanPham.KhuyenMai ?? 0,
-                    MoTa = sanPham.MoTa == null ? "" : sanPham.MoTa,
-                    ThongSo = sanPham.ThongSo == null ? "" : sanPham.ThongSo,
-                    Tag = sanPham.Tag == null ? "" : sanPham.Tag,
-                    SoLuong = sanPham.SoLuong,
-                    ThoiGianTao = DateTime.Now,
-                    ThoiGianCapNhat = DateTime.Now,
-                    TrangThai = true, // Mặc định là true khi tạo mới
-                });
+                //var newSanPham = _sanPhamService.Add(new SanPham()
+                //{
+                //    TenSP = sanPham.TenSP,
+                //    DonGia = sanPham.DonGia,
+                //    KhuyenMai = sanPham.KhuyenMai ?? 0,
+                //    MoTa = sanPham.MoTa == null ? "" : sanPham.MoTa,
+                //    ThongSo = sanPham.ThongSo == null ? "" : sanPham.ThongSo,
+                //    //Tag = sanPham.Tag == null ? "" : sanPham.Tag,
+                //    SoLuong = sanPham.SoLuong,
+                //    ThoiGianTao = DateTime.Now,
+                //    ThoiGianCapNhat = DateTime.Now,
+                //    TrangThai = true, // Mặc định là true khi tạo mới
+                //});
                 var newImageFilePaths = "";
                 int index = 1;
                 var HinhAnh = new List<IFormFile>();
@@ -109,12 +109,12 @@ namespace core_website.Areas.Admins.Controllers
                 }
                 newImageFilePaths = newImageFilePaths.TrimEnd(';'); // Xoá dấu chấm phẩy cuối cùng
 
-                _sanPhamService.UpdateImage(newSanPham.MaSP, newImageFilePaths);
+                //_sanPhamService.UpdateImage(newSanPham.MaSP, newImageFilePaths);
 
                 // Phân loại sản phẩm nếu có DanhMucId
                 if (sanPham.MaDM > 0)
                 {
-                    _danhMucService.Categorize(newSanPham.MaSP, sanPham.MaDM);
+                    //_danhMucService.Categorize(newSanPham.MaSP, sanPham.MaDM);
                 }
 
                 TempData["Message"] = "Sản phẩm thêm thành công";

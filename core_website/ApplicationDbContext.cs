@@ -61,21 +61,36 @@ namespace core_website
                     .IsRequired()
                     .HasMaxLength(255);
                 entity.Property(e => e.ThoiGianTao)
-                    .HasColumnType("datetime")
-                    .IsRequired(false); 
+                    .HasColumnType("datetime");//Thương sửa (cột này mặc định là không cho phép null)
+                                               //.IsRequired(false); 
                 entity.Property(e => e.ThoiGianCapNhat)
-                    .HasColumnType("datetime")
-                    .IsRequired(false); 
+                    .HasColumnType("datetime");//Thương sửa (cột này mặc định là không cho phép null)
+                                               //.IsRequired(false);  
                 entity.Property(e => e.TrangThai)
                     .HasColumnType("bit")
                     .IsRequired();
 
                 //cấu hình khoá ngoại
-                entity
-                    .HasMany(sp => sp.DanhMuc)
-                    .WithMany(dm => dm.SanPham)
-                    .UsingEntity(j => j.ToTable("PhanLoai"));
+                //entity
+                //    .HasMany(sp => sp.DanhMuc)
+                //    .WithMany(dm => dm.SanPham)
+                //    .UsingEntity(j => j.ToTable("PhanLoai"));
+                //thương code lại
+                modelBuilder.Entity<PhanLoai>(entity =>
+                {
+                    entity.ToTable("PhanLoai");
+                    entity.HasKey(e => new { e.MaSP, e.MaDM });
+
+                    entity.HasOne(e => e.SanPham)
+                          .WithMany(sp => sp.PhanLoai)
+                          .HasForeignKey(e => e.MaSP);
+
+                    entity.HasOne(e => e.DanhMuc)
+                          .WithMany(dm => dm.PhanLoai)
+                          .HasForeignKey(e => e.MaDM);
+                });
             });
+            //thuong end
         }
         //Huy - end
     }

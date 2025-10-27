@@ -30,5 +30,6 @@ namespace core_website.Areas.Api.Models
     public bool TrangThai { get; set; }
 
     public virtual ICollection<DanhMuc> DanhMuc { get; set; } = new List <DanhMuc>();
-  }
+    public ICollection<PhanLoai> PhanLoai { get; set; } = new List<PhanLoai>();
+    }
 }

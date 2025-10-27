@@ -14,12 +14,15 @@ namespace core_website.Areas.Api.Models
     public string TenDM { get; set; }
 
     public virtual ICollection<SanPham> SanPham { get; set; } = new List<SanPham>();
-  }
+    public ICollection<PhanLoai> PhanLoai { get; set; } = new List<PhanLoai>();
+    }
   public class PhanLoai
   {
     public int MaSP { get; set; }
     public int MaDM { get; set; }
-  }
+        public SanPham SanPham { get; set; }
+        public DanhMuc DanhMuc { get; set; }
+    }
   public class ThongKeDanhMuc
   {
     public int MaDM { get; set; }
